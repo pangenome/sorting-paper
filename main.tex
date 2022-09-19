@@ -40,9 +40,23 @@
 }
 \section{Background}
 
-Pangenome graphs \cite{computational2016computational}.
+Pangenome graphs \cite{computational2016computational}. SGD-layout. Layout in general. 
 
 \section{Results}
+
+Algorithm 1: How does our node update algorithm work in general, single threaded.
+\paragraph{}
+Fig. 1: Describe how our approach works. Explanation of 1D graph sorting and metric with Simon's handmade figures. SGD figure. Zipfian distribution figure.
+\paragraph{}
+Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes. Time + RAM by number of threads. Chr6 HPRC graph?
+\\
+1D (max. threads) vs. ALIBI; we should compare time + RAM. But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper. 
+\\
+2D (max. threads) + odgi draw vs. Bandage.
+\paragraph{}
+Fig. 3: Cool quantitative 1D sortings and 2D layouts: biological implications. Randomly sorted. PG-SGD sorted. Ygs sorted. We want a pipeline of sortings. 2D layout of the whole HPRC. Chr6 HPRC HLA graph? Chr8 beta-defensin gene cluster HPRC? Whole HPRC?
+\paragraph{Bonus Section}
+Fig. 4: Detect tension. Relax a graph. Detect tension afterwards. I need to test this on a new data set I got from Erik. I need to establish a fixed lower boundary for the tension from which on we don't relax anymore.
 
 \section{Discussion}
 
