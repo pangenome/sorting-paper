@@ -40,26 +40,47 @@
 }
 \section{Background}
 
-Pangenome graphs \cite{computational2016computational}. SGD-layout. Layout in general. 
+Pangenome graphs \cite{computational2016computational}. blubb.
+
+variation graph model
+
+SGD-layout. Layout in general. 
 
 \section{Results}
 
+\paragraph{The HOGHWILD! path-guided stochastic gradient descent algorithm}
 Algorithm 1: How does our node update algorithm work in general, single threaded.
-\paragraph{}
-Fig. 1: Describe how our approach works. Explanation of 1D graph sorting and metric with Simon's handmade figures. SGD figure. Zipfian distribution figure.
-\paragraph{}
+\\
+Fig. 1: Describe how our approach works. Explanation of 1D graph sorting and metric with Simon's handmade figures. SGD figure. Zipfian distribution figure. One basic 1D and 2D viz to explain how to actually read these.
+\paragraph{Performance evaluation}
 Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes. Time + RAM by number of threads. Chr6 HPRC graph?
 \\
 1D (max. threads) vs. ALIBI; we should compare time + RAM. But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper. 
 \\
 2D (max. threads) + odgi draw vs. Bandage.
-\paragraph{}
+\paragraph{Latent graph structure reveals underlying biology}
 Fig. 3: Cool quantitative 1D sortings and 2D layouts: biological implications. Randomly sorted. PG-SGD sorted. Ygs sorted. We want a pipeline of sortings. 2D layout of the whole HPRC. Chr6 HPRC HLA graph? Chr8 beta-defensin gene cluster HPRC? Whole HPRC?
 \paragraph{Bonus Section}
 Fig. 4: Detect tension. Relax a graph. Detect tension afterwards. I need to test this on a new data set I got from Erik. I need to establish a fixed lower boundary for the tension from which on we don't relax anymore.
 
 \section{Discussion}
 
+We propose / implemented ....
+\paragraph{}
+Difference to other existing methods, are there possible improvements of our method possible?
+\paragraph{}
+Discuss performance eval
+@Jiajie + Niklas: What about going GPU?
+\paragraph{}
+The algorithm allows to inspect a pangenome graph on base-level, as a whole.
+\paragraph{from the ODGI paper:}
+Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods. However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing. Recent interactive pangenome graph browsers are reference-centric (Beyer et al., 2019; Yokoyama et al., 2019), have a limited predefined coordinate system (Durant et al., 2021), or focus primarily on 2D representations (Gonnella et al., 2019; Wick et al., 2015). Our graph sorting and layout algorithms can provide the foundation for future tools of this type. We plan to focus on using these learned models to detect structural variation and assembly errors.
+\paragraph{}
+The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph. A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths. Our 1D path-guided SGD algorithm is designed to provide this kind of sort. Already, the 1D PG-SGD is a key step in the PanGenome Graph Building (PGGB) pipeline that we successfully applied to build the first draft human pangenome reference (Liao et al., bioRxiv 2022).
+\paragraph{}
+What about the future? 
+\paragraph{}
+How can other scientists benefit from this work?
 \section{Conclusion}
 
 \section{Methods}
@@ -68,8 +89,10 @@ Fig. 4: Detect tension. Relax a graph. Detect tension afterwards. I need to test
 \bibliographystyle{ieeetr}
 
 \section*{Acknowledgements}
+The authors thank members of the HPRC Pangenome Working Group for their insightful discussion and feedback, and members of the HPRC production teams for their development of resources used in our exposition.
 
 \section*{Funding}
+S.H. acknowledges funding from the Central Innovation Programme (ZIM) for SMEs of the Federal Ministry for Economic Affairs and Energy of Germany. S.N. acknowledges Germany’s Excellence Strategy (CMFI), EXC-2124 and (iFIT)—EXC 2180–390900677. This work was supported by the BMBF-funded de. NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) [031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A and 031A532B].
 
 \section*{Competing interests}
 The authors declare that they have no competing interests.
