@@ -20,6 +20,10 @@
 \usepackage{booktabs}
 \usepackage{siunitx}
 
+\usepackage{algorithm2e}
+\SetAlgoLined
+\SetKwProg{MyStruct}{For each}{:}{end}
+
 \newcommand{\vocab}{\textbf}
 
 \begin{document}
@@ -64,28 +68,43 @@ SGD-layout. Layout in general.
 Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is applicable in 1D and in 2D. In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes. Our path index enables efficient navigation of path positions by updating nodes on the fly, instead of keeping all pairwise distances of all nodes in memory. This allows the PG-SGD to be applied to gigabase-scale pangenome graphs. \\
 Our multi-threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}). The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible. Already, the PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}), or ALIBI (\url{https://doi.org/hkv3}).
 \\
-Algorithm 1: How does our node update algorithm work in general, single threaded.
+We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread.
+\begin{algorithm}
+	\MyStruct{Iteration}{
+		Perform term update.
+	}
+	\caption{TODO: PG-SGD algorithm.}
+	\label{alg:pg_sgd}
+\end{algorithm}
 
 Fig. 1: Describe how our approach works (Fig. \ref{fig:algorithm}). Explanation of 1D graph sorting and metric with Simon's handmade figures \ref{fig:sorting_explained},\ref{fig:metrics_explained}. SGD figure \ref{fig:pg_sgd_update_sketch}. Zipfian distribution figure \ref{fig:fig:zipf_curve}.
 
 \input{fig_algorithm}
 
 \paragraph{Performance evaluation}
-Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes. Time + RAM by number of threads. Chr6 HPRC graph?
+Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Chr6 HPRC graph?
 \\
-1D (max. threads) vs. ALIBI; we should compare time + RAM. But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper. 
+1D (max. threads) vs. ALIBI; we should compare time + RAM in Fig.~\ref{fig:alibi}. But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper in Table 1. 
 \\
-2D (max. threads) + odgi draw vs. Bandage.
+2D (max. threads) + odgi draw vs. Bandage in Fig.~\ref{fig:bandage}. 
+\input{fig_performance}
+\\
+\\
+Table 1: Metrics of the ALIBI and PG-SGD graphs from Fig. 2.
+\input{tab_performance.tex}
 \paragraph{Latent graph structure reveals underlying biology}
 Fig. 3: Cool quantitative 1D sortings and 2D layouts: biological implications. Randomly sorted. PG-SGD sorted. Ygs sorted. Reference sorted. We want a pipeline of sortings. 2D layout of the whole HPRC. Chr6 HPRC HLA graph? Chr8 beta-defensin gene cluster HPRC? Whole HPRC? 
 \\
 We could also try to build a gastric cancer pangenome graph with data from \url{https://www.nature.com/articles/s41467-022-33073-7} from up to 185 samples. However, we would have to request access to the data. 
 \\
 \\
-Table 1: Metrics of the sorted graphs in Fig. 3.
+\input{fig_latent_graph_structure}
+Table 2: Metrics of the sorted graphs in Fig. 3.
+\input{tab_metrics_latent_graph_structure}
 \paragraph{Bonus Section}
 Fig. 4: Detect tension. Relax a graph. Detect tension afterwards. I need to test this on a new data set I got from Erik. I need to establish a fixed lower boundary for the tension from which on we don't relax anymore. \\
 With a high quality layout, we can measure the discrepancy of the path layout position versus the expected path nucleotide position, the “tension” of a graph. The greater the “tension”, the greater is the possibility of a biologically meaningless alignment. This allows us to detect telomere collapsing alignment errors and hopefully (pangenome) assembly errors, subsequently correcting them.
+\input{fig_tension}
 
 \section{Discussion}
 
