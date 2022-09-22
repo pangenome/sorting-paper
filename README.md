@@ -1,4 +1,4 @@
-# odgi-paper
+# PG-SGD paper
 
 ## resources
 
