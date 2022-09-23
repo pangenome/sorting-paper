@@ -73,13 +73,14 @@ SGD-layout. Layout in general.
 \section{Results}
 
 \paragraph{The HOGHWILD! path-guided stochastic gradient descent algorithm}
-Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is applicable in 1D and in 2D.
+Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is applicable in any number of dimensions.
+In this work, we describe the results in 1D and 2D.
 In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes.
 Our path index enables efficient navigation of path positions by updating nodes on the fly, instead of keeping all pairwise distances of all nodes in memory.
 This allows the PG-SGD to be applied to gigabase-scale pangenome graphs. \\
 Our multi-threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}).
-The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
-Already, the PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}), or ALIBI (\url{https://doi.org/hkv3}).
+%The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
+Already, the PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}) or ALIBI (\url{https://doi.org/hkv3}).
 \\
 We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread.
 \begin{algorithm}
@@ -152,7 +153,7 @@ Already, the 1D PG-SGD is a key step in the PanGenome Graph Building (PGGB) pipe
 \paragraph{}
 What about the future?
 \paragraph{}
-How can other scientists benefit from this work?
+How can other scientists benefit from this work? Graph visualization (together with annotation) is key for understanding variations.
 \section{Conclusion}
 
 \section{Methods}
@@ -161,7 +162,8 @@ How can other scientists benefit from this work?
 \bibliographystyle{ieeetr}
 
 \section*{Acknowledgements}
-The authors thank members of the HPRC Pangenome Working Group for their insightful discussion and feedback, and members of the HPRC production teams for their development of resources used in our exposition.
+We are grateful to members of the HGSVC and HPRC production teams for their development of resources used in our exposition.
+
 
 \section*{Funding}
 JNM.S., J.L., and Z.Z. acknowledge funding from the NSF PPoSS Award \#2118709.
@@ -169,7 +171,7 @@ S.H. acknowledges funding from the Central Innovation Programme (ZIM) for SMEs o
 S.N. acknowledges Germany’s Excellence Strategy (CMFI), EXC-2124 and (iFIT)—EXC 2180–390900677.
 This work was supported by the BMBF-funded de.
 NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) [031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A and 031A532B].
-A.G. acknowledges Nicole Soranzo to establish a pangenome research unit at the Human Technopole in Milan, Italy.
+A.G. acknowledges efforts by Nicole Soranzo to establish a pangenome research unit at the Human Technopole in Milan, Italy.
 
 \section*{Competing interests}
 The authors declare that they have no competing interests.
