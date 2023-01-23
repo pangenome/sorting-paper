@@ -1,34 +1,46 @@
 \begin{figure*}[!htb]
 	\centering
 		%\hline
-		\begin{subfigure}[t]{0.4\textwidth}
+		\begin{subfigure}[t]{0.32\textwidth}
 			\centering
 			\caption{}
 			\includegraphics[width=\linewidth]{fig/algorithm/TODO_1D_metrics_explained.pdf}
-			\label{fig:metrics_explained}
+			\label{fig:1d_before_update}
 		\end{subfigure}
-		\begin{subfigure}[t]{0.4\textwidth}
+		\begin{subfigure}[t]{0.32\textwidth}
 		\centering
 		\caption{}
 		\includegraphics[width=\linewidth]{fig/algorithm/TODO_1D_sorting_explained.pdf}
-		\label{fig:sorting_explained}
+		\label{fig:1d_before_update_highlighted}
 		\end{subfigure}
+		\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\caption{}
+		\includegraphics[width=\linewidth]{fig/algorithm/TODO_1D_sorting_explained.pdf}
+		\label{fig:1d_after_update}
+		\end{subfigure}	
 		%\smallskip
-		\begin{subfigure}[t]{0.4\textwidth}
+		\begin{subfigure}[t]{0.32\textwidth}
 			\centering
 			\caption{}
 			\includegraphics[width=\linewidth]{fig/algorithm/TODO_pg_sgd_update_sketch.png}
-			\label{fig:pg_sgd_update_sketch}
+			\label{fig:2d_before_update}
 		\end{subfigure}
-		\begin{subfigure}[t]{0.4\textwidth}
+		\begin{subfigure}[t]{0.32\textwidth}
 			\centering
 			\caption{}
 			\includegraphics[width=\linewidth]{fig/algorithm/TODO_zipf_curve.jpg}
-			\label{fig:fig:zipf_curve}
+			\label{fig:2d_before_update_highlighted}
 		\end{subfigure}
+		\begin{subfigure}[t]{0.32\textwidth}
+		\centering
+		\caption{}
+		\includegraphics[width=\linewidth]{fig/algorithm/TODO_zipf_curve.jpg}
+		\label{fig:2d_after_update}
+		\end{subfigure}	
 	\caption{
-		Explain metrics and algorithms.
-		\textbf{(a)} Sketch of 1D sorting operation. \textbf{(b)} Sketch of metrics calculation. \textbf{(c)} Term update sketch. \textbf{(d)} Zipfian distribution.
+		PG-SGD update operation sketches. \textbf{(a)-(c)} 1D layout sketch of an update operation moving a pair of nodes at a time. Edges are not shown. \textbf{(d)-(f)} 2D layout sketch of an update operation moving a pair of nodes at a time. Edges are drawn as black links.
+		\textbf{(a)} State of the graph before the 1D update. \textbf{(b)} State of the graph before the update highlighting the discrepancy of the layout distance versus the path nucleotide distance of the blue nodes in 1D.  \textbf{(c)} State of the graph after the 1D update. \textbf{(d)} State of the graph before the 2D update. \textbf{(e)} State of the graph before the update highlighting the discrepancy of the layout distance versus the path nucleotide distance of the blue nodes in 2D. \textbf{(f)} State of the graph after the 2D update.
 	}
-	\label{fig:algorithm}
+	\label{fig:sketches}
 \end{figure*}
