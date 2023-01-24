@@ -21,8 +21,12 @@
 \usepackage{siunitx}
 
 \usepackage{algorithm2e}
+\usepackage[usenames,dvipsnames]{xcolor}
 \SetAlgoLined
-\SetKwProg{MyStruct}{For each}{:}{end}
+\SetKwProg{foreach}{For each}{:}{end}
+\SetKwProg{for}{For}{:}{end}
+\SetKwProg{pgsgd}{PG-SGD}{:}{end}
+\usepackage{bm}
 
 \newcommand{\vocab}{\textbf}
 
@@ -76,7 +80,7 @@ SGD-layout. Layout in general.
 \section{Results}
 
 \paragraph{The HOGHWILD! path-guided stochastic gradient descent algorithm}
-Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is applicable in any number of dimensions.
+Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is theoretically applicable in any number of dimensions.
 In this work, we describe the results in 1D and 2D.
 In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes.
 Our path index enables efficient navigation of path positions by updating nodes on the fly, instead of keeping all pairwise distances of all nodes in memory.
@@ -88,13 +92,22 @@ Our multi-threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rs
 	\item The path nucleotide distance of the nodes in the pair guides the actual layout distance dij update of these nodes. The magnitude r of the update depends on the current learning rate of the SGD.
 \end{itemize}
 %The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
-We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread.
+We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread. We can have several worker threads but only one checker thread!
 \begin{algorithm}
-	\MyStruct{Iteration}{
-		Perform term update.
+\pgsgd{\textbf{(}V\textbf{)}}{
+	\textbf{input:} variation graph $V = (N, E, P)$ \\
+	%https://tex.stackexchange.com/questions/22643/how-to-write-letters-in-bold-in-the-math-mode
+	\textbf{output:} $k$-dimensional layout \boldsymbol{$L$} with $n$ nodes \\
+    \boldsymbol{$P$} $\leftarrow PathIndex(G)$ \\ 
+	\boldsymbol{$L$} $\leftarrow RandomLayout(n, k)$ \tcp{only 2D PG-SGD has a random layout initialization}
+	\for{$\eta$ $in$ $annealing$ $schedule$}{
+		\foreach{$term$ $update$	} {
+			DO SOME MAGIC.
+		}
 	}
-	\caption{TODO: PG-SGD algorithm.}
-	\label{alg:pg_sgd}
+}
+\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
+\label{alg:pg_sgd}
 \end{algorithm}
 
 Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
