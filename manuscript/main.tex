@@ -99,14 +99,40 @@ We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single threa
 	%https://tex.stackexchange.com/questions/22643/how-to-write-letters-in-bold-in-the-math-mode
 	\textbf{output:} $k$-dimensional layout \boldsymbol{$L$} with $n$ nodes \\
     \boldsymbol{$P$} $\leftarrow PathIndex(G)$ \\ 
-	\boldsymbol{$L$} $\leftarrow RandomLayout(n, k)$ \tcp{only 2D PG-SGD has a random layout initialization}
+    \boldsymbol{$Z$} $\leftarrow ZipfZetas(G,P)$ \\ %@Andrea is this correct like this?
+	\boldsymbol{$L$} $\leftarrow RandomLayout(n, k)$ \tcp{only 2D PG-SGD has a random layout initialization, 1D starts with the current node order}
+	% atomic positions initialization?
+	% TODO for somplicity reasons I would only describe the 2D one here
 	\for{$\eta$ $in$ $annealing$ $schedule$}{
-		\foreach{$term$ $update$	} {
-			DO SOME MAGIC.
+		\foreach{$term$ $update$} {
+			random path step from all steps \\
+			if cooling $||$ flip \\
+			uniform step across the path \\
+			else \\
+			forward \\
+				use Z to generate max jump length \\
+				newsteprank = cursteprank + sampledzipfvalue \\
+			backward \\
+				use Z to generate jump length \\
+				newsteprank = cursteprank + sampledzipfvalue \\
+			get path positions via path index \\	
+			$nuc\_dist=abs(pos\_in\_path\_a - pos\_in\_path\_b)$ \\
+			$term\_weight = 1.0 / term\_dist$ \\
+			$w\_ij = term\_weight$ \\
+			$mu = eta.load() * w_{ij}$ \\
+			$dx = X[i].load() - X[j].load()$ \tcp{calculate layout distance }
+			$mag = std::abs(dx)$ \\
+			$Delta = mu * (mag - d_ij) / 2$ \\
+			$ Delta_abs = std::abs(Delta)$ \\
+			\tcp{potentially store new Delta\_max}
+			$r = Delta / mag$ \\
+			$ r_x = r * dx$ \\
+			\tcp{new X = old X - r\_x}
+			\tcp{new Y = old Y - r\_Y, 2D only}
 		}
 	}
 }
-\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
+\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $ZipfZetas$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
 \label{alg:pg_sgd}
 \end{algorithm}
 
