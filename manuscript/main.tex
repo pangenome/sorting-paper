@@ -25,9 +25,6 @@
 \usepackage{algorithm2e}
 \usepackage[usenames,dvipsnames]{xcolor}
 \SetAlgoLined
-\SetKwProg{for}{For}{:}{end}
-\SetKwProg{pgsgd}{PG-SGD}{:}{end}
-\SetKwProg{each}{For each}{:}{end}
 \usepackage{bm}
 
 % we squeeze our figures even more together
@@ -127,7 +124,7 @@ Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is
 In this work, we describe the results in 1D and 2D.
 In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes.
 Our path index enables efficient navigation of path positions by updating nodes on the fly, instead of keeping all pairwise distances of all nodes in memory.
-This allows the PG-SGD to be applied to gigabase-scale pangenome graphs. \\
+This allows the PG-SGD to be applied manuscriptto gigabase-scale pangenome graphs. \\
 Our multi-threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
 \begin{itemize}
 	\item The first node Xi of a pair is a uniform path step pick from all nodes.
@@ -137,48 +134,7 @@ Our multi-threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rs
 %The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
 We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread. We can have several worker threads but only one checker thread!
 
-\begin{algorithm}
-	\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $ZipfZetas$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
-	\label{alg:pg_sgd}
-	\pgsgd{\textbf{(}V\textbf{)}}{
-		\textbf{input:} variation graph $V = (N, E, P)$ \\
-		%https://tex.stackexchange.com/questions/22643/how-to-write-letters-in-bold-in-the-math-mode
-		\textbf{output:} $k$-dimensional layout \boldsymbol{$L$} with $n$ nodes \\
-		\boldsymbol{$P$} $\leftarrow PathIndex(G)$ \\ 
-		\boldsymbol{$Z$} $\leftarrow ZipfZetas(G,P)$ \\ %@Andrea is this correct like this?
-		\boldsymbol{$L$} $\leftarrow RandomLayout(n, k)$ \tcp{only 2D PG-SGD has a random layout initialization, 1D starts with the current node order}
-		% atomic positions initialization?
-		% TODO for somplicity reasons I would only describe the 2D one here
-		\for{$\eta$ $in$ $annealing$ $schedule$}{
-			\each{$term$ $update$} {
-				random path step from all steps \\
-				if cooling $||$ flip \\
-				uniform step across the path \\
-				else \\
-				forward \\
-				use Z to generate max jump length \\
-				newsteprank = cursteprank + sampledzipfvalue \\
-				backward \\
-				use Z to generate jump length \\
-				newsteprank = cursteprank + sampledzipfvalue \\
-				get path positions via path index \\	
-				$nuc\_dist=abs(pos\_in\_path\_a - pos\_in\_path\_b)$ \\
-				$term\_weight = 1.0 / term\_dist$ \\
-				$w\_ij = term\_weight$ \\
-				$mu = eta.load() * w_{ij}$ \\
-				$dx = X[i].load() - X[j].load()$ \tcp{calculate layout distance }
-				$mag = std::abs(dx)$ \\
-				$Delta = mu * (mag - d_ij) / 2$ \\
-				$ Delta_abs = std::abs(Delta)$ \\
-				\tcp{potentially store new Delta\_max}
-				$r = Delta / mag$ \\
-				$ r_x = r * dx$ \\
-				\tcp{new X = old X - r\_x}
-				\tcp{new Y = old Y - r\_Y, 2D only}
-			}
-		}
-	}
-\end{algorithm}
+\input{pg-sgd_pseudocode}
 
 Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
 

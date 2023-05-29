@@ -1,0 +1,60 @@
+\SetKwProg{for}{for}{:}{end}
+\SetKwProg{pgsgd}{PG-SGD}{:}{end}
+\SetKwProg{each}{for each}{:}{end}
+\SetKwProg{IF}{if}{:}{end}
+
+\SetKwFunction{PathIndex}{PathIndex}
+\SetKwFunction{RandomLayout}{RandomLayout}
+\SetKwFunction{InitZipf}{InitZipf}
+\SetKwFunction{Unif}{Unif}
+\SetKwFunction{Zipf}{Zipf}
+\SetKwFunction{StepCount}{StepCount}
+\SetKwFunction{PathId}{PathId}
+\SetKwFunction{StepPos}{StepPos}
+
+\begin{algorithm}
+	\pgsgd{\textbf{(}$\mathcal{V}$\textbf{)}}{
+		\textbf{input:} variation graph $\mathcal{V} = (\mathcal{N}, \mathcal{E}, \mathcal{P})$ \\
+		%https://tex.stackexchange.com/questions/22643/how-to-write-letters-in-bold-in-the-math-mode
+		\textbf{output:} $k$-dimensional layout $\mathcal{L}$ with $n$ nodes \\
+		$\mathcal{XP}$ $\gets \PathIndex(\mathcal{V})$ \tcp{index for efficient path position lookup}
+		%\boldsymbol{$Z$} $\gets ZipfZetas(G,P)$ \\ %@Andrea is this correct like this?
+		$\mathcal{L}$ $\gets \RandomLayout(n, k)$ \tcp{only 2D PG-SGD has a random layout initialization, 1D starts with the current node order}
+		$\mathcal{Z} \gets \InitZipf(\mathcal{V},\mathcal{XP})$ \tcp{generate Zipfian distribution}
+		% atomic positions initialization?
+		% TODO for somplicity reasons I would only describe the 2D one here
+		\for{$\eta$ $in$ $annealing$ $schedule$}{ %our "schedule" actually is the number paths.... we should specify this I would say
+			\each{$\{i,j: i<j\}$ in uniform order} { % I think we can remove i<j, because we don't care about that
+				$ps_i \gets \Unif(\mathcal{XP})$ \tcp{uniform path step from all steps}
+				$path \gets \PathId(ps_i,\mathcal{XP})$ \tcp{the path id of the sampled step}
+				\uIf{$(coolling$ $||$ $flip)$} {
+					$ps_j \gets \Unif(\StepCount(path, \mathcal{XP}))$ \tcp{uniform path step from specific path}
+					$p_j \gets \StepPos(ps_j)$ \tcp{nucleotide position of step}
+				} \Else {
+					$ps_j \gets \Zipf(path)$ \tcp{}
+					use Z to generate max jump length \\
+					newsteprank = cursteprank + sampledzipfvalue \\
+					backward \\
+					use Z to generate jump length \\
+					newsteprank = cursteprank + sampledzipfvalue \\
+				}
+				$p_i \gets \StepPos(ps_i)$ \tcp{nucleotide position of step}
+				$nd \gets ||p_i - p_j||$ \tcp{calculate nucleotide distance} %mag is nx
+				$w_{ij} \gets \frac{1.0}{nd}$ \tcp{term weight} 
+				$\mu \gets w_{ij}\eta$ \tcp{learning rate}  % current learning rate is given by term weight and step size
+				\IF{$\mu>1$} {
+				$\mu \gets 1$
+				}
+				$ld \gets ||\mathcal{L}_{i}-\mathcal{L}_j||$ \tcp{calculate layout distance}
+				$\delta \gets \mu \cdot \frac{ld -nd}{2}$ \tcp{the actual delta}
+				% TODO stop early?
+				% TODO potentially store new delta max?
+				$r \gets \delta - ld$ \tcp{size of the term update}
+				$\mathcal{L}_i \gets \mathcal{L}_i - r\cdot ld$ \\
+				$\mathcal{L}_j \gets \mathcal{L}_j - r\cdot ld$
+			}
+		}
+	}
+	\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $ZipfZetas$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
+	\label{alg:pg_sgd}
+\end{algorithm}
