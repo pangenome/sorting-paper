@@ -1,71 +1,111 @@
 \PassOptionsToPackage{utf8}{inputenc}
-%\documentclass{article}
+\documentclass{bioinfo}
 
-\documentclass[11pt,hidelinks]{article}
-%\usepackage[margin=0.75in,top=0.75in,footskip=0.5in]{geometry}
+\usepackage{makecell}
+
+\usepackage{floatrow}
+
 \usepackage{comment}
 
-\usepackage{helvet}
-\renewcommand{\familydefault}{\sfdefault}
+\usepackage{siunitx}
 
-\usepackage[draft]{hyperref}
-\usepackage{authblk}
-\usepackage{fullpage}
 % singlelinecheck=false puts subcaptions on the left
 \usepackage[singlelinecheck=false]{subcaption}
-%\usepackage{tikz,graphics,color,fullpage,float,epsf,caption,subcaption}
-\usepackage{graphicx}
+
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
 
 \usepackage{amsfonts}
 \usepackage{booktabs}
-\usepackage{siunitx}
 
 \usepackage{algorithm2e}
 \usepackage[usenames,dvipsnames]{xcolor}
 \SetAlgoLined
-\SetKwProg{foreach}{For each}{:}{end}
 \SetKwProg{for}{For}{:}{end}
 \SetKwProg{pgsgd}{PG-SGD}{:}{end}
+\SetKwProg{each}{For each}{:}{end}
 \usepackage{bm}
 
+% we squeeze our figures even more together
+\captionsetup{belowskip=-2pt}
+
+\SetAlgoLined
+\SetKwProg{MyStruct}{Struct}{ contains}{end}
+
 \newcommand{\vocab}{\textbf}
+\newcommand{\red}[1]{{\textcolor{Red}{#1}}}
+\newcommand{\FIXME}[1]{\red{[FIXME: #1]}}
+
+\usepackage{orcidlink}
+\hypersetup{hidelinks}
+
+
+\def\labelitemi{--}
+
+\copyrightyear{2023} \pubyear{XXXX}
+
+\access{Advance Access Publication Date: Day Month Year}
+\appnotes{Genome Analysis}
 
 \begin{document}
+\firstpage{1}
 
-\title{Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent}
+\subtitle{Genome Analysis}
 
-\author{ %[Heumos, \textit{et~al}.]{
-  Simon Heumos\,$^{1,2 \dagger}$,
-  Andrea Guarracino\,$^{3,6 \dagger}$,
-  Jan-Niklas Manuel Schmelzle\,$^{4,5}$,
-  Jiajie Li\,$^{5}$,
-  Zhiru Zhang\,$^{5}$,
-  Sven Nahnsen\,$^{1,2}$,
-  Pjotr Prins\,$^6$,
-  and Erik Garrison\,$^{6 *}$
+\title[Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent]{Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent}
+\author[Heumos, Guarracino \textit{et~al}.]{
+Simon~Heumos\,$^{\orcidlink{0000-0003-3326-817X}1,2,\dagger,*}$,
+Andrea~Guarracino\,$^{\orcidlink{0000-0001-9744-131X}3,4,\dagger}$,
+Jan-Niklas Manuel Schmelzle\,$^{\orcidlink{0000-0001-8566-4049}5,6}$,
+Jiajie Li\,$^{\orcidlink{0000-0002-9467-0659}6}$,
+Zhiru Zhang\,$^{\orcidlink{0000-0002-0778-0308}6}$,
+Sven Nahnsen\,$^{\orcidlink{0000-0002-4375-0691}1,2}$,
+Pjotr Prins\,$^{\orcidlink{0000-0002-8021-9162}3}$,
+Erik~Garrison\,$^{\orcidlink{0000-0003-3821-631X}\text{\sfb 3},*}$
 }
 
-\affil{\small$^1$Quantitative Biology Center (QBiC), University of Tübingen, Tübingen 72076, Germany \\
-  $^2$Biomedical Data Science, Department of Computer Science, University of Tübingen, Tübingen 72076, Germany \\
-  $^3$Genomics Research Centre, Human Technopole, Milan 20157, Italy \\
-  $^4$Department of Computer Engineering, School of Computation, Information and Technology (CIT), Technical University of Munich, Munich 80333, Germany \\
-  $^5$School of Electrical and Computer Engineering, Cornell University, Ithaca, NY 14853, USA \\
-  $^6$Department of Genetics, Genomics and Informatics, University of Tennessee Health Science Center, Memphis, TN 38163, USA \\
-  $^\ast$To whom correspondence should be addressed. \\
-  $^\dagger$Contributed equally.}
+\address{
+$^1$Quantitative Biology Center (QBiC), University of Tübingen, Tübingen 72076, Germany \\
+$^2$Biomedical Data Science, Department of Computer Science, University of Tübingen, Tübingen 72076, Germany \\
+$^3$Department of Genetics, Genomics and Informatics, University of Tennessee Health Science Center, Memphis, TN 38163, USA \\
+$^4$Genomics Research Centre, Human Technopole, Milan 20157, Italy \\
+$^5$Department of Computer Engineering, School of Computation, Information and Technology (CIT), Technical University of Munich, Munich 80333, Germany \\
+$^6$School of Electrical and Computer Engineering, Cornell University, Ithaca, NY 14853, USA \\
+}
+
+\corresp{
+$^\ast$To whom correspondence should be addressed. \\
+$^{\dagger}$The authors wish it to be known that, in their opinion, the first two authors should be regarded as Joint First Authors.\
+}
+
+\history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
+
+\editor{Associate Editor: XXXXXXX}
+
+\abstract{
+\textbf{Motivation:}
+The availability of many high-quality genomes has led to the need for models that allow the study of genetic variability within entire populations.
+Pangenome graphs can represent the full diversity between multiple genomes, but they may exhibit complex structures due to common patterns of genome variation.
+These nonlinear structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
+\textbf{Results:}
+To address these challenges, we propose a novel layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
+Our approach orders the nodes of a pangenome graph by leveraging the HOGWILD! strategy and it is guided by the path position information of the genomes represented in the graph.
+We demonstrate that our implementation can efficiently compute the latent structure of gigabase-scale pangenome graphs, exposing their biological features. \\
+\textbf{Availability:}
+The PG-SGD algorithm is implemented in \textit{odgi} which is published as free software under the MIT open source license.
+Source code is available at \url{https://github.com/pangenome/odgi} and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}.
+\textit{odgi} can be installed via Bioconda \url{https://bioconda.github.io/recipes/odgi/README.html} or GNU Guix \url{https://github.com/ekg/guix-genomics/blob/master/odgi.scm}. \\
+\textbf{Contact:} \href{simon.heumos@qbic.uni-tuebingen.de}{simon.heumos@qbic.uni-tuebingen.de},
+\href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
+%\textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
+}
 
 \maketitle
 
-\abstract{
-    \textbf{Motivation:}
-	The availability of many high-quality genomes has led to the need for models that allow the study of genetic variability within entire populations.
-	Pangenome graphs can represent the full diversity between multiple genomes, but they may exhibit complex structures due to common patterns of genome variation.
-    These nonlinear structures introduce difficulty in downstream analyses, visualization, and interpretation.
-    \textbf{Results:}
-	To address these challenges, we propose a novel layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-	Our approach orders the nodes of a pangenome graph by leveraging the HOGWILD! strategy and it is guided by the genomes represented in the graph.
-	We show that our implementation can efficiently compute the latent structure of gigabase-scale pangenome graphs, exposing their biological features.
-}
 
 \section{Background}
 A pangenome1 models the entire set of genomic elements of a given population. It can efficiently be encoded2 in the form of a variation graph, which embeds the linear sequences of the pangenome as paths in the graphs themselves. 
@@ -80,7 +120,7 @@ SGD-layout. Layout in general.
 \\ Very light background.
 %Pangenome graphs built from raw sets of alignments may have complex structures generated by common patterns of genome variation.
 
-\section{Results}
+\section{Algorithm}
 
 \paragraph{The HOGHWILD! path-guided stochastic gradient descent algorithm}
 Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is theoretically applicable in any number of dimensions.
@@ -96,52 +136,60 @@ Our multi-threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rs
 \end{itemize}
 %The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
 We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread. We can have several worker threads but only one checker thread!
+
 \begin{algorithm}
-\pgsgd{\textbf{(}V\textbf{)}}{
-	\textbf{input:} variation graph $V = (N, E, P)$ \\
-	%https://tex.stackexchange.com/questions/22643/how-to-write-letters-in-bold-in-the-math-mode
-	\textbf{output:} $k$-dimensional layout \boldsymbol{$L$} with $n$ nodes \\
-    \boldsymbol{$P$} $\leftarrow PathIndex(G)$ \\ 
-    \boldsymbol{$Z$} $\leftarrow ZipfZetas(G,P)$ \\ %@Andrea is this correct like this?
-	\boldsymbol{$L$} $\leftarrow RandomLayout(n, k)$ \tcp{only 2D PG-SGD has a random layout initialization, 1D starts with the current node order}
-	% atomic positions initialization?
-	% TODO for somplicity reasons I would only describe the 2D one here
-	\for{$\eta$ $in$ $annealing$ $schedule$}{
-		\foreach{$term$ $update$} {
-			random path step from all steps \\
-			if cooling $||$ flip \\
-			uniform step across the path \\
-			else \\
-			forward \\
+	\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $ZipfZetas$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
+	\label{alg:pg_sgd}
+	\pgsgd{\textbf{(}V\textbf{)}}{
+		\textbf{input:} variation graph $V = (N, E, P)$ \\
+		%https://tex.stackexchange.com/questions/22643/how-to-write-letters-in-bold-in-the-math-mode
+		\textbf{output:} $k$-dimensional layout \boldsymbol{$L$} with $n$ nodes \\
+		\boldsymbol{$P$} $\leftarrow PathIndex(G)$ \\ 
+		\boldsymbol{$Z$} $\leftarrow ZipfZetas(G,P)$ \\ %@Andrea is this correct like this?
+		\boldsymbol{$L$} $\leftarrow RandomLayout(n, k)$ \tcp{only 2D PG-SGD has a random layout initialization, 1D starts with the current node order}
+		% atomic positions initialization?
+		% TODO for somplicity reasons I would only describe the 2D one here
+		\for{$\eta$ $in$ $annealing$ $schedule$}{
+			\each{$term$ $update$} {
+				random path step from all steps \\
+				if cooling $||$ flip \\
+				uniform step across the path \\
+				else \\
+				forward \\
 				use Z to generate max jump length \\
 				newsteprank = cursteprank + sampledzipfvalue \\
-			backward \\
+				backward \\
 				use Z to generate jump length \\
 				newsteprank = cursteprank + sampledzipfvalue \\
-			get path positions via path index \\	
-			$nuc\_dist=abs(pos\_in\_path\_a - pos\_in\_path\_b)$ \\
-			$term\_weight = 1.0 / term\_dist$ \\
-			$w\_ij = term\_weight$ \\
-			$mu = eta.load() * w_{ij}$ \\
-			$dx = X[i].load() - X[j].load()$ \tcp{calculate layout distance }
-			$mag = std::abs(dx)$ \\
-			$Delta = mu * (mag - d_ij) / 2$ \\
-			$ Delta_abs = std::abs(Delta)$ \\
-			\tcp{potentially store new Delta\_max}
-			$r = Delta / mag$ \\
-			$ r_x = r * dx$ \\
-			\tcp{new X = old X - r\_x}
-			\tcp{new Y = old Y - r\_Y, 2D only}
+				get path positions via path index \\	
+				$nuc\_dist=abs(pos\_in\_path\_a - pos\_in\_path\_b)$ \\
+				$term\_weight = 1.0 / term\_dist$ \\
+				$w\_ij = term\_weight$ \\
+				$mu = eta.load() * w_{ij}$ \\
+				$dx = X[i].load() - X[j].load()$ \tcp{calculate layout distance }
+				$mag = std::abs(dx)$ \\
+				$Delta = mu * (mag - d_ij) / 2$ \\
+				$ Delta_abs = std::abs(Delta)$ \\
+				\tcp{potentially store new Delta\_max}
+				$r = Delta / mag$ \\
+				$ r_x = r * dx$ \\
+				\tcp{new X = old X - r\_x}
+				\tcp{new Y = old Y - r\_Y, 2D only}
+			}
 		}
 	}
-}
-\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $ZipfZetas$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
-\label{alg:pg_sgd}
 \end{algorithm}
 
 Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
 
 \input{fig_sketches}
+
+\section{Results}
+\label{sec:results}
+
+%\subsection{Experimental insights}
+
+%\subsection{Limitations}
 
 % something for the supplementary
 \paragraph{Performance evaluation}
@@ -180,6 +228,7 @@ This allows us to detect telomere collapsing alignment errors and hopefully (pan
 \input{fig_tension}
 
 \section{Discussion}
+\label{sec:discussion}
 
 We propose / implemented ....
 \paragraph{}
@@ -210,28 +259,29 @@ What about the future?
 How can other scientists benefit from this work?
 Graph visualization (together with annotation) is key for understanding variations.
 This projection presents biologically relevant structures that we can work with downstream for researches and algorithms that look at and classify variation,
-\section{Conclusion}
 
-\section{Methods}
+\section*{Acknowledgments}
 
-\bibliography{document}
-\bibliographystyle{ieeetr}
-
-\section*{Acknowledgements}
 We are grateful to members of the HGSVC and HPRC production teams for their development of resources used in our exposition.
-
+We thank the authors of the pangenome resources made available on GenBank which have made our experiments possible.
 
 \section*{Funding}
+
 JNM.S., J.L., and Z.Z. acknowledge funding from the NSF PPoSS Award \#2118709.
 S.H. acknowledges funding from the Central Innovation Programme (ZIM) for SMEs of the Federal Ministry for Economic Affairs and Energy of Germany.
 S.N. acknowledges Germany’s Excellence Strategy (CMFI), EXC-2124 and (iFIT)—EXC 2180–390900677.
-This work was supported by the BMBF-funded de.
-NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) [031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A and 031A532B].
+This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A532B, 031A533A, 031A533B, 031A534A, 031A535A, 031A537A, 031A537B, 031A537C, 031A537D and 031A538A).
 A.G. acknowledges efforts by Nicole Soranzo to establish a pangenome research unit at the Human Technopole in Milan, Italy.
 
 \section*{Competing interests}
 The authors declare that they have no competing interests.
 
-\section*{Availability of data and materials}
+\section*{Data availability}
+
+Code and links to data resources used to build this manuscript and its figures can be found in the paper's public repository: \url{https://github.com/pangenome/sorting-paper}.
+
+\bibliographystyle{natbib}
+
+\bibliography{document}
 
 \end{document}
