@@ -17,6 +17,5 @@ sudo apt install graphviz
 git clone https://github.com/pangenome/hogwild-layout
 cd hogwild-layout/manuscript && make -k
 ```
-
-## Genome Biology Method paper author instructions
-https://genomebiology.biomedcentral.com/submission-guidelines/preparing-your-manuscript/method
+## Oxford Bioinformatics Application Notes paper author instructions
+https://academic.oup.com/bioinformatics/pages/instructions_for_authors
