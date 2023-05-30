@@ -23,35 +23,34 @@
 		$\mathcal{Z} \gets \InitZipf(\mathcal{V},\mathcal{XP})$ \tcp{generate Zipfian distribution}
 		% atomic positions initialization?
 		% TODO for somplicity reasons I would only describe the 2D one here
-		\for{$\eta$ $in$ $annealing$ $schedule$}{ %our "schedule" actually is the number paths.... we should specify this I would say
-			\each{$\{i,j: i<j\}$ in uniform order} { % I think we can remove i<j, because we don't care about that
-				$ps_i \gets \Unif(\mathcal{XP})$ \tcp{uniform path step from all steps}
-				$path \gets \PathId(ps_i,\mathcal{XP})$ \tcp{the path id of the sampled step}
+		\for{$planned$ $term$ $updates$}{ %our "schedule" actually is the number paths.... we should specify this I would say
+			\each{$\eta$ $in$ $annealing$ $schedule$} { % I think we can remove i<j, because we don't care about that
+				$ps_a \gets \Unif(\mathcal{XP})$ \tcp{uniform path step from all steps}
+				$path \gets \PathId(ps_a,\mathcal{XP})$ \tcp{the path id of the sampled step}
 				\uIf{$(coolling$ $||$ $flip)$} {
-					$ps_j \gets \Unif(\StepCount(path, \mathcal{XP}))$ \tcp{uniform path step from specific path}
-					$p_j \gets \StepPos(ps_j)$ \tcp{nucleotide position of step}
+					$ps_b \gets \Unif(\StepCount(path, \mathcal{XP}))$ \tcp{uniform path step from specific path}
+					$p_b \gets \StepPos(ps_b)$ \tcp{nucleotide position of step}
 				} \Else {
-					$ps_j \gets \Zipf(path)$ \tcp{}
-					use Z to generate max jump length \\
-					newsteprank = cursteprank + sampledzipfvalue \\
-					backward \\
-					use Z to generate jump length \\
-					newsteprank = cursteprank + sampledzipfvalue \\
+					$ps_b \gets \Zipf(path)$ \tcp{Zipfian path step from specific path}
 				}
-				$p_i \gets \StepPos(ps_i)$ \tcp{nucleotide position of step}
-				$nd \gets ||p_i - p_j||$ \tcp{calculate nucleotide distance} %mag is nx
-				$w_{ij} \gets \frac{1.0}{nd}$ \tcp{term weight} 
-				$\mu \gets w_{ij}\eta$ \tcp{learning rate}  % current learning rate is given by term weight and step size
+				$p_a \gets \StepPos(ps_a)$ \tcp{nucleotide position of step}
+				$p_b \gets \StepPos(ps_b)$ \tcp{nucleotide position of step}
+				$nd \gets ||p_a - p_b||$ \tcp{calculate nucleotide distance} %mag is nx
+				$ld \gets ||\mathcal{L}_{a}-\mathcal{L}_b||$ \tcp{calculate layout distance}
+				$w_{ab} \gets \frac{1.0}{nd}$ \tcp{term weight} 
+				$\mu \gets w_{ab}\eta$ \tcp{learning rate}  % current learning rate is given by term weight and step size
 				\IF{$\mu>1$} {
 				$\mu \gets 1$
 				}
-				$ld \gets ||\mathcal{L}_{i}-\mathcal{L}_j||$ \tcp{calculate layout distance}
 				$\delta \gets \mu \cdot \frac{ld -nd}{2}$ \tcp{the actual delta}
+				\uIf{$\delta <= 0$} {
+					$STOP$ \tcp{we can't optimize it any better, so we stop here}
+				}
 				% TODO stop early?
 				% TODO potentially store new delta max?
 				$r \gets \delta - ld$ \tcp{size of the term update}
-				$\mathcal{L}_i \gets \mathcal{L}_i - r\cdot ld$ \\
-				$\mathcal{L}_j \gets \mathcal{L}_j - r\cdot ld$
+				$\mathcal{L}_a \gets \mathcal{L}_a - r\cdot ld$ \tcp{update the 1. term}
+				$\mathcal{L}_b \gets \mathcal{L}_b - r\cdot ld$ \tcp{update the 2. term}
 			}
 		}
 	}
