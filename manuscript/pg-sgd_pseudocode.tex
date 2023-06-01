@@ -23,8 +23,8 @@
 		$\mathcal{Z} \gets \InitZipf(\mathcal{V},\mathcal{XP})$ \tcp{generate Zipfian distribution}
 		% atomic positions initialization?
 		% TODO for somplicity reasons I would only describe the 2D one here
-		\for{$planned$ $term$ $updates$}{ %our "schedule" actually is the number paths.... we should specify this I would say
-			\each{$\eta$ $in$ $annealing$ $schedule$} { % I think we can remove i<j, because we don't care about that
+		\for{$\eta$ $in$ $annealing$ $schedule$}{ %our "schedule" actually is the number paths.... we should specify this I would say
+			\each{$planned$ $term$ $updates$} { % I think we can remove i<j, because we don't care about that
 				$ps_a \gets \Unif(\mathcal{XP})$ \tcp{uniform path step from all steps}
 				$path \gets \PathId(ps_a,\mathcal{XP})$ \tcp{the path id of the sampled step}
 				\uIf{$(coolling$ $||$ $flip)$} {
