@@ -85,12 +85,12 @@ $^{\dagger}$The authors wish it to be known that, in their opinion, the first tw
 
 \abstract{
 \textbf{Motivation:}
-The availability of many high-quality genomes has led to the need for models that allow the study of genetic variability within entire populations.
+The availability of many high-quality genomes has led to the need for models that allow the study of genomic variability within entire populations.
 Pangenome graphs can represent the full diversity between multiple genomes, but they may exhibit complex structures due to common patterns of genome variation.
 These nonlinear structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
 \textbf{Results:}
 To address these challenges, we propose a novel layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-Our approach orders the nodes of a pangenome graph by leveraging the HOGWILD! strategy and it is guided by the path position information of the genomes represented in the graph.
+Our approach arranges the nodes of a pangenome graph by leveraging the HOGWILD! strategy and it is guided by the path position information of the genomes represented in the graph.
 We demonstrate that our implementation can efficiently compute the latent structure of gigabase-scale pangenome graphs, exposing their biological features. \\
 \textbf{Availability:}
 The PG-SGD algorithm is implemented in \textit{odgi} which is published as free software under the MIT open source license.
@@ -136,10 +136,13 @@ We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single threa
 
 \input{pg-sgd_pseudocode}
 
+\iffalse
 Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
 
 \input{fig_sketches}
+\fi
 
+\iffalse
 \section{Results}
 \label{sec:results}
 
@@ -182,6 +185,7 @@ With a high quality layout, we can measure the discrepancy of the path layout po
 The greater the “tension”, the greater is the possibility of a biologically meaningless alignment.
 This allows us to detect telomere collapsing alignment errors and hopefully (pangenome) assembly errors, subsequently correcting them.
 \input{fig_tension}
+\fi
 
 \section{Discussion}
 \label{sec:discussion}
