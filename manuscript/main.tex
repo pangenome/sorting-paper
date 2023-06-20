@@ -39,6 +39,7 @@
 
 \usepackage{orcidlink}
 \hypersetup{hidelinks}
+\usepackage{appendix}
 
 
 \def\labelitemi{--}
@@ -100,6 +101,8 @@ Source code is available at \url{https://github.com/pangenome/odgi} and document
 }
 
 \maketitle
+
+\FIXME{WE ONLY WANT TO TAKE ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D and 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 
 \section{Introduction}
 Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of downstream analyses
@@ -253,5 +256,10 @@ Code and links to data resources used to build this manuscript and its figures c
 \bibliographystyle{natbib}
 
 \bibliography{document}
+
+\begin{appendices}
+	\section{Quantization}
+	\FIXME{@ANDREA: Please add some more details about your clever quantization. Why. How. Where. When. Secs.}
+\end{appendices}
 
 \end{document}
