@@ -114,21 +114,19 @@ It can be represented by a graph data structure incorporating sequences as nodes
 These nodes are shared for identical sequences, such as homologs, paralogs, and orthologs.
 In the variation graph model \citep{Garrison:2018} reads, contigs, haplotypes, or individual chromosomes are represented as paths in the graph.
 A bi-directed graph can even contain both strands of DNA as paths. \\
-
 The layout of these pangenome graphs, that is the arrangement of nodes and edges in a representation, provide an accessible representation of genetic variation across multiple genomes.
-Graph sorting aims to find the best node order for a layout to minimizes overlapping nodes or edges, reduces edge crossings, and promote intuitive understanding of the data by displaying structure and important features in an understandable way.
+Graph layout methods aim to find the best node positions in the layout to minimizes overlapping nodes or edges, reduces edge crossings, and promote intuitive understanding of the data by displaying structure and important features in an understandable way.
 \FIXME{
 	Existing layout algorithms range from simple, force-directed methods to more complex, hierarchical layouts, each presenting unique strengths and drawbacks.
 	Force-directed methods offer an aesthetic layout based on a physics simulation but may struggle with scalability for larger graphs (XXX WE NEED CITATIONS XXX).
 	In contrast, hierarchical layouts handle layered relationships and dependencies, yet can exhibit limitations when dealing with non-hierarchical data (XXX WE NEED CITATIONS XXX)
-}
-
+} \\
 With the ever-growing scale and complexity of genomic data, there is a need for advanced layout algorithms that can optimally balance factors such as
 efficiency, scalability, readability, and the ability to reveal significant biological patterns.
 Pangenome graphs embed linear sequences as paths in the graph, but to our knowledge, no algorithm takes into account this biological information in the sorting.
 We present a new layout algorithm to simplify a pangenome graph, by using path-guided stochastic gradient descent (\FIXME{CITATION}) to move a single pair of nodes at a time.
 \FIXME{A LITTLE BIT MORE ABOUT THE SGD APPROACH?}
-We exemplify how our implementation is a key step in general pangenome analyses such as pangenome graph buildiong and analysis (\FIXME{CITE PGGB, ACROCENTRIC PAPER, and maybe HPRC PAPER}).
+We exemplify how our implementation is a key step in general pangenome analyses such as pangenome graph building and analysis (\FIXME{CITE PGGB, ACROCENTRIC PAPER, and maybe HPRC PAPER}).
 
 \section{Algorithm}
 
@@ -137,15 +135,17 @@ Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is
 In this work, we describe the results in 1D and 2D.
 In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes.
 Our path index enables efficient navigation of path positions by updating nodes on the fly, instead of keeping all pairwise distances of all nodes in memory.
-This allows the PG-SGD to be applied manuscriptto gigabase-scale pangenome graphs. \\
-Our multi-threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
+This allows the PG-SGD to be applied to gigabase-scale pangenome graphs. \\
+Our multi threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
 \begin{itemize}
 	\item The first node Xi of a pair is a uniform path step pick from all nodes.
 	\item The second node Xj of a pair is sampled from the same path following a Zipfian distribution. 
-	\item The path nucleotide distance of the nodes in the pair guides the actual layout distance dij update of these nodes. The magnitude r of the update depends on the current learning rate of the SGD.
+	\item The path nucleotide distance of the nodes in the pair guides the actual layout distance dij update of these nodes.
+	\item The magnitude r of the update depends on the current learning rate of the SGD.
 \end{itemize}
 %The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
-We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread. We can have several worker threads but only one checker thread!
+We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread.
+We can have several worker threads but only one checker thread!
 
 \input{pg-sgd_pseudocode}
 
