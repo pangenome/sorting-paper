@@ -50,216 +50,233 @@
 \appnotes{Genome Analysis}
 
 \begin{document}
-\firstpage{1}
+    \firstpage{1}
 
-\subtitle{Genome Analysis}
+    \subtitle{Genome Analysis}
 
-\title[Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent]{Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent}
-\author[Heumos, Guarracino \textit{et~al}.]{
-Simon~Heumos\,$^{\orcidlink{0000-0003-3326-817X}1,2,\dagger,*}$,
-Andrea~Guarracino\,$^{\orcidlink{0000-0001-9744-131X}3,4,\dagger}$,
-Jan-Niklas Manuel Schmelzle\,$^{\orcidlink{0000-0001-8566-4049}5,6}$,
-Jiajie Li\,$^{\orcidlink{0000-0002-9467-0659}6}$,
-Zhiru Zhang\,$^{\orcidlink{0000-0002-0778-0308}6}$,
-Sven Nahnsen\,$^{\orcidlink{0000-0002-4375-0691}1,2}$,
-Pjotr Prins\,$^{\orcidlink{0000-0002-8021-9162}3}$,
-Erik~Garrison\,$^{\orcidlink{0000-0003-3821-631X}\text{\sfb 3},*}$
-}
+    \title[Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent]{Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent}
+    \author[Heumos, Guarracino \textit{et~al}.]{
+        Simon~Heumos\,$^{\orcidlink{0000-0003-3326-817X}1,2,\dagger}$,
+        Andrea~Guarracino\,$^{\orcidlink{0000-0001-9744-131X}3,4,\dagger}$,
+        Jan-Niklas Manuel Schmelzle\,$^{\orcidlink{0000-0001-8566-4049}5,6}$,
+        Jiajie Li\,$^{\orcidlink{0000-0002-9467-0659}6}$,
+        Zhiru Zhang\,$^{\orcidlink{0000-0002-0778-0308}6}$,
+        Sven Nahnsen\,$^{\orcidlink{0000-0002-4375-0691}1,2}$,
+        Pjotr Prins\,$^{\orcidlink{0000-0002-8021-9162}3}$,
+        Erik~Garrison\,$^{\orcidlink{0000-0003-3821-631X}\text{\sfb 3},*}$
+    }
 
-\address{
-$^1$Quantitative Biology Center (QBiC), University of Tübingen, Tübingen 72076, Germany \\
-$^2$Biomedical Data Science, Department of Computer Science, University of Tübingen, Tübingen 72076, Germany \\
-$^3$Department of Genetics, Genomics and Informatics, University of Tennessee Health Science Center, Memphis, TN 38163, USA \\
-$^4$Genomics Research Centre, Human Technopole, Milan 20157, Italy \\
-$^5$Department of Computer Engineering, School of Computation, Information and Technology (CIT), Technical University of Munich, Munich 80333, Germany \\
-$^6$School of Electrical and Computer Engineering, Cornell University, Ithaca, NY 14853, USA \\
-}
+    \address{
+        $^1$Quantitative Biology Center (QBiC), University of Tübingen, Tübingen 72076, Germany \\
+        $^2$Biomedical Data Science, Department of Computer Science, University of Tübingen, Tübingen 72076, Germany \\
+        $^3$Department of Genetics, Genomics and Informatics, University of Tennessee Health Science Center, Memphis, TN 38163, USA \\
+        $^4$Genomics Research Centre, Human Technopole, Milan 20157, Italy \\
+        $^5$Department of Computer Engineering, School of Computation, Information and Technology (CIT), Technical University of Munich, Munich 80333, Germany \\
+        $^6$School of Electrical and Computer Engineering, Cornell University, Ithaca, NY 14853, USA \\
+    }
 
-\corresp{
-$^\ast$To whom correspondence should be addressed. \\
-$^{\dagger}$The authors wish it to be known that, in their opinion, the first two authors should be regarded as Joint First Authors.\
-}
+    \corresp{
+        $^\ast$To whom correspondence should be addressed. \\
+        $^{\dagger}$The authors wish it to be known that, in their opinion, the first two authors should be regarded as Joint First Authors.\
+    }
 
-\history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
+    \history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
 
-\editor{Associate Editor: XXXXXXX}
+    \editor{Associate Editor: XXXXXXX}
 
-\abstract{
-\textbf{Motivation:}
-The increasing availability of high-quality genomes demands models that allow for the study of genomic variability within entire populations.
-Pangenome graphs can represent the full genetic diversity between multiple genomes, but they may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
-These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
-\textbf{Results:}
-To address these challenges, we propose a novel layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-Our method, driven by the HOGWILD! strategy, arranges the nodes of a pangenome graph using the path position information of the genomes represented in the graph.
-We demonstrate that our implementation can efficiently compute the latent structure of gigabase-scale pangenome graphs, revealing their biological features. \\
-\textbf{Availability:}
-The PG-SGD algorithm has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
-Source code is available at \url{https://github.com/pangenome/odgi} and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}.
-\textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu}
-\textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
-}
+    \abstract{
+        \textbf{Motivation:}
+        The increasing availability of high-quality genomes demands models that allow for the study of genomic variability within entire populations.
+        Pangenome graphs can represent the full genetic diversity between multiple genomes, but they may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
+        These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
+        \textbf{Results:}
+        To address these challenges, we propose a novel layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
+        Our method, driven by the HOGWILD! strategy, arranges the nodes of a pangenome graph using the path position information of the genomes represented in the graph.
+        We demonstrate that our implementation can efficiently compute the latent structure of gigabase-scale pangenome graphs, revealing their biological features. \\
+        \textbf{Availability:}
+        The PG-SGD algorithm has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
+        Source code is available at \url{https://github.com/pangenome/odgi} and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}. \\
+        \textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
+        \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
+    }
 
-\maketitle
+    \maketitle
 
-\FIXME{WE ONLY WANT TO TAKE ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D and 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
+    \FIXME{WE ONLY WANT TO TAKE ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D and 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 
-\section{Introduction}
-Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of downstream analyses
-such as gene annotation, read mapping, and variant detection (\FIXME{XXX WE NEED CITATIONS XXX}).
-However, with the availability of thousands of high-quality genomes per species, this linear model has shown its weaknesses.
-A single genome can not faithfully represent the genetic diversity of a species, leading to the reference bias problem (\FIXME{XXX WE NEED CITATIONS XXX}).
-A pangenome models the entire set of genomic elements of a given population \citep{Tettelin_2008,cpang2018,Eizenga_2020}.
-It can be represented by a graph data structure incorporating sequences as nodes and their connections as edges ((\FIXME{XXX A FIGURE MIGHT HELP XXX}).
-These nodes are shared for identical sequences, such as homologs, paralogs, and orthologs.
-In the variation graph model \citep{Garrison:2018} reads, contigs, haplotypes, or individual chromosomes are represented as paths in the graph.
-A bi-directed graph can even contain both strands of DNA as paths. \\
-The layout of these pangenome graphs, that is the arrangement of nodes and edges in a representation, provide an accessible representation of genetic variation across multiple genomes.
-Graph layout methods aim to find the best node positions in the layout to minimizes overlapping nodes or edges, reduces edge crossings, and promote intuitive understanding of the data by displaying structure and important features in an understandable way.
-\FIXME{
-	Existing layout algorithms range from simple, force-directed methods to more complex, hierarchical layouts, each presenting unique strengths and drawbacks.
-	Force-directed methods offer an aesthetic layout based on a physics simulation but may struggle with scalability for larger graphs (XXX WE NEED CITATIONS XXX).
-	In contrast, hierarchical layouts handle layered relationships and dependencies, yet can exhibit limitations when dealing with non-hierarchical data (XXX WE NEED CITATIONS XXX)
-} \\
-With the ever-growing scale and complexity of genomic data, there is a need for advanced layout algorithms that can optimally balance factors such as
-efficiency, scalability, readability, and the ability to reveal significant biological patterns.
-Pangenome graphs embed linear sequences as paths in the graph, but to our knowledge, no algorithm takes into account this biological information in the sorting.
-We present a new layout algorithm to simplify a pangenome graph, by using path-guided stochastic gradient descent (\FIXME{CITATION}) to move a single pair of nodes at a time.
-\FIXME{A LITTLE BIT MORE ABOUT THE SGD APPROACH?}
-We exemplify how our implementation is a key step in general pangenome analyses such as pangenome graph building and analysis (\FIXME{CITE PGGB, ACROCENTRIC PAPER, and maybe HPRC PAPER}).
 
-\section{Algorithm}
+    \section{Introduction}
+    Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of downstream analyses
+    such as gene annotation, read mapping, and variant detection (\FIXME{XXX WE NEED CITATIONS XXX}).
+    However, with the availability of thousands of high-quality genomes per species, this linear model has shown its weaknesses.
+    A single genome can not faithfully represent the genetic diversity of a species, leading to the reference bias problem (\FIXME{XXX WE NEED CITATIONS XXX}).
+    A pangenome models the entire set of genomic elements of a given population \citep{Tettelin_2008,cpang2018,Eizenga_2020}.
+    It can be represented by a graph data structure incorporating sequences as nodes and their connections as edges ((\FIXME{XXX A FIGURE MIGHT HELP XXX}).
+    These nodes are shared for identical sequences, such as homologs, paralogs, and orthologs.
+    In the variation graph model \citep{Garrison:2018} reads, contigs, haplotypes, or individual chromosomes are represented as paths in the graph.
+    A bi-directed graph can even contain both strands of DNA as paths. \\
+    The layout of these pangenome graphs, that is the arrangement of nodes and edges in a representation, provide an accessible representation of genetic variation across multiple genomes.
+    Graph layout methods aim to find the best node positions in the layout to minimizes overlapping nodes or edges, reduces edge crossings, and promote intuitive understanding of the data by displaying structure and important features in an understandable way.
+    \FIXME{
+        Existing layout algorithms range from simple, force-directed methods to more complex, hierarchical layouts, each presenting unique strengths and drawbacks.
+        Force-directed methods offer an aesthetic layout based on a physics simulation but may struggle with scalability for larger graphs (XXX WE NEED CITATIONS XXX).
+        In contrast, hierarchical layouts handle layered relationships and dependencies, yet can exhibit limitations when dealing with non-hierarchical data (XXX WE NEED CITATIONS XXX)
+    } \\
+    With the ever-growing scale and complexity of genomic data, there is a need for advanced layout algorithms that can optimally balance factors such as
+    efficiency, scalability, readability, and the ability to reveal significant biological patterns.
+    Pangenome graphs embed linear sequences as paths in the graph, but to our knowledge, no algorithm takes into account this biological information in the sorting.
+    We present a new layout algorithm to simplify a pangenome graph, by using path-guided stochastic gradient descent (\FIXME{CITATION}) to move a single pair of nodes at a time.
+    \FIXME{A LITTLE BIT MORE ABOUT THE SGD APPROACH?}
+    We exemplify how our implementation is a key step in general pangenome analyses such as pangenome graph building and analysis (\FIXME{CITE PGGB, ACROCENTRIC PAPER, and maybe HPRC PAPER}).
 
-\paragraph{The HOGHWILD! path-guided stochastic gradient descent algorithm}
-Our algorithm is inspired by Zheng et al. (\url{https://doi.org/hkv4}) and it is theoretically applicable in any number of dimensions.
-In this work, we describe the results in 1D and 2D.
-In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes.
-Our path index enables efficient navigation of path positions by updating nodes on the fly, instead of keeping all pairwise distances of all nodes in memory.
-This allows the PG-SGD to be applied to gigabase-scale pangenome graphs. \\
-Our multi threaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
-\begin{itemize}
-	\item The first node Xi of a pair is a uniform path step pick from all nodes.
-	\item The second node Xj of a pair is sampled from the same path following a Zipfian distribution. 
-	\item The path nucleotide distance of the nodes in the pair guides the actual layout distance dij update of these nodes.
-	\item The magnitude r of the update depends on the current learning rate of the SGD.
-\end{itemize}
+
+    \section{Algorithm}
+
+    \paragraph{The HOGHWILD! path-guided stochastic gradient descent algorithm}
+    Our algorithm is inspired by Zheng et al. ((\FIXME{CITATION} \url{https://doi.org/hkv4}) and it is applicable in any number of dimensions.
+    In this work, we describe the results in 1 dimension (1D) and 2 dimensions (2D).
+    In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes.
+    Our path index enables efficient navigation of path positions by updating nodes on the fly, instead of keeping all pairwise distances of all nodes in memory.
+    This allows the PG-SGD to be applied to gigabase-scale pangenome graphs. \\
+    Our multithreaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
+    \begin{itemize}
+        \item The first node Xi of a pair is a uniform path step pick from all nodes.
+        \item The second node Xj of a pair is sampled from the same path following a Zipfian distribution.
+        \item The path nucleotide distance of the nodes in the pair guides the actual layout distance dij update of these nodes.
+        \item The magnitude r of the update depends on the current learning rate of the SGD.
+    \end{itemize}
 %The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
-We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread.
-We can have several worker threads but only one checker thread!
+    We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread.
+    We can have several worker threads but only one checker thread!
 
-\input{pg-sgd_pseudocode}
+    \input{pg-sgd_pseudocode}
 
-\iffalse
-Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
+    \iffalse
+    Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
 
-\input{fig_sketches}
-\fi
+    \input{fig_sketches}
+    \fi
 
-\iffalse
-\section{Results}
-\label{sec:results}
+    \iffalse
+
+
+    \section{Results}
+    \label{sec:results}
 
 %\subsection{Experimental insights}
 
 %\subsection{Limitations}
 
 % something for the supplementary
-\paragraph{Performance evaluation}
-Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
-\\
-1D (max. threads) vs. ALIBI; we should compare time + RAM in Fig.~\ref{fig:alibi}.
-But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper in Table 1.
-\\
-2D (max. threads) + odgi draw vs. Bandage in Fig.~\ref{fig:bandage}.
-\input{fig_performance}
-\\
-\\
-Table 1: Metrics of the ALIBI and PG-SGD graphs from Fig. 2.
-\input{tab_performance.tex}
-Already, the PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}) or ALIBI (\url{https://doi.org/hkv3}).
-\paragraph{Latent graph structure reveals underlying biology}
-Fig. 3: Cool quantitative 1D sortings and 2D layouts: biological implications.
-Randomly sorted. PG-SGD sorted. Ygs sorted. Reference sorted.
-We want a pipeline of sortings. 2D layout of the whole HPRC.
-Chr6 HPRC HLA graph? Chr8 beta-defensin gene cluster HPRC? Whole HPRC?
-\\
-We could also try to build a gastric cancer pangenome graph with data from \url{https://www.nature.com/articles/s41467-022-33073-7} from up to 185 samples.
-However, we would have to request access to the data.
-\\
-\\
-\input{fig_latent_graph_structure}
-Table 2: Metrics of the sorted graphs in Fig. 3.
-\input{tab_metrics_latent_graph_structure}
-\paragraph{Bonus Section}
-Fig. 4: Detect tension. Relax a graph. Detect tension afterwards.
-I need to test this on a new data set I got from Erik.
-I need to establish a fixed lower boundary for the tension from which on we don't relax anymore. \\
-With a high quality layout, we can measure the discrepancy of the path layout position versus the expected path nucleotide position, the “tension” of a graph.
-The greater the “tension”, the greater is the possibility of a biologically meaningless alignment.
-This allows us to detect telomere collapsing alignment errors and hopefully (pangenome) assembly errors, subsequently correcting them.
-\input{fig_tension}
-\fi
 
-\section{Discussion}
-\label{sec:discussion}
+    \paragraph{Performance evaluation}
+    Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
+    \\
+    1D (max. threads) vs. ALIBI; we should compare time + RAM in Fig.~\ref{fig:alibi}.
+    But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper in Table 1.
+    \\
+    2D (max. threads) + odgi draw vs. Bandage in Fig.~\ref{fig:bandage}.
+    \input{fig_performance}
+    \\
+    \\
+    Table 1: Metrics of the ALIBI and PG-SGD graphs from Fig. 2.
+    \input{tab_performance.tex}
+    Already, the PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}) or ALIBI (\url{https://doi.org/hkv3}).
 
-We propose / implemented ....
-\paragraph{}
-Difference to other existing methods, are there possible improvements of our method possible?
-\paragraph{}
-Discuss performance eval
-@Jiajie + Niklas: What about going GPU?
-\paragraph{}
-The algorithm allows to inspect a pangenome graph on base-level, as a whole.
-\paragraph{from the ODGI paper:}
-Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.
-However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
-Recent interactive pangenome graph browsers are reference-centric (Beyer et al., 2019; Yokoyama et al., 2019), have a limited predefined coordinate system (Durant et al., 2021), or focus primarily on 2D representations (Gonnella et al., 2019; Wick et al., 2015).
-Our graph sorting and layout algorithms can provide the foundation for future tools of this type.
-We plan to focus on using these learned models to detect structural variation and assembly errors.
-\paragraph{}
-The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph.
-A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
-Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
-Already, the 1D PG-SGD is a key step in the PanGenome Graph Building (PGGB) pipeline that we successfully applied to build the first draft human pangenome reference (Liao et al., bioRxiv 2022).
-\paragraph{}
-I'd like to argue that this projection presents biologically relevant structures that we can work with downstream
-both for human interface
-and for other algorithms that look at and classify variation
-\paragraph{}
-What about the future?
-\paragraph{}
-How can other scientists benefit from this work?
-Graph visualization (together with annotation) is key for understanding variations.
-This projection presents biologically relevant structures that we can work with downstream for researches and algorithms that look at and classify variation,
+    \paragraph{Latent graph structure reveals underlying biology}
+    Fig. 3: Cool quantitative 1D sortings and 2D layouts: biological implications.
+    Randomly sorted. PG-SGD sorted. Ygs sorted. Reference sorted.
+    We want a pipeline of sortings. 2D layout of the whole HPRC.
+    Chr6 HPRC HLA graph? Chr8 beta-defensin gene cluster HPRC? Whole HPRC?
+    \\
+    We could also try to build a gastric cancer pangenome graph with data from \url{https://www.nature.com/articles/s41467-022-33073-7} from up to 185 samples.
+    However, we would have to request access to the data.
+    \\
+    \\
+    \input{fig_latent_graph_structure}
+    Table 2: Metrics of the sorted graphs in Fig. 3.
+    \input{tab_metrics_latent_graph_structure}
 
-\section*{Acknowledgments}
+    \paragraph{Bonus Section}
+    Fig. 4: Detect tension. Relax a graph. Detect tension afterwards.
+    I need to test this on a new data set I got from Erik.
+    I need to establish a fixed lower boundary for the tension from which on we don't relax anymore. \\
+    With a high quality layout, we can measure the discrepancy of the path layout position versus the expected path nucleotide position, the “tension” of a graph.
+    The greater the “tension”, the greater is the possibility of a biologically meaningless alignment.
+    This allows us to detect telomere collapsing alignment errors and hopefully (pangenome) assembly errors, subsequently correcting them.
+    \input{fig_tension}
+    \fi
 
-We are grateful to members of the HGSVC and HPRC production teams for their development of resources used in our exposition.
-We thank the authors of the pangenome resources made available on GenBank which have made our experiments possible. A special thanks goes to Matthias Seybold from the Quantitative Biology Center for maintaining the Core Facility Cluster.
 
-\section*{Funding}
+    \section{Discussion}
+    \label{sec:discussion}
+    We presented
+    We propose / implemented ....
 
-JNM.S., J.L., and Z.Z. acknowledge funding from the NSF PPoSS Award \#2118709.
-S.H. acknowledges funding from the Central Innovation Programme (ZIM) for SMEs of the Federal Ministry for Economic Affairs and Energy of Germany.
-S.N. acknowledges Germany’s Excellence Strategy (CMFI), EXC-2124 and (iFIT)—EXC 2180–390900677.
-This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A532B, 031A533A, 031A533B, 031A534A, 031A535A, 031A537A, 031A537B, 031A537C, 031A537D and 031A538A).
-A.G. acknowledges efforts by Nicole Soranzo to establish a pangenome research unit at the Human Technopole in Milan, Italy.
+    \paragraph{}
+    Difference to other existing methods, are there possible improvements of our method possible?
 
-\section*{Competing interests}
-The authors declare that they have no competing interests.
+    \paragraph{}
+    Discuss performance eval
+    @Jiajie + Niklas: What about going GPU?
 
-\section*{Data availability}
+    \paragraph{}
+    The algorithm allows to inspect a pangenome graph on base-level, as a whole.
 
-Code and links to data resources used to build this manuscript and its figures can be found in the paper's public repository: \url{https://github.com/pangenome/sorting-paper}.
+    \paragraph{from the ODGI paper:}
+    Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.
+    However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
+    Recent interactive pangenome graph browsers are reference-centric (Beyer et al., 2019; Yokoyama et al., 2019), have a limited predefined coordinate system (Durant et al., 2021), or focus primarily on 2D representations (Gonnella et al., 2019; Wick et al., 2015).
+    Our graph sorting and layout algorithms can provide the foundation for future tools of this type.
+    We plan to focus on using these learned models to detect structural variation and assembly errors.
 
-\bibliographystyle{natbib}
+    \paragraph{}
+    The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph.
+    A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
+    Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
+    Already, the 1D PG-SGD is a key step in the PanGenome Graph Building (PGGB) pipeline that we successfully applied to build the first draft human pangenome reference (Liao et al., bioRxiv 2022).
 
-\bibliography{document}
+    \paragraph{}
+    I'd like to argue that this projection presents biologically relevant structures that we can work with downstream
+    both for human interface
+    and for other algorithms that look at and classify variation
 
-\begin{appendices}
-	\section{Quantization}
-	\FIXME{@ANDREA: Please add some more details about your clever quantization. Why. How. Where. When. Secs.}
-\end{appendices}
+    \paragraph{}
+    What about the future?
+
+    \paragraph{}
+    How can other scientists benefit from this work?
+    Graph visualization (together with annotation) is key for understanding variations.
+    This projection presents biologically relevant structures that we can work with downstream for researches and algorithms that look at and classify variation,
+
+    \section*{Acknowledgments}
+
+    We are grateful to members of the HGSVC and HPRC production teams for their development of resources used in our exposition.
+    We thank the authors of the pangenome resources made available on GenBank which have made our experiments possible.
+    A special thanks goes to Matthias Seybold from the Quantitative Biology Center for maintaining the Core Facility Cluster.
+
+    \section*{Funding}
+
+    S.H. acknowledges funding from the Central Innovation Programme (ZIM) for SMEs of the Federal Ministry for Economic Affairs and Energy of Germany.
+    S.N. acknowledges Germany’s Excellence Strategy (CMFI), EXC-2124 and (iFIT)—EXC 2180–390900677.
+    This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A532B, 031A533A, 031A533B, 031A534A, 031A535A, 031A537A, 031A537B, 031A537C, 031A537D and 031A538A).
+    A.G. acknowledges efforts by Nicole Soranzo to establish a pangenome research unit at the Human Technopole in Milan, Italy.
+    JNM.S., J.L., and Z.Z. acknowledge funding from the NSF PPoSS Award \#2118709.
+
+    \section*{Competing interests}
+    The authors declare that they have no competing interests.
+
+    \section*{Data availability}
+
+    Code and links to data resources used to build this manuscript and its figures can be found in the paper's public repository: \url{https://github.com/pangenome/sorting-paper}.
+
+    \bibliographystyle{natbib}
+
+    \bibliography{document}
+
+    \begin{appendices}
+        \section{Quantization}
+        \FIXME{@ANDREA: Please add some more details about your clever quantization. Why. How. Where. When. Secs.}
+    \end{appendices}
 
 \end{document}
