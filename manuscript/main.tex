@@ -86,24 +86,25 @@
 
     \abstract{
         \textbf{Motivation:}
-        The increasing availability of high-quality genomes demands models that allow for the study of genomic variability within entire populations.
+        The increasing availability of high-quality genomes demands models for studying genomic variability within entire populations.
         Pangenome graphs can represent the full genetic diversity between multiple genomes, but they may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
         These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
         \textbf{Results:}
         To address these challenges, we propose a novel layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-        Our method, driven by the HOGWILD! strategy, arranges the nodes of a pangenome graph using the path position information of the genomes represented in the graph.
-        We demonstrate that our implementation can efficiently compute the latent structure of gigabase-scale pangenome graphs, revealing their biological features. \\
+        Our method, driven by the HOGWILD! strategy, arranges the nodes of a pangenome graph using the nucleotide sequences of the genomes represented in the graph.
+        We demonstrate that our implementation efficiently computes the latent structure of gigabase-scale pangenome graphs, revealing their biological features. \\
         \textbf{Availability:}
-        The PG-SGD algorithm has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
-        Source code is available at \url{https://github.com/pangenome/odgi} and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}. \\
+        The PG-SGD algorithm is integrated in \text{ODGI} which is released as free software under the MIT open source license.
+        Source code is available at \url{https://github.com/pangenome/odgi}. \\ % and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}. \\
         \textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
         \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
     }
 
     \maketitle
 
-    \FIXME{WE ONLY WANT TO TAKE ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D and 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
-
+    %\FIXME{WE ONLY WANT TO TAKE ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING.
+    %PG-SGD PRODUCES 1D and 2D LAYOUTS.
+    %IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 
     \section{Introduction}
     Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of downstream analyses
@@ -133,6 +134,7 @@
     \section{Algorithm}
 
     \paragraph{The HOGHWILD! path-guided stochastic gradient descent algorithm}
+    \FIXME{SPECIFY THAT THE IMPLEMENTATION IS IN ODGI AND CITE IT}
     Our algorithm is inspired by Zheng et al. ((\FIXME{CITATION} \url{https://doi.org/hkv4}) and it is applicable in any number of dimensions.
     In this work, we describe the results in 1 dimension (1D) and 2 dimensions (2D).
     In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes.
@@ -210,44 +212,27 @@
 
     \section{Discussion}
     \label{sec:discussion}
-    We presented
-    We propose / implemented ....
 
-    \paragraph{}
-    Difference to other existing methods, are there possible improvements of our method possible?
+    We presented the Path-Guided Stochastic Gradient Descent (PG-SGD), a layout algorithm for pangenome graphs that
+    leverages the inherent biological information available within the graph's represented genomic sequences.
+    Our implementation efficiently computes the layout of pangenome graphs representing thousands of individuals at whole-genome scale.
+    \FIXME{Difference to other existing methods, are there possible improvements of our method possible?}
+    \FIXME{Discuss performance eval. @Jiajie + Niklas: What about going GPU?}
+    We implemented the PG-SGD algorithm to generate layouts in 1 and 2 dimensions, but the algorithm can be extended in any number of dimensions.
+    Graph visualization is key for understanding genome variations and the large-scale layouts produced by the PG-SGD algorithm offer an unprecedented 
+    high-level perspective on variation in pangenomes. These layouts are critical for pangenome graph building (\FIXME{CITE PGG and HPRC MAIN PAPER}) and 
+    making new biological discoveries (\FIXME{CITE ACROCENTRIC PAPER}).
+    %The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph.
+    %A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
+    %Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
+    %Already, the 1D PG-SGD is a key step in the PanGenome Graph Building (PGGB) pipeline that we successfully applied to build the first draft human pangenome reference (Liao et al., bioRxiv 2022).
+    However, there remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
+    Our PG-SGD algorithm will be the foundation of new pangenome graph browsers for exploring meaningful graph layouts.
+    Futhermore, projecting a graph in a low number of dimensions, but still preserving its biologically relevant information, enable the application of 
+    algorithms that use the graph layout to look at variant classification.
+    Our future research involve exploiting these learned projections to detect structural variations and assembly errors.
+    \FIXME{PROTEIN?}
 
-    \paragraph{}
-    Discuss performance eval
-    @Jiajie + Niklas: What about going GPU?
-
-    \paragraph{}
-    The algorithm allows to inspect a pangenome graph on base-level, as a whole.
-
-    \paragraph{from the ODGI paper:}
-    Its static, large-scale 1D and 2D visualizations of the pangenome graphs allow an unprecedented high-level perspective on variation in pangenomes, and have also been critical in the development of pangenome graph building methods.
-    However, an interactive solution that combines the 1D and 2D layout of a graph with annotation and read mapping information across different zoom levels is still missing.
-    Recent interactive pangenome graph browsers are reference-centric (Beyer et al., 2019; Yokoyama et al., 2019), have a limited predefined coordinate system (Durant et al., 2021), or focus primarily on 2D representations (Gonnella et al., 2019; Wick et al., 2015).
-    Our graph sorting and layout algorithms can provide the foundation for future tools of this type.
-    We plan to focus on using these learned models to detect structural variation and assembly errors.
-
-    \paragraph{}
-    The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph.
-    A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
-    Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
-    Already, the 1D PG-SGD is a key step in the PanGenome Graph Building (PGGB) pipeline that we successfully applied to build the first draft human pangenome reference (Liao et al., bioRxiv 2022).
-
-    \paragraph{}
-    I'd like to argue that this projection presents biologically relevant structures that we can work with downstream
-    both for human interface
-    and for other algorithms that look at and classify variation
-
-    \paragraph{}
-    What about the future?
-
-    \paragraph{}
-    How can other scientists benefit from this work?
-    Graph visualization (together with annotation) is key for understanding variations.
-    This projection presents biologically relevant structures that we can work with downstream for researches and algorithms that look at and classify variation,
 
     \section*{Acknowledgments}
 
