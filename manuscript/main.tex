@@ -56,7 +56,7 @@
 
 \title[Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent]{Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent}
 \author[Heumos, Guarracino \textit{et~al}.]{
-Simon~Heumos\,$^{\orcidlink{0000-0003-3326-817X}1,2,\dagger,*}$,
+Simon~Heumos\,$^{\orcidlink{0000-0003-3326-817X}1,2,\dagger}$,
 Andrea~Guarracino\,$^{\orcidlink{0000-0001-9744-131X}3,4,\dagger}$,
 Jan-Niklas Manuel Schmelzle\,$^{\orcidlink{0000-0001-8566-4049}5,6}$,
 Jiajie Li\,$^{\orcidlink{0000-0002-9467-0659}6}$,
@@ -86,17 +86,17 @@ $^{\dagger}$The authors wish it to be known that, in their opinion, the first tw
 
 \abstract{
 \textbf{Motivation:}
-The increasing availability of high-quality genomes demands models that allow for the study of genomic variability within entire populations.
+The increasing availability of high quality genomes demands models that allow for the study of genomic variability within entire populations.
 Pangenome graphs can represent the full genetic diversity between multiple genomes, but they may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
 These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
 \textbf{Results:}
 To address these challenges, we propose a novel layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-Our method, driven by the HOGWILD! strategy, arranges the nodes of a pangenome graph using the path position information of the genomes represented in the graph.
+Our HOWGWILD! applying method uses the path position information of the genomes represented in the pangenome graph to move pairs of nodes in parallel.
 We demonstrate that our implementation can efficiently compute the latent structure of gigabase-scale pangenome graphs, revealing their biological features. \\
 \textbf{Availability:}
 The PG-SGD algorithm has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
-Source code is available at \url{https://github.com/pangenome/odgi} and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}.
-\textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu}
+Source code is available at \url{https://github.com/pangenome/odgi} and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}. \\
+\textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
 \textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
 }
 
