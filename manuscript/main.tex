@@ -91,7 +91,7 @@ Pangenome graphs can represent the full genetic diversity between multiple genom
 These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
 \textbf{Results:}
 To address these challenges, we propose a novel layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-Our HOWGWILD! applying method uses the path position information of the genomes represented in the pangenome graph to move pairs of nodes in parallel.
+Our HOWGWILD! method uses the path position information of the genomes represented in the pangenome graph to move pairs of nodes in parallel.
 We demonstrate that our implementation can efficiently compute the latent structure of gigabase-scale pangenome graphs, revealing their biological features. \\
 \textbf{Availability:}
 The PG-SGD algorithm has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
@@ -102,21 +102,22 @@ Source code is available at \url{https://github.com/pangenome/odgi} and document
 
 \maketitle
 
-\FIXME{WE ONLY WANT TO TAKE ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D and 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
+\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 
 \section{Introduction}
-Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of downstream analyses
-such as gene annotation, read mapping, and variant detection (\FIXME{XXX WE NEED CITATIONS XXX}).
-However, with the availability of thousands of high-quality genomes per species, this linear model has shown its weaknesses.
-A single genome can not faithfully represent the genetic diversity of a species, leading to the reference bias problem (\FIXME{XXX WE NEED CITATIONS XXX}).
-A pangenome models the entire set of genomic elements of a given population \citep{Tettelin_2008,cpang2018,Eizenga_2020}.
-It can be represented by a graph data structure incorporating sequences as nodes and their connections as edges ((\FIXME{XXX A FIGURE MIGHT HELP XXX}).
+Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of elemental analyses
+such as gene annotation, read mapping, and variant detection \citep{Singh2022}.
+With the availability of hundresds to thousands of high quality genomes per species, this linear model has become obsolete.
+A single genome can not faithfully represent the genetic diversity of a species, leading to the reference bias problem \citep{Ballouz2019}.
+A pangenome models the entire set of genomic elements of a given population \citep{Tettelin_2008,cpang2018,Eizenga_2020, Sherman_2020}.
+It can be represented by a sequence graph incorporating sequences as nodes and their connections as edges \citep{Hein1989}.
+%@Andrea: I don't think we need a figure which describes nodes, edges, paths. And how a variation graph looks like. Because, there already exists tons of them and we would just make another such figure.
 These nodes are shared for identical sequences, such as homologs, paralogs, and orthologs.
-In the variation graph model \citep{Garrison:2018} reads, contigs, haplotypes, or individual chromosomes are represented as paths in the graph.
-A bi-directed graph can even contain both strands of DNA as paths. \\
+In the variation graph model \citep{Garrison:2018} reads, contigs, haplotypes, or individual chromosomes are encoded as paths visiting the nodes in the graph.
+%A bidirected graph can even contain both strands of DNA as paths. \\
 
-The layout of these pangenome graphs, that is the arrangement of nodes and edges in a representation, provide an accessible representation of genetic variation across multiple genomes.
-Graph sorting aims to find the best node order for a layout to minimizes overlapping nodes or edges, reduces edge crossings, and promote intuitive understanding of the data by displaying structure and important features in an understandable way.
+A pangenome graph layout is the arrangement of nodes and edges in n-dimensional space such that a human accessible representation of genetic variation across multiple genomes can be drawn.
+The layout challenge is to find the best node positions in order to minimize overlapping nodes or edges, reduce edge crossings, and promote intuitive understanding by displaying structure and important features in a human readable way.
 \FIXME{
 	Existing layout algorithms range from simple, force-directed methods to more complex, hierarchical layouts, each presenting unique strengths and drawbacks.
 	Force-directed methods offer an aesthetic layout based on a physics simulation but may struggle with scalability for larger graphs (XXX WE NEED CITATIONS XXX).
@@ -125,10 +126,12 @@ Graph sorting aims to find the best node order for a layout to minimizes overlap
 
 With the ever-growing scale and complexity of genomic data, there is a need for advanced layout algorithms that can optimally balance factors such as
 efficiency, scalability, readability, and the ability to reveal significant biological patterns.
-Pangenome graphs embed linear sequences as paths in the graph, but to our knowledge, no algorithm takes into account this biological information in the sorting.
-We present a new layout algorithm to simplify a pangenome graph, by using path-guided stochastic gradient descent (\FIXME{CITATION}) to move a single pair of nodes at a time.
-\FIXME{A LITTLE BIT MORE ABOUT THE SGD APPROACH?}
-We exemplify how our implementation is a key step in general pangenome analyses such as pangenome graph buildiong and analysis (\FIXME{CITE PGGB, ACROCENTRIC PAPER, and maybe HPRC PAPER}).
+Pangenome graphs embed linear sequences as paths in the graph, but to our knowledge, no algorithm takes into account this biological information during the layout process.
+We present a new pangenome graph layout algorithm which uses path-guided stochastic gradient descent %\citep{Zheng2019}
+ (PG-SGD) to move pairs of nodes in parallel. ( \FIXME{WE NEED TO SAY SOMETHING ABOUT HOGWILD HERE?!}). \\
+\FIXME{A LITTLE BIT MORE ABOUT THE SGD APPROACH?} \\
+We exemplify how our implementation is a key step in general pangenome analyses such as pangenome graph buildiong and analysis (\FIXME{CITE PGGB, ACROCENTRIC PAPER, HPRC PAPER, ODGI PAPER}). \\
+\FIXME{2D: waragraph + gfaestus for interactive visualization}.
 
 \section{Algorithm}
 
