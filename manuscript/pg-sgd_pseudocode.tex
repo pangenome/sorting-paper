@@ -24,10 +24,10 @@
 		% atomic positions initialization?
 		% TODO for somplicity reasons I would only describe the 2D one here
 		\for{$\eta$ $in$ $annealing$ $schedule$}{ %our "schedule" actually is the number paths.... we should specify this I would say
-			\each{$planned$ $term$ $updates$} { % I think we can remove i<j, because we don't care about that
+			\each{$planned$ $term$ $update$} { % I think we can remove i<j, because we don't care about that
 				$ps_a \gets \Unif(\mathcal{XP})$ \tcp{uniform path step from all steps}
 				$path \gets \PathId(ps_a,\mathcal{XP})$ \tcp{the path id of the sampled step}
-				\uIf{$(coolling$ $||$ $flip)$} {
+				\uIf{$(cooling$ $||$ $flip)$} {
 					$ps_b \gets \Unif(\StepCount(path, \mathcal{XP}))$ \tcp{uniform path step from specific path}
 					$p_b \gets \StepPos(ps_b)$ \tcp{nucleotide position of step}
 				} \Else {
@@ -54,6 +54,6 @@
 			}
 		}
 	}
-	\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $ZipfZetas$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
+	\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $InitZipf$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
 	\label{alg:pg_sgd}
 \end{algorithm}
