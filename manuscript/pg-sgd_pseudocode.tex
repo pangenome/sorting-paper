@@ -4,39 +4,39 @@
 \SetKwProg{IF}{if}{:}{end}
 
 \SetKwFunction{PathIndex}{PathIndex}
-\SetKwFunction{RandomLayout}{RandomLayout}
+\SetKwFunction{LayoutInitialization}{LayoutInitialization}
 \SetKwFunction{InitZipf}{InitZipf}
 \SetKwFunction{Unif}{Unif}
 \SetKwFunction{Zipf}{Zipf}
 \SetKwFunction{StepCount}{StepCount}
-\SetKwFunction{PathId}{PathId}
+\SetKwFunction{Path}{Path}
 \SetKwFunction{StepPos}{StepPos}
 
 \begin{algorithm}
-	\pgsgd{\textbf{(}$\mathcal{V}$\textbf{)}}{
-		\textbf{input:} variation graph $\mathcal{V} = (\mathcal{N}, \mathcal{E}, \mathcal{P})$ \\
+	\pgsgd{\textbf{(}$\mathcal{G}$\textbf{)}}{
+		\textbf{input:} variation graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathcal{P})$ \\
 		%https://tex.stackexchange.com/questions/22643/how-to-write-letters-in-bold-in-the-math-mode
-		\textbf{output:} $k$-dimensional layout $\mathcal{L}$ with $n$ nodes \\
-		$\mathcal{XP}$ $\gets \PathIndex(\mathcal{V})$ \tcp{index for efficient path position lookup}
+		\textbf{output:} $N$-dimensional layout $\mathcal{L}$ with $|\mathcal{V}|$ nodes \\
+		$\mathcal{XP}$ $\gets \PathIndex(\mathcal{G})$ \tcp{for path position lookup} 
 		%\boldsymbol{$Z$} $\gets ZipfZetas(G,P)$ \\ %@Andrea is this correct like this?
-		$\mathcal{L}$ $\gets \RandomLayout(n, k)$ \tcp{only 2D PG-SGD has a random layout initialization, 1D starts with the current node order}
-		$\mathcal{Z} \gets \InitZipf(\mathcal{V},\mathcal{XP})$ \tcp{generate Zipfian distribution}
+		$\mathcal{L}$ $\gets \LayoutInitialization(\mathcal{V}, N)$ \\ %\tcp{random or deterministic} 
+		$\mathcal{Z} \gets \InitZipf(\mathcal{G},\mathcal{XP})$ \tcp{Zipfian distribution}
 		% atomic positions initialization?
-		% TODO for somplicity reasons I would only describe the 2D one here
+		% TODO for simplicity reasons I would only describe the 2D one here
 		\for{$\eta$ $in$ $annealing$ $schedule$}{ %our "schedule" actually is the number paths.... we should specify this I would say
 			\each{$planned$ $term$ $update$} { % I think we can remove i<j, because we don't care about that
-				$ps_a \gets \Unif(\mathcal{XP})$ \tcp{uniform path step from all steps}
-				$path \gets \PathId(ps_a,\mathcal{XP})$ \tcp{the path id of the sampled step}
+				$s_a \gets \Unif(\mathcal{XP})$ \tcp{uniformly sample a step from $\mathcal{P}$}
+				$p \gets \Path(s_a,\mathcal{XP})$ \tcp{path of $s_a$}
 				\uIf{$(cooling$ $||$ $flip)$} {
-					$ps_b \gets \Unif(\StepCount(path, \mathcal{XP}))$ \tcp{uniform path step from specific path}
-					$p_b \gets \StepPos(ps_b)$ \tcp{nucleotide position of step}
+					$s_b \gets \Unif(\StepCount(p, \mathcal{XP}))$ \tcp{uniformly sample a step from $p$}
+					$p_b \gets \StepPos(s_b)$ \tcp{nuc. position}
 				} \Else {
-					$ps_b \gets \Zipf(path)$ \tcp{Zipfian path step from specific path}
+					$s_b \gets \Zipf(p)$ \tcp{Zipfian sampling of a step from $p$}
 				}
-				$p_a \gets \StepPos(ps_a)$ \tcp{nucleotide position of step}
-				$p_b \gets \StepPos(ps_b)$ \tcp{nucleotide position of step}
-				$nd \gets ||p_a - p_b||$ \tcp{calculate nucleotide distance} %mag is nx
-				$ld \gets ||\mathcal{L}_{a}-\mathcal{L}_b||$ \tcp{calculate layout distance}
+				$p_a \gets \StepPos(s_a)$ \tcp{nuc. position}
+				$p_b \gets \StepPos(s_b)$ \tcp{nuc. position}
+				$nd \gets ||p_a - p_b||$ \tcp{nuc. distance} %mag is nx
+				$ld \gets ||\mathcal{L}_{a}-\mathcal{L}_b||$ \tcp{layout distance}
 				$w_{ab} \gets \frac{1.0}{nd}$ \tcp{term weight} 
 				$\mu \gets w_{ab}\eta$ \tcp{learning rate}  % current learning rate is given by term weight and step size
 				\IF{$\mu>1$} {
@@ -44,16 +44,16 @@
 				}
 				$\delta \gets \mu \cdot \frac{ld -nd}{2}$ \tcp{the actual delta}
 				\uIf{$\delta <= 0$} {
-					$STOP$ \tcp{we can't optimize it any better, so we stop here}
+					$STOP$ \tcp{we can't optimize it more}
 				}
 				% TODO stop early?
 				% TODO potentially store new delta max?
 				$r \gets \delta - ld$ \tcp{size of the term update}
-				$\mathcal{L}_a \gets \mathcal{L}_a - r\cdot ld$ \tcp{update the 1. term}
-				$\mathcal{L}_b \gets \mathcal{L}_b - r\cdot ld$ \tcp{update the 2. term}
+				$\mathcal{L}_a \gets \mathcal{L}_a - r\cdot ld$ \tcp{update the 1st node}
+				$\mathcal{L}_b \gets \mathcal{L}_b - r\cdot ld$ \tcp{update the 2nd node}
 			}
 		}
 	}
-	\caption{Pseudocode of the PG-SGD algorithm. Explain $\eta$. Explain $PathIndex$ in the text. Explain $InitZipf$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}
+	\caption{Pseudocode of the PG-SGD algorithm. \FIXME{Explain $\eta$. Explain $PathIndex$ in the text. Explain $InitZipf$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}}
 	\label{alg:pg_sgd}
 \end{algorithm}
