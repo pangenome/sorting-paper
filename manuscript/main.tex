@@ -100,47 +100,42 @@
 	\textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
 	}
 	
-	    \maketitle
-	
+	\maketitle
 	
 	\section{Introduction}
-	Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of elemental analyses
+	Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of analyses
 	such as gene annotation, read mapping, and variant detection \citep{Singh2022}.
-	With the availability of hundresds to thousands of high quality genomes per species, this linear model has become obsolete.
+	However, with the availability of hundreds to thousands of high quality genomes per species, this linear model has become obsolete.
 	A single genome can not faithfully represent the genetic diversity of a species, leading to the reference bias problem \citep{Ballouz2019}.
-	A pangenome models the entire set of genomic elements of a given population \citep{Tettelin_2008,cpang2018,Eizenga_2020, Sherman_2020}.
-	It can be represented by a sequence graph incorporating sequences as nodes and their connections as edges \citep{Hein1989}.
-	%@Andrea: I don't think we need a figure which describes nodes, edges, paths. And how a variation graph looks like. Because, there already exists tons of them and we would just make another such figure.
+	Rather, a pangenome models the entire set of genomic elements of a given population \citep{Tettelin_2008,cpang2018,Eizenga_2020, Sherman_2020}.
+	Pangenomes can be represented by a sequence graph incorporating sequences as nodes and their connections as edges \citep{Hein1989}.
 	These nodes are shared for identical sequences, such as homologs, paralogs, and orthologs.
-	In the variation graph model \citep{Garrison:2018} reads, contigs, haplotypes, or individual chromosomes are encoded as paths visiting the nodes in the graph.
+	In the variation graph model \citep{Garrison:2018}, genomes are encoded as paths visiting the nodes in the graph.
 	%A bidirected graph can even contain both strands of DNA as paths. \\
 	
-	A pangenome graph layout is the arrangement of nodes and edges in n-dimensional space such that a human accessible representation of genetic variation across multiple genomes can be drawn. 
-	\FIXME{We may have to talk about paths and nucleotides here. Or we introduce this later, not sure.}
-	The layout challenge is to find suitable node coodinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote intuitive understanding by displaying structure and important features in a human readable way. 
-	One popular graph layout approach is force-directed graph drawing which produces aesthetically-pleasing layouts. It is prone to get stuck in local minima, but stochastic gradient descent (SGD) implementations can circumvent that \citep{Zheng2019}. Typically, force-directed layouts are hard to compute. HOGWILD! \citep{Recht2011} SGD presents a parallelizable solution. In practice, multidimensional scaling (MDS) using pairwise nodes distances as a (dis)similarity measurement is applied to minimize the energy/stress/secs of a graph.
-	Since pangenome graphs embed linear sequences as paths in the graph, a reasonable distance metric would be the path nucleotide distance between a pair of nodes. 
-	But to our knowledge, no algorithm takes into account this biological information during the layout process.
-	
-	This paper describes a new pangenome graph layout algorithm which uses path-guided stochastic gradient descent %\citep{Zheng2019}
-	(PG-SGD) to move pairs of nodes in a HOGWILD! parallel manner. The algorithm aims to adjust the graph layout to best reflect the path nucleotide positions. In theory, our algorithm is applicable in any number of dimensions. Here,
-	we exemplify how our implementation is able to produce 1D and 2D human readable layouts. Already, the 1D PG-SGD is a key step in pangenome graph construction \citep{Liao2023, Garrison2023} and analysis \citep{Guarracino2022, Guarracino2023}.
-	
-	\FIXME{2D: waragraph + gfaestus for interactive visualization? Not sure how to add this here. I am afraid the readers might think we also implemented these tools. Better in the discussion?}. \\
-	% We may want to adjust some citations using https://tex.stackexchange.com/questions/585942/how-to-display-the-first-two-authors-in-a-citation-call-out.
-	
+	A pangenome graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space such that a human accessible representation of genetic variation across multiple genomes can be drawn. 
+	Layout algorithms aim to find suitable node coodinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote intuitive understanding by displaying the graph layout.
+	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetically-pleasing layouts.
+	This is prone to get stuck in local minima, but stochastic gradient descent (SGD) implementations can alleviate such a problem \citep{Zheng2019}.
+	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}, but the HOGWILD! SGD is a parallelizable, therefore scalable solution \citep{Recht2011}.
+	In practice, multidimensional scaling (MDS) is applied to minimize the difference between the visual distance and theoretical graphed distance, and this is accomplished by using pairwise nodes distances to minimize an energy function.
 	%\FIXME{
 	%	Existing layout algorithms range from simple, force-directed methods to more complex, hierarchical layouts, each presenting unique strengths and drawbacks.
 	%	Force-directed methods offer an aesthetic layout based on a physics simulation but may struggle with scalability for larger graphs (XXX WE NEED CITATIONS XXX).
 	%	In contrast, hierarchical layouts handle layered relationships and dependencies, yet can exhibit limitations when dealing with non-hierarchical data (XXX WE NEED CITATIONS XXX)
 	%}
+	Since pangenome graphs represent genomes as paths in the graph, a reasonable distance metric would be the nucleotide distance between a pair of nodes traversed by the same path.
+	But to our knowledge, no algorithm takes into account such biological information to compute the pangenome graph layouts.
 	
-	%With the ever-growing scale and complexity of genomic data, there is a need for advanced layout algorithms that can optimally balance factors such as
-	%efficiency, scalability, readability, and the ability to reveal significant biological patterns. \FIXME{MOVE THIS SOMEWHERE ELSE?}
+	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to move pairs of nodes in a HOGWILD! parallel manner.
+	The algorithm computes the pangenome graph layout that best reflects the nucleotide sequences in the graph.
+	Our implementation produces layouts in 1 dimension (1D) and 2 dimensions (2D), but it can be extended in any number of dimensions.
 	
-	\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
+	% We may want to adjust some citations using https://tex.stackexchange.com/questions/585942/how-to-display-the-first-two-authors-in-a-citation-call-out.
 	
+
 	\section{Algorithm}
+	\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 	
 	In this work, we describe the results in 1 dimension (1D) and 2 dimensions (2D). In this section we will describe. Then we will. And then. \\
 	
@@ -255,6 +250,9 @@
 	Futhermore, projecting a graph in a low number of dimensions, but still preserving its biologically relevant information, enable the application of algorithms that use the graph layout to look at variant classification.
 	Our future research involve exploiting these learned projections to detect structural variations and assembly errors.
 	\FIXME{PROTEIN?}
+	
+	Already, the 1D PG-SGD is a key step in pangenome graph construction \citep{Liao2023, Garrison2023} and analysis \citep{Guarracino2022, Guarracino2023}.
+	\FIXME{2D: waragraph + gfaestus for interactive visualization? Not sure how to add this here. I am afraid the readers might think we also implemented these tools. Better in the discussion?}. \\
 	
 	
 	\section*{Acknowledgments}
