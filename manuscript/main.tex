@@ -166,16 +166,23 @@
 			\item The magnitude r of the update depends on the current learning rate of the SGD.
 		\end{itemize}
 	}
-	%The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
-
+		
 	\subsection{Path index}
-	%\subsection{parallelization in detail}
-	\subsection{Layoit initialization}
+	\FIXME{Describe in details}
+	\subsection{Parallelization}
+	\FIXME{Be brief and specify that it works because the pangenome graphs are sparse}
+	\subsection{Layout initialization}
+	\FIXME{1D: random, node order in the input graph; 2D: Random (uniform or gaussian), hilbert}
 	\subsection{Zipfian distribution}
+	\FIXME{Describe what it is and why we use it (SPOILER: it just works)}
 	\subsection{Annealing}
+	\FIXME{Describe the problem (noise aat local level) and how we solve it by 'annealing', that is slowing down the movements}
 	\subsection{Stop criteria, iterations, term updates}
+	\FIXME{Describe briefly}
 	\subsection{Cooling and flip}
+	\FIXME{Describe briefly}
 	\subsection{From 1D layout to 1D node order}
+	\FIXME{Not sure, so very short}
 
 	\input{pg-sgd_pseudocode}
 
@@ -185,20 +192,20 @@
     \input{fig_sketches}
     \fi
 
-    \iffalse
-
-
     \section{Results}
     \label{sec:results}
 
-%\subsection{Experimental insights}
+    \subsection{Performance}
+	\FIXME{Describe the dataset (HPRC chromosomes), runtime and memory usage (specifying the faster/slower chromosome pangenome graph layout and the thinner/fatter in memory), just text no with a table}
+    \FIXME{A comparison with Bandage might be worth, to give readers an idea of the scalability}
+	
 
-%\subsection{Limitations}
+    \subsection{Pangenome graphs layouts reveal biology features}
+	\FIXME{With the HPRC dataset, Describe a full chromosome, and 1 or a few selected loci, HLA, C4, beta-defensin locus, LPA, stuff from the HPRC paper or PGR-TK.
+	In the supp a huge picture with a "karyotype might be hot}
 
-% something for the supplementary
-
-    \paragraph{Performance evaluation}
-    Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
+	\iffalse
+	Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
     \\
     1D (max. threads) vs. ALIBI; we should compare time + RAM in Fig.~\ref{fig:alibi}.
     But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper in Table 1.
@@ -239,31 +246,26 @@
 	\section{Discussion}
 	\label{sec:discussion}
 	
-	We have presented the PG-SGD layout algorithm for pangenome graphs that leverages the inherent biological information available within the graph's represented genomic sequences.
+	We presented the Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph.
 	Our implementation efficiently computes the layout of pangenome graphs representing thousands of individuals at whole-genome scale.
 	\FIXME{Difference to other existing methods, are there possible improvements of our method possible?}
 	\FIXME{Discuss performance eval. @Jiajie + Niklas: What about going GPU?}
-	We implemented the PG-SGD algorithm to generate layouts in 1D and 2D, but the algorithm can in princible be extended to any number of dimensions.
-	Graph visualization is key for understanding genome variations and the large-scale layouts produced by the PG-SGD algorithm offer an unprecedented 
-	high-level perspective on variation in pangenomes. These layouts are critical for pangenome graph building (\FIXME{CITE PGG and HPRC MAIN PAPER}) and 
-	making new biological discoveries (\FIXME{CITE ACROCENTRIC PAPER}).
 	
-	Problem space: We take a look at all paths (FULL HPRC GRAPH ~8 BILLION STEPS ACROSS ~34 THOUSAND PATHS) and not at all nodes (FULL HPRC GRAPH ~100 MILLION). So we have a very large problem space compared to just looking at the nodes.
+	Graph visualization is key for understanding genome variations and the large-scale layouts produced by the PG-SGD algorithm offer an unprecedented high-level perspective on variation in pangenomes.
+	We implemented the PG-SGD algorithm to generate layouts in 1 and 2 dimensions.
+	These graph projections have already been employed in constructing and analyzing the first draft human pangenome reference \citep{Liao2023}, as well as in the discovery of heterologous recombination of acrocentric chromosomes \citep{Guarracino2023}.
+	Furthermore, they are applied in the creation and analysis of pangenome graphs for any species \citep{Guarracino2022, Garrison2023}.
 	%The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph.
 	%A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
 	%Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
-	%Already, the 1D PG-SGD is a key step in the PanGenome Graph Building (PGGB) pipeline that we successfully applied to build the first draft human pangenome reference (Liao et al., bioRxiv 2022).
+	%Problem space: We take a look at all paths (FULL HPRC GRAPH ~8 BILLION STEPS ACROSS ~34 THOUSAND PATHS) and not at all nodes (FULL HPRC GRAPH ~100 MILLION). So we have a very large problem space compared to just looking at the nodes.
+	There still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
+	Our algorithm will be the foundation of new pangenome graph browsers for exploring meaningful graph layouts (\href{https://github.com/chfi/waragraph}{https://github.com/chfi/waragraph}).
 	
-	However, there remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
-	Our PG-SGD algorithm will be the foundation of new pangenome graph browsers for exploring meaningful graph layouts.
-	\FIXME{2D: waragraph + gfaestus for interactive visualization?}
-	Futhermore, projecting a graph in a low number of dimensions, but still preserving its biologically relevant information, enable the application of algorithms that use the graph layout to look at variant classification.
-	Our future research involve exploiting these learned projections to detect structural variations and assembly errors.
-	\FIXME{PROTEIN?}
-	
-	Already, the 1D PG-SGD is a key step in pangenome graph construction \citep{Liao2023, Garrison2023} and analysis \citep{Guarracino2022, Guarracino2023}.
-	\FIXME{2D: waragraph + gfaestus for interactive visualization? Not sure how to add this here. I am afraid the readers might think we also implemented these tools. Better in the discussion?}. \\
-	
+	The PG-SGD algorithm can be extended to any number of dimensions.
+	Projecting a graph in a low number of dimensions, but still preserving its biologically relevant information, enable the application of algorithms that use the graph layout for variant detection and classification.
+	Our future research involves leveraging these graph projections to detect structural variants and detect and solve assembly errors.
+	Moreover, we consider the extension of the algorithm to RNA and protein sequences.
 	
 	\section*{Acknowledgments}
 	
