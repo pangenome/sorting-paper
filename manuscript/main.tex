@@ -135,11 +135,19 @@
 	
 
 	\section{Algorithm}
-	\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
+	%\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 	
-	In this work, we describe the results in 1 dimension (1D) and 2 dimensions (2D). In this section we will describe. Then we will. And then. \\
+	%In this work, we describe the results in 1 dimension (1D) and 2 dimensions (2D). In this section we will describe. Then we will. And then. \\
 	
-	\FIXME{Do we need a formal definition of a variation graph like in the seqwish paper?}
+	
+\begin{definition}
+	Variation graphs are a mathematical formalism to represent pangenome graphs \citep{Garrison_2019_thesis}.
+	In the variation graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathcal{P})$, nodes (or vertices) $\mathcal{V} = v_1\ldots v_{|\mathcal{V}|}$ contain sequences of DNA.
+	Each node $v_i$ has a unique identifier $i$ and an implicit reverse complement $\bar{v_i}$.
+	The node strand $s$ represents node orientation.
+	Edges $\mathcal{E} = e_1\ldots e_{|\mathcal{E}|}$ connect ordered pairs of node strands ($e_i = ( s_a, s_b )$), defining the graph topology.
+	Paths $\mathcal{P} = p_1\ldots p_{|\mathcal{P}|}$ describe walks over node strands ($p_i = s_1 \ldots s_{|p_i|}$), representing the genomes embedded in the graph.
+\end{definition}
 	
 	Our HOGHWILD! path-guided stochastic gradient descent algorithm is inspired by \cite{Zheng2019} and is theoretically applicable in any number of dimensions. 
 	We implemented the algorithm in ODGI \citep{Guarracino2022}, making use of its already proven interface to pangenome graphs in the standard graphical fragment assebmly (GFA) format (\url{https://github.com/GFA-spec/GFA-spec}).
