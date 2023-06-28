@@ -129,7 +129,8 @@
 	
 	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to move pairs of nodes in a HOGWILD! parallel manner.
 	The algorithm computes the pangenome graph layout that best reflects the nucleotide sequences in the graph.
-	Our implementation produces layouts in 1 dimension (1D) and 2 dimensions (2D), but it can be extended in any number of dimensions.
+	It can be extended in any number of dimensions. We provide in the ODGI toolkit \citep{Guarracino2022} implementations to produce layouts in 1 dimension (1D) and 2 dimensions (2D).
+	
 	
 	% We may want to adjust some citations using https://tex.stackexchange.com/questions/585942/how-to-display-the-first-two-authors-in-a-citation-call-out.
 	
@@ -137,44 +138,45 @@
 	\section{Algorithm}
 	%\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 	
-	%In this work, we describe the results in 1 dimension (1D) and 2 dimensions (2D). In this section we will describe. Then we will. And then. \\
-	
-	
+	The PG-SGD algorithm is inspired by \cite{Zheng2019}, but we designed it to work on pangenomes in the form of variation graph (\ref{def:vg}).
+
 \begin{definition}
+	\label{def:vg}
 	Variation graphs are a mathematical formalism to represent pangenome graphs \citep{Garrison_2019_thesis}.
-	In the variation graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathcal{P})$, nodes (or vertices) $\mathcal{V} = v_1\ldots v_{|\mathcal{V}|}$ contain sequences of DNA.
+	In the variation graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathcal{P})$, nodes (or vertices) $\mathcal{V} = v_1\ldots v_{|\mathcal{V}|}$ contain nucleotide sequences.
 	Each node $v_i$ has a unique identifier $i$ and an implicit reverse complement $\bar{v_i}$.
 	The node strand $s$ represents node orientation.
 	Edges $\mathcal{E} = e_1\ldots e_{|\mathcal{E}|}$ connect ordered pairs of node strands ($e_i = ( s_a, s_b )$), defining the graph topology.
 	Paths $\mathcal{P} = p_1\ldots p_{|\mathcal{P}|}$ describe walks over node strands ($p_i = s_1 \ldots s_{|p_i|}$), representing the genomes embedded in the graph.
 \end{definition}
-	
-	Our HOGHWILD! path-guided stochastic gradient descent algorithm is inspired by \cite{Zheng2019} and is theoretically applicable in any number of dimensions. 
-	We implemented the algorithm in ODGI \citep{Guarracino2022}, making use of its already proven interface to pangenome graphs in the standard graphical fragment assebmly (GFA) format (\url{https://github.com/GFA-spec/GFA-spec}).
-	In our implementation, the algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the actual nucleotide distance of a path traversing these nodes.
-	Our path index enables efficient navigation of path positions by updating nodes on the fly, instead of keeping all pairwise distances of all nodes in memory.
-	This allows the PG-SGD to be applied to gigabase-scale pangenome graphs. \\
-	Our multithreaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
-	\begin{itemize}
-	    \item The first node Xi of a pair is a uniform path step pick from all nodes.
-	    \item The second node Xj of a pair is sampled from the same path following a Zipfian distribution.
-	    \item The path nucleotide distance of the nodes in the pair guides the actual layout distance dij update of these nodes.
-	    \item The magnitude r of the update depends on the current learning rate of the SGD.
-	\end{itemize}
+
+	The algorithm moves a single pair of nodes at a time, minimizing the disparity between the layout distance of a node pair and the nucleotide distance of the same nodes as calculated along a path that traverses them.
+	Our path index enables efficient retrieval of path positions to quickly compute nucleotide distances.
+	This eliminates the need to store all pairwise distances between nodes in memory, allowing the PG-SGD to be applied to gigabase-scale pangenome graphs. \\
+	%Our multithreaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
+	Our implementation is multithreaded, but for the sake of simplicity, we describe how the algorithm works on a single thread (~\ref{alg:pg_sgd}).
+
+	\subsection{General algorithm}
+
+	\FIXME{
+		\begin{itemize}
+			\item The first node Xi of a pair is a uniform path step pick from all nodes.
+			\item The second node Xj of a pair is sampled from the same path following a Zipfian distribution.
+			\item The path nucleotide distance of the nodes in the pair guides the actual layout distance dij update of these nodes.
+			\item The magnitude r of the update depends on the current learning rate of the SGD.
+		\end{itemize}
+	}
 	%The exploration of the path-guided SGD parameter space is in progress, in order to get the best layout as quickly as possible.
-	We describe in algorithm~\ref{alg:pg_sgd} how the PG-SGD works on a single thread.
-	We can have several worker threads but only one checker thread!
-	
-	\subsection{general algorithm}
-	\subsection{path index}
-	\subsection{parallelization in detail}
-	\subsection{randomization}
-	ZIPF!
-	\subsection{annealing step-size $\eta$}
-	\subsection{convergence / stop criteria, iterations, term updates}
-	\subsection{cooling || flip}
-	\subsection{from layout to 1D node order}
-	
+
+	\subsection{Path index}
+	%\subsection{parallelization in detail}
+	\subsection{Layoit initialization}
+	\subsection{Zipfian distribution}
+	\subsection{Annealing}
+	\subsection{Stop criteria, iterations, term updates}
+	\subsection{Cooling and flip}
+	\subsection{From 1D layout to 1D node order}
+
 	\input{pg-sgd_pseudocode}
 
     \iffalse
