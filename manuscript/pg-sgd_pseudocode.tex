@@ -29,7 +29,6 @@
 				$p \gets \Path(s_a,\mathcal{XP})$ \tcp{path of $s_a$}
 				\uIf{$(cooling$ $||$ $flip)$} {
 					$s_b \gets \Unif(\StepCount(p, \mathcal{XP}))$ \tcp{uniformly sample a step from $p$}
-					$p_b \gets \StepPos(s_b)$ \tcp{nuc. position}
 				} \Else {
 					$s_b \gets \Zipf(p)$ \tcp{Zipfian sampling of a step from $p$}
 				}
@@ -44,7 +43,7 @@
 				}
 				$\delta \gets \mu \cdot \frac{ld -nd}{2}$ \tcp{the actual delta}
 				\uIf{$\delta <= 0$} {
-					$STOP$ \tcp{we can't optimize it more}
+					$STOP$ \tcp{we can't optimize more}
 				}
 				% TODO stop early?
 				% TODO potentially store new delta max?
@@ -54,6 +53,6 @@
 			}
 		}
 	}
-	\caption{Pseudocode of the PG-SGD algorithm. \FIXME{Explain $\eta$. Explain $PathIndex$ in the text. Explain $InitZipf$ in the text. Explain $RandomLayout$ in the text. Explain annealing schedule in the text or rephrase this wording.}}
+	\caption{Pseudocode of the PG-SGD algorithm.}
 	\label{alg:pg_sgd}
 \end{algorithm}
