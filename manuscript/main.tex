@@ -182,7 +182,7 @@
 	we specifically avoided to use succinct SDSL~\citep{Gog2014} data structures. We only use bit compressed integer vectors. 
 	This enables efficient retrieval of path positions to quickly compute nucleotide distances and eliminates the need to store all pairwise distances between nodes in memory, allowing the PG-SGD to be applied to gigabase-scale pangenome graphs.
 
-	Our implementation is multithreaded, threads can perform term update calculations in parallel. Layout values are stored in an atomic integer vector presenting the only multithreading bottleneck. Effectively, this presents a modified version of the HOGWILD! SGD algorithm which just writes the layout updates to a shared non-atomic integer vector. We went for an atomic vector, because this ensures memory saftey and in our experience there was basically no performance loss. Algorithm~\ref{alg:pg_sgd}.
+	Our implementation is multithreaded, threads can perform term update calculations in parallel. Layout values are stored in an atomic integer vector presenting the only multithreading bottleneck. Effectively, this presents a modified version of the HOGWILD! SGD algorithm which just writes the layout updates to a shared non-atomic integer vector. We went for an atomic vector, because this ensures memory saftey and in our experience there was basically no performance loss.
 	
 	Due to the fact that we have a very high learning rate, our 1D implementation can work with a random layout as input. Though, by default, it just makes the given node order the starting layout. In 2D, we offer several random layout initializations: 
 		\begin{enumerate*}[label=(\roman*)]
@@ -190,7 +190,6 @@
 		\item gaussian,
 		\item or hilbert.
 	\end{enumerate*}
-	\FIXME{1D: random, node order in the input graph; 2D: Random (uniform or gaussian), hilbert}
 
     \iffalse
     Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
