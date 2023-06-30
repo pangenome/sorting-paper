@@ -96,7 +96,7 @@
 
 	\abstract{
 	\textbf{Motivation:}
-	The increasing availability of high quality genomes demands models to study genomic variability within entire populations.
+	The increasing availability of complete genomes demands models to study genomic variability within entire populations.
 	Pangenome graphs can represent the full genetic diversity between multiple genomes, but they may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
 	These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
 	\textbf{Results:}
@@ -196,7 +196,7 @@
 		\begin{enumerate*}[label=(\roman*)]
 		\item Uniform,
 		\item gaussian,
-		\item or hilbert.
+		\item or Hilbert.
 	\end{enumerate*}
 
     \iffalse
@@ -209,13 +209,13 @@
     \label{sec:results}
 
     \subsection{Performance}
-	\FIXME{Describe the dataset (HPRC chromosomes), runtime and memory usage (specifying the faster/slower chromosome pangenome graph layout and the thinner/fatter in memory), just text no with a table}
+	\FIXME{Describe the dataset (HPRC chromosomes), runtime and memory usage (specifying the fastest/slowest chromosome pangenome graph layout and the thinnest/fattest in memory), just text no with a table}
     \FIXME{A comparison with Bandage might be worth, to give readers an idea of the scalability}
 	
 
     \subsection{Pangenome graphs layouts reveal biology features}
 	\FIXME{With the HPRC dataset, Describe a full chromosome, and 1 or a few selected loci, HLA, C4, beta-defensin locus, LPA, stuff from the HPRC paper or PGR-TK.
-	In the supp a huge picture with a "karyotype might be hot}
+	In the supp a huge picture with a "karyotype", that is all chromosome layout together sorted by chromosome number, might be hot}
 
 	\iffalse
 	Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
@@ -277,7 +277,7 @@
 	
 	The PG-SGD algorithm can be extended to any number of dimensions.
 	Projecting a graph in a low number of dimensions, but still preserving its biologically relevant information, enable the application of algorithms that use the graph layout for variant detection and classification. 
-	Helpful could be to integrate more layout objectives~\FIXME{Add citation for \url{https://arxiv.org/pdf/2112.01571.pdf}} like neighborhood preservation.
+	Helpful could be to integrate more layout objectives \citep{ahmed_multicriteria_2021} like neighborhood preservation.
 	
 	Our future research involves leveraging these graph projections to detect structural variants and detect and solve assembly errors.
 	Moreover, we consider the extension of the algorithm to RNA and protein sequences.
@@ -312,8 +312,8 @@
 	
 	\begin{appendices}
 	    \section{Appendix}
-	    \FIXME{@ANDREA: Please add some more details about your clever quantization. Why. How. Where. When. Secs.} \\
-	    \FIXME{PGR-TK Paper - Layouts of challenging regions of the human pangenome. - https://www.nature.com/articles/s41592-023-01914-y} \\
+	    %\FIXME{@ANDREA: Please add some more details about your clever quantization. Why. How. Where. When. Secs.} \\
+	    %\FIXME{PGR-TK Paper - Layouts of challenging regions of the human pangenome. - https://www.nature.com/articles/s41592-023-01914-y} \\
 	    \FIXME{From 1D layout to 1D node order} \\
 	    \FIXME{reference-guided path-guided stochastic gradient descent}
 	\end{appendices}
