@@ -188,22 +188,22 @@
 	\section{Implementation}
 	
 	We implemented PG-SGD in ODGI \citep{Guarracino2022}. % which serves as an interface to graphs in the GFA (\url{https://github.com/GFA-spec/GFA-spec}) format. 
-	Our path index is a strict subset of the XG index~\citep{Garrison:2018} with the exception that we specifically avoid using succinct SDSL data structures \citep{Gog2014}.
-	We only use bit compressed integer vectors. 
-	This enables efficient retrieval of path positions to quickly compute nucleotide distances and eliminates the need to store all pairwise distances between nodes in memory, allowing PG-SGD to be applied to gigabase-scale pangenome graphs.
+	Our path index is a strict subset of the XG index~\citep{Garrison:2018} where we specifically avoid using succinct SDSL data structures \citep{Gog2014}.
+	Instead, we only use bit compressed integer vectors, enabling efficient retrieval of path positions to quickly compute nucleotide distances without the need to store all pairwise distances between nodes in memory.
+	This allows PG-SGD to scale on large pangenome graphs representing thousands of whole genomes.
 
-	Our implementation is multithreaded, with threads performing layout updates without any locking.
-	Layout values are stored in an atomic integer vector presenting the only multithreading bottleneck.
-	Effectively, this presents a modified version of the HOGWILD! SGD algorithm which just writes the layout updates to a shared non-atomic integer vector.
-	We went for an atomic vector, because this ensures memory saftey and in our experience there was basically no performance loss.
+	Graph layout initialization can significantly influence the quality of the final layout.
+	In the 1D implementation, nodes are placed in the same order as they appear in the input graph by default, although support for random layout initialization is also provided.
+	his random placement ensures that each run of the PG-SGD method could potentially yield a different result, thereby increasing the likelihood of obtaining a meaningful layout.
+	In 2D, we offer several layout initialization techniques.
+	One option is to position nodes in the first layout dimension according to their order in the input graph and to add either uniform or Gaussian noise in the second dimension.
+	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
+
+	Our implementation is multithreaded and follows the HOGWILD! strategy, that is threads perform layout updates without any locking.
+	This is possible because pangenome graphs are tipically sparse \citep{Guarracino2022}, with low average node degree, meaning most updates only modify small parts of the entire layout.
+	With respect to the HOGWILD! SGD algorithm \citep{Recht2011} which writes the layout updates to a shared non-atomic integer vector, PG-SGD stores node coordinates in an atomic integer vector.
+	We prefer an atomic vector to ensure memory safety because, in our experience, there is no performance loss with respect to the non-atomic counterpart.
 	
-	Due to the fact that we have a very high learning rate, our 1D implementation can work with a random layout as input. Though, by default, it just makes the given node order the starting layout. In 2D, we offer several random layout initializations: 
-		\begin{enumerate*}[label=(\roman*)]
-		\item Uniform,
-		\item gaussian,
-		\item or Hilbert.
-	\end{enumerate*}
-
     \iffalse
     Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
 
