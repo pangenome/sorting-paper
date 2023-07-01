@@ -97,7 +97,7 @@
 	\abstract{
 	\textbf{Motivation:}
 	The increasing availability of complete genomes demands models to study genomic variability within entire populations.
-	Pangenome graphs can represent the full genetic diversity between multiple genomes, but they may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
+	Pangenome graphs can represent the full genetic diversity between multiple genomes, but their layouts may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
 	These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
 	\textbf{Results:}
 	To address these challenges, we propose a novel graph layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
@@ -127,25 +127,26 @@
 	Layout algorithms aim to find suitable node coodinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote intuitive understanding by displaying the graph layout.
 	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetically-pleasing layouts.
 	This is prone to get stuck in local minima, but stochastic gradient descent (SGD) implementations can alleviate such a problem \citep{Zheng2019}.
-	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}, but the HOGWILD! SGD is a parallelizable, therefore scalable solution \citep{Recht2011}.
-	In practice, multidimensional scaling (MDS) is applied to minimize the difference between the visual distance and theoretical graph distance. This can be accomplished by using pairwise node	 distances to minimize an energy function.
+	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}, but the HOGWILD! SGD is a highly parallelizable, therefore scalable solution that can be applied when the optimization problem is sparse \citep{Recht2011}.
+	In practice, multidimensional scaling (MDS) is applied to minimize the difference between the visual distance and theoretical graph distance.
+	This can be accomplished by using pairwise node distances to minimize an energy function.
 	%\FIXME{
 	%	Existing layout algorithms range from simple, force-directed methods to more complex, hierarchical layouts, each presenting unique strengths and drawbacks.
 	%	Force-directed methods offer an aesthetic layout based on a physics simulation but may struggle with scalability for larger graphs (XXX WE NEED CITATIONS XXX).
 	%	In contrast, hierarchical layouts handle layered relationships and dependencies, yet can exhibit limitations when dealing with non-hierarchical data (XXX WE NEED CITATIONS XXX)
 	%}
 	Since pangenome graphs represent genomes as paths in the graph, a reasonable distance metric would be the nucleotide distance between a pair of nodes traversed by the same path.
-	But to our knowledge, no algorithm takes into account such biological information to compute the pangenome graph layouts.
+	To our knowledge, no algorithm takes into account such biological information to compute the pangenome graph layouts.
 	
-	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to move pairs of nodes in a HOGWILD! parallel manner.
+	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to move pairs of nodes in parallel with a HOGWILD! strategy.
 	The algorithm computes the pangenome graph layout that best reflects the nucleotide sequences in the graph.
-	It can be extended in any number of dimensions. We provide in the ODGI toolkit \citep{Guarracino2022} implementations to produce layouts in 1 dimension (1D) and 2 dimensions (2D).
+	PG-SGD can be extended in any number of dimensions. We provide in the ODGI toolkit \citep{Guarracino2022} implementations to produce layouts in 1 dimension (1D) and 2 dimensions (2D).
 	% We may want to adjust some citations using https://tex.stackexchange.com/questions/585942/how-to-display-the-first-two-authors-in-a-citation-call-out.
 
 	\section{Algorithm}
 	%\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 	
-	PG-SGD is inspired by \cite{Zheng2019}, but we designed our algorithm to work on pangenomes in the form of a variation graph introduced in Definition \ref{def:vg}.
+	PG-SGD is inspired by \cite{Zheng2019}, but we designed the algorithm to work on pangenomes in the form of a variation graph (Definition \ref{def:vg}).
 
 	\begin{definition}
 		\label{def:vg}
