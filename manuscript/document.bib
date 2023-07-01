@@ -3176,3 +3176,42 @@ that learning good vector representations for millions of phrases is possible.},
 	year = {2021},
 	keywords = {Computational Geometry (cs.CG), FOS: Computer and information sciences, FOS: Computer and information sciences},
 }
+
+
+@article{sibbesen_haplotype-aware_2023,
+	title = {Haplotype-aware pantranscriptome analyses using spliced pangenome graphs},
+	volume = {20},
+	copyright = {2023 The Author(s), under exclusive licence to Springer Nature America, Inc.},
+	issn = {1548-7105},
+	url = {https://www.nature.com/articles/s41592-022-01731-9},
+	doi = {10.1038/s41592-022-01731-9},
+	abstract = {Pangenomics is emerging as a powerful computational paradigm in bioinformatics. This field uses population-level genome reference structures, typically consisting of a sequence graph, to mitigate reference bias and facilitate analyses that were challenging with previous reference-based methods. In this work, we extend these methods into transcriptomics to analyze sequencing data using the pantranscriptome: a population-level transcriptomic reference. Our toolchain, which consists of additions to the VG toolkit and a standalone tool, RPVG, can construct spliced pangenome graphs, map RNA sequencing data to these graphs, and perform haplotype-aware expression quantification of transcripts in a pantranscriptome. We show that this workflow improves accuracy over state-of-the-art RNA sequencing mapping methods, and that it can efficiently quantify haplotype-specific transcript expression without needing to characterize the haplotypes of a sample beforehand.},
+	language = {en},
+	number = {2},
+	urldate = {2023-07-01},
+	journal = {Nature Methods},
+	author = {Sibbesen, Jonas A. and Eizenga, Jordan M. and Novak, Adam M. and Sirén, Jouni and Chang, Xian and Garrison, Erik and Paten, Benedict},
+	month = feb,
+	year = {2023},
+	keywords = {Genome informatics, Software, Statistical methods},
+	pages = {239--247},
+}
+
+@misc{dabbaghie_panpa:_2023,
+	title = {{PanPA}: generation and alignment of panproteome graphs},
+	copyright = {© 2023, Posted by Cold Spring Harbor Laboratory. This pre-print is available under a Creative Commons License (Attribution-NonCommercial 4.0 International), CC BY-NC 4.0, as described at http://creativecommons.org/licenses/by-nc/4.0/},
+	shorttitle = {{PanPA}},
+	url = {https://www.biorxiv.org/content/10.1101/2023.01.19.524778v1},
+	doi = {10.1101/2023.01.19.524778},
+	abstract = {Motivation Compared to eukaryotes, prokaryote genomes are more diverse through different mechanisms, including a higher mutation rate and horizontal gene transfer. Therefore, using a linear representative reference can cause a reference bias. Graph-based pangenome methods have been developed to tackle this problem. However, comparisons in DNA space is still challenging due to this high diversity. In contrast, amino acids have higher similarity due to evolutionary constraints, resulting in conserved amino acids that, however, may be encoded by several synonymous codons. Coding regions cover the majority of the genome in prokaryotes. Thus, building panproteomes leverages the high sequence similarity while not losing much of the genome in non-coding regions.
+Results We present PanPA, a method that takes a set of multiple sequence alignments (MSAs) of proteins or protein clusters, indexes them, and builds a graph for each MSA. In the querying step, it can align DNA or amino acid sequences back to these graphs. We first showcase that PanPA generates correct alignments on a panproteome from 1,350 E. coli. To demonstrate that panproteomes allow longer phylogenetic distance comparison, we compare DNA and protein alignments from 1,073 S. enterica assemblies against E. coli reference genome, pangenome, and panproteome using BWA, GraphAligner, and PanPA respectively, where PanPA was able to produce around 22\% more alignments. We also aligned DNA short-reads WGS sample from S. enterica against the E. coli reference with BWA and the panproteome with PanPA, where PanPA was able to find alignment for 69\% of the reads compared to 5\% with BWA
+Availability PanPA is available at https://github.com/fawaz-dabbaghieh/PanPA
+Contact fawaz\{at\}hhu.de, olga.kalinina\{at\}helmholtz-hzi.de
+Supplementary information Supplementary data are available at Bioinformatics online.},
+	language = {en},
+	urldate = {2023-07-01},
+	publisher = {bioRxiv},
+	author = {Dabbaghie, Fawaz and Srikakulam, Sanjay K. and Marschall, Tobias and Kalinina, Olga V.},
+	month = jan,
+	year = {2023},
+}
