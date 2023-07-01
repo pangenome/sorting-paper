@@ -199,9 +199,9 @@
 	One option is to position nodes in the first layout dimension according to their order in the input graph and to add either uniform or Gaussian noise in the second dimension.
 	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
 
-	Our implementation is multithreaded and follows the HOGWILD! strategy, that is threads perform layout updates without any locking.
+	Our implementation is multithreaded and follows the HOGWILD! strategy \citep{Recht2011}, that is threads perform layout updates without any locking.
 	This is possible because pangenome graphs are tipically sparse \citep{Guarracino2022}, with low average node degree, meaning most updates only modify small parts of the entire layout.
-	With respect to the HOGWILD! SGD algorithm \citep{Recht2011} which writes the layout updates to a shared non-atomic integer vector, PG-SGD stores node coordinates in an atomic integer vector.
+	With respect to the HOGWILD! SGD algorithm, which writes the layout updates to a shared non-atomic integer vector, PG-SGD stores node coordinates in an atomic integer vector.
 	We prefer an atomic vector to ensure memory safety because, in our experience, there is no performance loss with respect to the non-atomic counterpart.
 	
     \iffalse
@@ -222,71 +222,68 @@
 	\FIXME{With the HPRC dataset, Describe a full chromosome, and 1 or a few selected loci, HLA, C4, beta-defensin locus, LPA, stuff from the HPRC paper or PGR-TK.
 	In the supp a huge picture with a "karyotype", that is all chromosome layout together sorted by chromosome number, might be hot}
 
-	\iffalse
-	Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
-    \\
-    1D (max. threads) vs. ALIBI; we should compare time + RAM in Fig.~\ref{fig:alibi}.
-    But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper in Table 1.
-    \\
-    2D (max. threads) + odgi draw vs. Bandage in Fig.~\ref{fig:bandage}.
-    \input{fig_performance}
-    \\
-    \\
-    Table 1: Metrics of the ALIBI and PG-SGD graphs from Fig. 2.
-    \input{tab_performance.tex}
-    Already, PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}) or ALIBI (\url{https://doi.org/hkv3}).
-
-    \paragraph{Latent graph structure reveals underlying biology}
-    Fig. 3: Cool quantitative 1D sortings and 2D layouts: biological implications.
-    Randomly sorted. PG-SGD sorted. Ygs sorted. Reference sorted.
-    We want a pipeline of sortings. 2D layout of the whole HPRC.
-    Chr6 HPRC HLA graph? Chr8 beta-defensin gene cluster HPRC? Whole HPRC?
-    \\
-    We could also try to build a gastric cancer pangenome graph with data from \url{https://www.nature.com/articles/s41467-022-33073-7} from up to 185 samples.
-    However, we would have to request access to the data.
-    \\
-    \\
-    \input{fig_latent_graph_structure}
-    Table 2: Metrics of the sorted graphs in Fig. 3.
-    \input{tab_metrics_latent_graph_structure}
-
-    \paragraph{Bonus Section}
-    Fig. 4: Detect tension. Relax a graph. Detect tension afterwards.
-    I need to test this on a new data set I got from Erik.
-    I need to establish a fixed lower boundary for the tension from which on we don't relax anymore. \\
-    With a high quality layout, we can measure the discrepancy of the path layout position versus the expected path nucleotide position, the “tension” of a graph.
-    The greater the “tension”, the greater is the possibility of a biologically meaningless alignment.
-    This allows us to detect telomere collapsing alignment errors and hopefully (pangenome) assembly errors, subsequently correcting them.
-    \input{fig_tension}
-    \fi
-
+	% \iffalse
+	% Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
+    % \\
+    % 1D (max. threads) vs. ALIBI; we should compare time + RAM in Fig.~\ref{fig:alibi}.
+    % But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper in Table 1.
+    % \\
+    % 2D (max. threads) + odgi draw vs. Bandage in Fig.~\ref{fig:bandage}.
+    % \input{fig_performance}
+    % \\
+    % \\
+    % Table 1: Metrics of the ALIBI and PG-SGD graphs from Fig. 2.
+    % \input{tab_performance.tex}
+    % Already, PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}) or ALIBI (\url{https://doi.org/hkv3}).
+    % \paragraph{Latent graph structure reveals underlying biology}
+    % Fig. 3: Cool quantitative 1D sortings and 2D layouts: biological implications.
+    % Randomly sorted. PG-SGD sorted. Ygs sorted. Reference sorted.
+    % We want a pipeline of sortings. 2D layout of the whole HPRC.
+    % Chr6 HPRC HLA graph? Chr8 beta-defensin gene cluster HPRC? Whole HPRC?
+    % \\
+    % We could also try to build a gastric cancer pangenome graph with data from \url{https://www.nature.com/articles/s41467-022-33073-7} from up to 185 samples.
+    % However, we would have to request access to the data.
+    % \\
+    % \\
+    % \input{fig_latent_graph_structure}
+    % Table 2: Metrics of the sorted graphs in Fig. 3.
+    % \input{tab_metrics_latent_graph_structure}
+    % \paragraph{Bonus Section}
+    % Fig. 4: Detect tension. Relax a graph. Detect tension afterwards.
+    % I need to test this on a new data set I got from Erik.
+    % I need to establish a fixed lower boundary for the tension from which on we don't relax anymore. \\
+    % With a high quality layout, we can measure the discrepancy of the path layout position versus the expected path nucleotide position, the “tension” of a graph.
+    % The greater the “tension”, the greater is the possibility of a biologically meaningless alignment.
+    % This allows us to detect telomere collapsing alignment errors and hopefully (pangenome) assembly errors, subsequently correcting them.
+    % \input{fig_tension}
+    % \fi
 
 	\section{Discussion}
 	\label{sec:discussion}
 	
 	We presented Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph.
-	Our implementation efficiently computes the layout of pangenome graphs representing thousands of individuals at whole-genome scale.
-	\FIXME{Difference to other existing methods, are there possible improvements of our method possible?}
-	\FIXME{Discuss performance eval. @Jiajie + Niklas: What about going GPU?}
+	Our implementation efficiently computes the layout of pangenome graphs representing thousands of whole genomes.
+	\FIXME{Discuss differences to other existing methods? are there possible improvements for our method?}
 	
 	Graph visualization is key for understanding genome variations and the large-scale layouts produced by PG-SGD offer an unprecedented high-level perspective on variation in pangenomes.
 	We implemented PG-SGD to generate layouts in 1 and 2 dimensions.
-	These graph projections have already been employed in constructing and analyzing the first draft human pangenome reference \citep{Liao2023}, as well as in the discovery of heterologous recombination of acrocentric chromosomes \citep{Guarracino2023}.
+	These graph projections have already been employed in constructing and analyzing the first draft human pangenome reference \citep{Liao2023}, as well as in the discovery of heterologous recombination of human acrocentric chromosomes \citep{Guarracino2023}.
 	Furthermore, they are applied in the creation and analysis of pangenome graphs for any species \citep{Guarracino2022, Garrison2023}.
 	%The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph.
 	%A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
 	%Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
 	%Problem space: We take a look at all paths (FULL HPRC GRAPH ~8 BILLION STEPS ACROSS ~34 THOUSAND PATHS) and not at all nodes (FULL HPRC GRAPH ~100 MILLION). So we have a very large problem space compared to just looking at the nodes.
-	There still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
-	Our algorithm will be the foundation of new pangenome graph browsers for exploring meaningful graph layouts (\href{https://github.com/chfi/waragraph}{https://github.com/chfi/waragraph}).
+	Of note, there still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
+	Our algorithm will be the foundation of new pangenome graph browsers for studying graph layouts and the genome variation they represent (\url{https://github.com/chfi/waragraph}).
 	
 	PG-SGD can be extended to any number of dimensions.
-	Projecting a graph in a low number of dimensions, but still preserving its biologically relevant information, enable the application of algorithms that use the graph layout for variant detection and classification. 
-	Helpful could be to integrate more layout objectives \citep{ahmed_multicriteria_2021} like neighborhood preservation.
-	
-	Our future research involves leveraging these graph projections to detect structural variants and detect and solve assembly errors.
-	Moreover, we consider the extension of the algorithm to RNA and protein sequences.
-	
+	It can be seen as a graph embedding algorithm that converts high-dimensional, sparse pangenome graphs into low-dimensional, dense, and continuous vector spaces, while preserving its biologically relevant information.
+	This enables the application of machine learning algorithms that use the graph layout for variant detection and classification. 
+	Our future research involves leveraging these graph projections to detect structural variants and to identify and correct assembly errors
+	Moreover, we are considering extending the algorithm to RNA and protein sequences to support pantranscriptomes and panproteomes, respectively.
+	%Helpful could be to integrate more layout objectives \citep{ahmed_multicriteria_2021} like neighborhood preservation.
+	\FIXME{@Jiajie + Niklas: What about going GPU?}
+
 	\section*{Acknowledgments}
 	
 	We are grateful to members of the HGSVC and HPRC production teams for their development of resources used in our exposition.
@@ -307,10 +304,7 @@
 	\section*{Data availability}
 	
 	Code and links to data resources used to build this manuscript and its figures can be found in the paper's public repository: \url{https://github.com/pangenome/sorting-paper}.
-	
-	\section{Animations}
-	\FIXME{ADD LINKS TO OUR ANIMATIONS ON ZENODO}
-	
+		
 	\bibliographystyle{natbib}
 	
 	\bibliography{document}
@@ -319,6 +313,7 @@
 	    \section{Appendix}
 	    %\FIXME{@ANDREA: Please add some more details about your clever quantization. Why. How. Where. When. Secs.} \\
 	    %\FIXME{PGR-TK Paper - Layouts of challenging regions of the human pangenome. - https://www.nature.com/articles/s41592-023-01914-y} \\
+		\FIXME{ADD LINKS TO OUR ANIMATIONS ON ZENODO} \\
 	    \FIXME{From 1D layout to 1D node order} \\
 	    \FIXME{reference-guided path-guided stochastic gradient descent}
 	\end{appendices}
