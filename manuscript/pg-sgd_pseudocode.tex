@@ -25,34 +25,34 @@
 		% TODO for simplicity reasons I would only describe the 2D one here
 		\for{$\eta$ $in$ $annealing$ $schedule$}{ %our "schedule" actually is the number paths.... we should specify this I would say
 			\each{$planned$ $term$ $update$} { % I think we can remove i<j, because we don't care about that
-				$s_a \gets \Unif(\mathcal{XP})$ \tcp{uniformly sample a step from $\mathcal{P}$}
-				$p \gets \Path(s_a,\mathcal{XP})$ \tcp{path of $s_a$}
+				$s_i \gets \Unif(\mathcal{XP})$ \tcp{uniform sampling of a step from $\mathcal{P}$}
+				$p \gets \Path(s_i,\mathcal{XP})$ \tcp{path of $s_i$}
 				\uIf{$(cooling$ $||$ $flip)$} {
-					$s_b \gets \Unif(\StepCount(p, \mathcal{XP}))$ \tcp{uniformly sample a step from $p$}
+					$s_j \gets \Unif(\StepCount(p, \mathcal{XP}))$ \tcp{uniform sampling of a step from $p$}
 				} \Else {
-					$s_b \gets \Zipf(p)$ \tcp{Zipfian sampling of a step from $p$}
+					$s_j \gets \Zipf(p)$ \tcp{Zipfian sampling of a step from $p$}
 				}
-				$p_a \gets \StepPos(s_a)$ \tcp{nuc. position}
-				$p_b \gets \StepPos(s_b)$ \tcp{nuc. position}
-				$nd \gets ||p_a - p_b||$ \tcp{nuc. distance} %mag is nx
-				$ld \gets ||\mathcal{L}_{a}-\mathcal{L}_b||$ \tcp{layout distance}
-				$w_{ab} \gets \frac{1.0}{nd}$ \tcp{term weight} 
-				$\mu \gets w_{ab}\eta$ \tcp{learning rate}  % current learning rate is given by term weight and step size
+				$p_i \gets \StepPos(s_i)$ \tcp{nuc. position}
+				$p_j \gets \StepPos(s_j)$ \tcp{nuc. position}
+				$nd_{ij} \gets ||p_i - p_j||$ \tcp{nuc. distance} %mag is nx
+				$ld_{ij} \gets ||l_{i} - l_j||$ \tcp{layout distance}
+				$w_{ij} \gets \frac{1.0}{nd_{ij}}$ \tcp{term weight} 
+				$\mu \gets w_{ij}\eta$ \tcp{learning rate}  % current learning rate is given by term weight and step size
 				\IF{$\mu>1$} {
 				$\mu \gets 1$
 				}
-				$\delta \gets \mu \cdot \frac{ld -nd}{2}$ \tcp{the actual delta}
+				$\delta \gets \mu \cdot \frac{ld -nd_{ij}}{2}$ \tcp{the actual delta}
 				\uIf{$\delta <= 0$} {
 					$STOP$ \tcp{we can't optimize more}
 				}
 				% TODO stop early?
 				% TODO potentially store new delta max?
-				$r \gets \delta - ld$ \tcp{size of the term update}
-				$\mathcal{L}_a \gets \mathcal{L}_a - r\cdot ld$ \tcp{update the 1st node}
-				$\mathcal{L}_b \gets \mathcal{L}_b - r\cdot ld$ \tcp{update the 2nd node}
+				$r \gets \delta - ld_{ij}$ \tcp{size of the update}
+				$l_i \gets l_i - r\cdot ld_{ij}$ \tcp{update $v_i$ coordinates}
+				$l_j \gets l_j - r\cdot ld_{ij}$ \tcp{update $v_j$ coordinates}
 			}
 		}
 	}
-	\caption{Pseudocode of the PG-SGD algorithm.}
+	\caption{Pseudocode of PG-SGD.}
 	\label{alg:pg_sgd}
 \end{algorithm}

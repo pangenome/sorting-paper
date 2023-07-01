@@ -147,7 +147,7 @@
 	%\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 	
 	PG-SGD is inspired by \cite{Zheng2019}, but we designed the algorithm to work on pangenomes in the form of a variation graph (Definition \ref{def:vg}).
-
+	
 	\begin{definition}
 		\label{def:vg}
 		Variation graphs are a mathematical formalism to represent pangenome graphs \citep{Garrison_2019_thesis}.
@@ -156,42 +156,46 @@
 		The node strand $s$ represents node orientation.
 		Edges $\mathcal{E} = e_1\ldots e_{|\mathcal{E}|}$ connect ordered pairs of node strands ($e_i = ( s_a, s_b )$), defining the graph topology.
 		Paths $\mathcal{P} = p_1\ldots p_{|\mathcal{P}|}$ describe walks over node strands ($p_i = s_1 \ldots s_{|p_i|}$), representing the genomes embedded in the graph.
+		\FIXME{EXPLAIN THE STEPS}
 	\end{definition}
 
-	In brief, the algorithm moves a single pair of nodes $\mathcal{V}_i$, $\mathcal{V}_j$ at a time, minimizing the disparity between the layout distance $ld_{ij}$ of a node pair and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a path that traverses them.
+	PG-SGD's pseudocode is shown in Algorithm~\ref{alg:pg_sgd} and key steps are sketched in Figure \FIXME{Add puritan figure.}.
+	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a path that traverses them.
 	%Our multithreaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
-	\begin{enumerate*}[label=(\roman*)]
-		\item The first node $\mathcal{V}_i$ of a pair is a uniform path step pick from all nodes.
-		\item The second node $\mathcal{V}_j$ of a pair is sampled from the same path following a Zipfian distribution \citep{Zipf1932}.
-		\item The path nucleotide distance  $nd_{ij}$ guides the actual layout distance $ld_{ij}$ update of these nodes. Also referred to as \textit{term update}.
-		\item The magnitude $r$ of the update depends on the current learning rate $\mu$ of the SGD.
-	\end{enumerate*}
-	These key steps are sketched in Figure \FIXME{Add puritan figure.}. Pseudocode is shown in Algorithm~\ref{alg:pg_sgd}.
+	$v_i$ is the node associated with the step $s_i$ sampled uniformly from all the steps in $\mathcal{P}$.
+	$v_j$ is the node associated with the step $s_j$ sampled from the same path of $s_i$ by following a Zipfian distribution \citep{Zipf1932}.
+	The difference between $nd_{ij}$ and $ld_{ij}$ guides the update of the node coordinates in the layout.
+	The magnitude $r$ of the update depends on the learning rate $\mu$ of the SGD.
+	The number of iterations steers the annealing step size $\eta$ which determines the learning rate $\mu$.
+	%A key property of pangenome graph layouts is that their nodes can be arranged so that most edges go between nodes that are close together in the node order \citep{Guarracino2022}.
+	A large $\eta$ in the first iterations leads to a globally linear (in 1D) or planar (in 2D) layout.
+	By decreasing $\eta$, the layout adjustments become more localized, ensuring that the nodes are positioned in a way to best reflect the nucleotide distances in the paths (i.e., in the genomes). % LIAR: down to the single base pair level.
 	
 	\input{pg-sgd_pseudocode}
-	
-	The number of iterations steer the annealing step size $\eta$ which in turn determines the learning rate $\mu$ of PG-SGD. 
-	Since variation graphs are very sparse, a large step size in the beginning of the schedule already leads to a globally linear \FIXME{(or planar?)} layout.
-	With decreasing $\eta$ the node layout adjustments become more local, ensuring that the nodes are positioned in away to best reflect the nucleotde distances of the paths down to the single base pair level. 
-	
-	In standard SGD layout algorithms, the problem space is given by pairwise node comparisons. In PG-SGD, the problem space is given by the pairwise path step comparisons. The number of path steps in large variation graphs can be several orders of magnitude higher than the number of nodes. Therefore, the number of term updates in PG-SGD is bound to the number of path steps in the graph.
+
+	%In standard SGD layout algorithms, the problem space is given by pairwise node comparisons. In PG-SGD, the problem space is given by the pairwise path step comparisons. The number of path steps in large variation graphs can be several orders of magnitude higher than the number of nodes. Therefore, the number of term updates in PG-SGD is bound to the number of path steps in the graph.
 	%Should the delta of $nd_{ij}$ and $ld_{ij}$ become 0 before the annealing schedule is finished, the algorithm stops.
 
 	Originating from empirical inspection of word frequency tables, Zipf's law states that a word with rank $n$ occurs $1/n$ times as the most frequent one.
-	It's mathematical formulation is called the Zipfian distribution whichs rank-frequency distribution is related to the inverse power law.
-	Sampling from a Zipfian distribution generated with a path's nucleotide position space increases the possibility to draw a small nucleotide position.
-	So there is a high chance of a small nucleotide distance between node pair $\mathcal{V}_ij$ to refine the layout down to the nodes containing only one base pair.
-	
-	To provide balance between global and local term updates, there is a 50\% chance for a \textit{flip}: In half of our term updates the second path step is sampled from a uniform distribution instead of a Zipfian one. Additionally, after half the number of iterations, a \textit{cooling} phase skewes the Zipfian distribution so that the possibility of a a small sampled nucleotide distance is significantly increased. Again, this boosts the local planarity of the graph layout.
-	
+	It's mathematical formulation is called the Zipfian distribution and it rank-frequency distribution is related to the inverse power law.
+	Sampling $s_j$ from a Zipfian distribution fixed in the $s_i$'s path position space increases the possibility to draw a nucleotide position close to $s_i$.
+	So there is a high chance to use small nucleotide distances $nd_{ij}$ to refine the layout of nodes comprising a few base pairs.
+	\FIXME{TO IMPROVE, AS IT DOES NOT EXPLAIN WHY ZIPFIAN AND NOT OTHER FUNCTIONS}
+
+	To provide balance between global and local layout updates, in half of the updates ($flip$ flag in Algorithm~\ref{alg:pg_sgd}) the $s_j$ is sampled uniformly instead from a Zipfian distribution (uniform sampling favours global updates).
+	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a a small sampled nucleotide distance is significantly increased. 
+
 	\section{Implementation}
 	
-	We implemented the algorithm in ODGI which serves as an interface to graphs in the GFA (\url{https://github.com/GFA-spec/GFA-spec}) format. 
-	Our path index is a strict subset of the XG index~\citep{Garrison:2018} with the exception that
-	we specifically avoided to use succinct SDSL~\citep{Gog2014} data structures. We only use bit compressed integer vectors. 
+	We implemented PG-SGD in ODGI \citep{Guarracino2022}. % which serves as an interface to graphs in the GFA (\url{https://github.com/GFA-spec/GFA-spec}) format. 
+	Our path index is a strict subset of the XG index~\citep{Garrison:2018} with the exception that we specifically avoid using succinct SDSL data structures \citep{Gog2014}.
+	We only use bit compressed integer vectors. 
 	This enables efficient retrieval of path positions to quickly compute nucleotide distances and eliminates the need to store all pairwise distances between nodes in memory, allowing PG-SGD to be applied to gigabase-scale pangenome graphs.
 
-	Our implementation is multithreaded, threads can perform term update calculations in parallel. Layout values are stored in an atomic integer vector presenting the only multithreading bottleneck. Effectively, this presents a modified version of the HOGWILD! SGD algorithm which just writes the layout updates to a shared non-atomic integer vector. We went for an atomic vector, because this ensures memory saftey and in our experience there was basically no performance loss.
+	Our implementation is multithreaded, with threads performing layout updates without any locking.
+	Layout values are stored in an atomic integer vector presenting the only multithreading bottleneck.
+	Effectively, this presents a modified version of the HOGWILD! SGD algorithm which just writes the layout updates to a shared non-atomic integer vector.
+	We went for an atomic vector, because this ensures memory saftey and in our experience there was basically no performance loss.
 	
 	Due to the fact that we have a very high learning rate, our 1D implementation can work with a random layout as input. Though, by default, it just makes the given node order the starting layout. In 2D, we offer several random layout initializations: 
 		\begin{enumerate*}[label=(\roman*)]
