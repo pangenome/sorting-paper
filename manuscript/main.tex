@@ -101,11 +101,11 @@
 	These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
 	\textbf{Results:}
 	To address these challenges, we propose a novel graph layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-	Our HOWGWILD! method uses the genomes, represented in the pangenome graph as paths, to move pairs of nodes in parallel.
+	PG-SGD uses the genomes, represented in the pangenome graph as paths, to move pairs of nodes in parallel by applying the HOWGWILD! strategy.
 	We show that our implementation efficiently computes the layout of gigabase-scale pangenome graphs, revealing their biological features. \\
 	\textbf{Availability:}
-	The PG-SGD algorithm has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
-	Source code is available at \url{https://github.com/pangenome/odgi} and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}. \\
+	PG-SGD has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
+	Source code is available at \url{https://github.com/pangenome/odgi}. \\% and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}. \\
 	\textbf{Contact:} \href{egarris5@uthsc.edu}{egarris5@uthsc.edu} \\
 	\textbf{Supplementary information:} Supplementary data are available at \textit{Bioinformatics} online.
 	}
@@ -145,7 +145,7 @@
 	\section{Algorithm}
 	%\FIXME{WE ONLY WANT TO TALK ABOUT LAYOUTS AND PRODUCING LAYOUTS, NOT ABOUT GRAPH SORTING. PG-SGD PRODUCES 1D AND 2D LAYOUTS. IN 1D WE SORT A GRAPH BY PROJECTING THE ACTUAL 1D LAYOUT INTO A NODE ORDER!}
 	
-	The PG-SGD algorithm is inspired by \cite{Zheng2019}, but we designed it to work on pangenomes in the form of a variation graph introduced in Definition \ref{def:vg}.
+	PG-SGD is inspired by \cite{Zheng2019}, but we designed our algorithm to work on pangenomes in the form of a variation graph introduced in Definition \ref{def:vg}.
 
 	\begin{definition}
 		\label{def:vg}
@@ -169,11 +169,11 @@
 	
 	\input{pg-sgd_pseudocode}
 	
-	The number of iterations steer the annealing step size $\eta$ which in turn determines the learning rate $\mu$ of the PG-SGD. 
+	The number of iterations steer the annealing step size $\eta$ which in turn determines the learning rate $\mu$ of PG-SGD. 
 	Since variation graphs are very sparse, a large step size in the beginning of the schedule already leads to a globally linear \FIXME{(or planar?)} layout.
 	With decreasing $\eta$ the node layout adjustments become more local, ensuring that the nodes are positioned in away to best reflect the nucleotde distances of the paths down to the single base pair level. 
 	
-	In standard SGD layout algorithms, the problem space is given by pairwise node comparisons. In the PG-SGD, the problem space is given by the pairwise path step comparisons. The number of path steps in large variation graphs can be several orders of magnitude higher than the number of nodes. Therefore, the number of term updates in the PG-SGD is bound to the number of path steps in the graph.
+	In standard SGD layout algorithms, the problem space is given by pairwise node comparisons. In PG-SGD, the problem space is given by the pairwise path step comparisons. The number of path steps in large variation graphs can be several orders of magnitude higher than the number of nodes. Therefore, the number of term updates in PG-SGD is bound to the number of path steps in the graph.
 	%Should the delta of $nd_{ij}$ and $ld_{ij}$ become 0 before the annealing schedule is finished, the algorithm stops.
 
 	Originating from empirical inspection of word frequency tables, Zipf's law states that a word with rank $n$ occurs $1/n$ times as the most frequent one.
@@ -188,7 +188,7 @@
 	We implemented the algorithm in ODGI which serves as an interface to graphs in the GFA (\url{https://github.com/GFA-spec/GFA-spec}) format. 
 	Our path index is a strict subset of the XG index~\citep{Garrison:2018} with the exception that
 	we specifically avoided to use succinct SDSL~\citep{Gog2014} data structures. We only use bit compressed integer vectors. 
-	This enables efficient retrieval of path positions to quickly compute nucleotide distances and eliminates the need to store all pairwise distances between nodes in memory, allowing the PG-SGD to be applied to gigabase-scale pangenome graphs.
+	This enables efficient retrieval of path positions to quickly compute nucleotide distances and eliminates the need to store all pairwise distances between nodes in memory, allowing PG-SGD to be applied to gigabase-scale pangenome graphs.
 
 	Our implementation is multithreaded, threads can perform term update calculations in parallel. Layout values are stored in an atomic integer vector presenting the only multithreading bottleneck. Effectively, this presents a modified version of the HOGWILD! SGD algorithm which just writes the layout updates to a shared non-atomic integer vector. We went for an atomic vector, because this ensures memory saftey and in our experience there was basically no performance loss.
 	
@@ -229,7 +229,7 @@
     \\
     Table 1: Metrics of the ALIBI and PG-SGD graphs from Fig. 2.
     \input{tab_performance.tex}
-    Already, the PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}) or ALIBI (\url{https://doi.org/hkv3}).
+    Already, PG-SGD outperforms existing graph linearization methods like the flow procedure (\url{https://doi.org/gdw58w}) or ALIBI (\url{https://doi.org/hkv3}).
 
     \paragraph{Latent graph structure reveals underlying biology}
     Fig. 3: Cool quantitative 1D sortings and 2D layouts: biological implications.
@@ -259,13 +259,13 @@
 	\section{Discussion}
 	\label{sec:discussion}
 	
-	We presented the Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph.
+	We presented Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph.
 	Our implementation efficiently computes the layout of pangenome graphs representing thousands of individuals at whole-genome scale.
 	\FIXME{Difference to other existing methods, are there possible improvements of our method possible?}
 	\FIXME{Discuss performance eval. @Jiajie + Niklas: What about going GPU?}
 	
-	Graph visualization is key for understanding genome variations and the large-scale layouts produced by the PG-SGD algorithm offer an unprecedented high-level perspective on variation in pangenomes.
-	We implemented the PG-SGD algorithm to generate layouts in 1 and 2 dimensions.
+	Graph visualization is key for understanding genome variations and the large-scale layouts produced by PG-SGD offer an unprecedented high-level perspective on variation in pangenomes.
+	We implemented PG-SGD to generate layouts in 1 and 2 dimensions.
 	These graph projections have already been employed in constructing and analyzing the first draft human pangenome reference \citep{Liao2023}, as well as in the discovery of heterologous recombination of acrocentric chromosomes \citep{Guarracino2023}.
 	Furthermore, they are applied in the creation and analysis of pangenome graphs for any species \citep{Guarracino2022, Garrison2023}.
 	%The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph.
@@ -275,7 +275,7 @@
 	There still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
 	Our algorithm will be the foundation of new pangenome graph browsers for exploring meaningful graph layouts (\href{https://github.com/chfi/waragraph}{https://github.com/chfi/waragraph}).
 	
-	The PG-SGD algorithm can be extended to any number of dimensions.
+	PG-SGD can be extended to any number of dimensions.
 	Projecting a graph in a low number of dimensions, but still preserving its biologically relevant information, enable the application of algorithms that use the graph layout for variant detection and classification. 
 	Helpful could be to integrate more layout objectives \citep{ahmed_multicriteria_2021} like neighborhood preservation.
 	
