@@ -57,13 +57,13 @@
     \subtitle{Genome Analysis}
 
     %\title[Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent]{Pangenome graph layout by HOGWILD! Path-Guided Stochastic Gradient Descent}
-    %\title[Pangenome graph layout by Path-Guided Stochastic Gradient Descent]{Pangenome graph layout by Path-Guided Stochastic Gradient Descent}
+    \title[Pangenome graph layout by Path-Guided Stochastic Gradient Descent]{Pangenome graph layout by Path-Guided Stochastic Gradient Descent}
     %\title[Unveiling genome variation by sequence-guided pangenome graph layouts]{Unveiling genome variation by sequence-guided pangenome graph layouts}
     %\title[PG-SGD: sequence-guided pangenome graph layouts]{PG-SGD: sequence-guided pangenome graph layouts}
     %\title[Genome-guided pangenome graph layouts via Stochastic Gradient Descent]{Genome-guided pangenome graph layouts via Stochastic Gradient Descent}
 	%\title[Sequence-guided pangenome graph layouts via Stochastic Gradient Descent]{Sequence-guided pangenome graph layouts via Stochastic Gradient Descent}
     %\title[Genome-guided pangenome graph layouts]{Genome-guided pangenome graph layouts}
-	\title[Sequence-guided pangenome graph layouts]{Sequence-guided pangenome graph layouts}
+	%\title[Sequence-guided pangenome graph layouts]{Sequence-guided pangenome graph layouts}
     
 	\author[Heumos, Guarracino \textit{et~al}.]{
         Simon~Heumos\,$^{\orcidlink{0000-0003-3326-817X}1,2,\dagger}$,
@@ -101,7 +101,7 @@
 	These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
 	\textbf{Results:}
 	To address these challenges, we propose a novel graph layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-	PG-SGD uses the genomes, represented in the pangenome graph as paths, to move pairs of nodes in parallel by applying the HOWGWILD! strategy.
+	PG-SGD uses the genomes, represented in the pangenome graph as paths, to move pairs of nodes in parallel by applying a modified HOWGWILD! strategy.
 	We show that our implementation efficiently computes the layout of gigabase-scale pangenome graphs, revealing their biological features. \\
 	\textbf{Availability:}
 	PG-SGD has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
@@ -138,7 +138,7 @@
 	Since pangenome graphs represent genomes as paths in the graph, a reasonable distance metric would be the nucleotide distance between a pair of nodes traversed by the same path.
 	To our knowledge, no algorithm takes into account such biological information to compute the pangenome graph layouts.
 	
-	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to move pairs of nodes in parallel with a HOGWILD! strategy.
+	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to move pairs of nodes in parallel with a modified HOGWILD! strategy.
 	The algorithm computes the pangenome graph layout that best reflects the nucleotide sequences in the graph.
 	PG-SGD can be extended in any number of dimensions. We provide in the ODGI toolkit \citep{Guarracino2022} implementations to produce layouts in 1 dimension (1D) and 2 dimensions (2D).
 	% We may want to adjust some citations using https://tex.stackexchange.com/questions/585942/how-to-display-the-first-two-authors-in-a-citation-call-out.
@@ -177,7 +177,7 @@
 	%Should the delta of $nd_{ij}$ and $ld_{ij}$ become 0 before the annealing schedule is finished, the algorithm stops.
 
 	Originating from empirical inspection of word frequency tables, Zipf's law states that a word with rank $n$ occurs $1/n$ times as the most frequent one.
-	It's mathematical formulation is called the Zipfian distribution and it rank-frequency distribution is related to the inverse power law.
+	It's mathematical formulation is called the Zipfian distribution and its rank-frequency distribution is related to the inverse power law.
 	Sampling $s_j$ from a Zipfian distribution fixed in the $s_i$'s path position space increases the possibility to draw a nucleotide position close to $s_i$.
 	So there is a high chance to use small nucleotide distances $nd_{ij}$ to refine the layout of nodes comprising a few base pairs.
 	\FIXME{TO IMPROVE, AS IT DOES NOT EXPLAIN WHY ZIPFIAN AND NOT OTHER FUNCTIONS}
@@ -194,15 +194,15 @@
 
 	Graph layout initialization can significantly influence the quality of the final layout.
 	In the 1D implementation, nodes are placed in the same order as they appear in the input graph by default, although support for random layout initialization is also provided.
-	his random placement ensures that each run of the PG-SGD method could potentially yield a different result, thereby increasing the likelihood of obtaining a meaningful layout.
+	This random placement ensures that each run of the PG-SGD method could potentially yield a different result, thereby increasing the likelihood of obtaining a meaningful layout.
 	In 2D, we offer several layout initialization techniques.
 	One option is to position nodes in the first layout dimension according to their order in the input graph and to add either uniform or Gaussian noise in the second dimension.
 	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
 
-	Our implementation is multithreaded and follows the HOGWILD! strategy \citep{Recht2011}, that is threads perform layout updates without any locking.
-	This is possible because pangenome graphs are tipically sparse \citep{Guarracino2022}, with low average node degree, meaning most updates only modify small parts of the entire layout.
-	With respect to the HOGWILD! SGD algorithm, which writes the layout updates to a shared non-atomic integer vector, PG-SGD stores node coordinates in an atomic integer vector.
-	We prefer an atomic vector to ensure memory safety because, in our experience, there is no performance loss with respect to the non-atomic counterpart.
+	Our implementation is multithreaded and uses shared memory for the layout vector following the HOGWILD! strategy \citep{Recht2011}: Threads perform layout updates without any locking for additional speed up.
+	This is possible because pangenome graphs are typically sparse \citep{Guarracino2022}, with low average node degree, meaning most updates only modify small parts of the entire layout.
+	The HOGWILD! SGD algorithm writes the layout updates to a shared non-atomic double vector, whereas PG-SGD stores node coordinates in a vector of atomic doubles.
+	Such a vector ensures that no memory overwrites are possible. Our tests revealed basically no performance loss with respect to the non-atomic counterpart.
 	
     \iffalse
     Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
@@ -280,7 +280,7 @@
 	It can be seen as a graph embedding algorithm that converts high-dimensional, sparse pangenome graphs into low-dimensional, dense, and continuous vector spaces, while preserving its biologically relevant information.
 	This enables the application of machine learning algorithms that use the graph layout for variant detection and classification. 
 	Our future research involves leveraging these graph projections to detect structural variants and to identify and correct assembly errors
-	Moreover, we are considering extending the algorithm to RNA and protein sequences to support pantranscriptomes \citep{sibbesen_haplotype-aware_2023} and panproteomes \citep{dabbaghie_panpa:_2023}, respectively.
+	Moreover, we are considering extending the algorithm to RNA and protein sequences to support pantranscriptome graphs \citep{sibbesen_haplotype-aware_2023} and panproteome graphs \citep{dabbaghie_panpa:_2023}, respectively.
 	%Helpful could be to integrate more layout objectives \citep{ahmed_multicriteria_2021} like neighborhood preservation.
 	\FIXME{@Jiajie + Niklas: What about going GPU?}
 
