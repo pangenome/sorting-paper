@@ -212,13 +212,21 @@
     \label{sec:results}
 
     \subsection{Performance}
-	\FIXME{Describe the dataset (HPRC chromosomes), runtime and memory usage (specifying the fastest/slowest chromosome pangenome graph layout and the thinnest/fattest in memory), just text no with a table}
-    \FIXME{A comparison with Bandage might be worth, to give readers an idea of the scalability}
-	
+	We apply PG-SGD to the recent draft human pangenome reference \citep{Liao2023} to show the scalability and practicality of the algorithm with a real pangenome.
+	Experiments were conducted on computer with \FIXME{XXX GB of RAM and XXXAMD/INTELXXX processors with XXX vCPUs}.
+	We downloaded pangenome graphs for each autosome (24 in total) and for the mitochondrial DNA.
+	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references.
+	See \FIXME{SUPPLEMENTARY TABLE XXX WITH GRAPH LENGTH AND NUMBER OF NODES, EDGES AND STEPS} for graph statistics).
+	When applied to these pangenome graphs, PG-SGD obtains the graph layouts in \FIXME{XXXX minutes/hours on average}, with the slowest chromosome being chromosome 16.
+	This is expected since chromosome 16 presents one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
+	Repetitive sequences lead to graph nodes with a very high number of path traversals, which are computationally expensive to work with \citep{Guarracino2022}.
+	Memory consumption is \FIXME{XXXX GB of RAM on average}, with the memory peak occurring with \FIXME{chromosome XXX}.
+	Given its scalability, PG-SGD can even be applied to the full graph with all chromosomes together \FIXME{SUPPLEMENTARY TABLE WITH RUNTIME, MEMORY USAGE; SUPPLEMENTARY FIGURE whe}.
 
     \subsection{Pangenome graphs layouts reveal biology features}
-	\FIXME{With the HPRC dataset, Describe a full chromosome, and 1 or a few selected loci, HLA, C4, beta-defensin locus, LPA, stuff from the HPRC paper or PGR-TK.
-	In the supp a huge picture with a "karyotype", that is all chromosome layout together sorted by chromosome number, might be hot}
+	Graph visualization is essential for understanding pangenome graphs and the genome variation they represent.
+	We show how PG-SGD allows us quickly gain insight into biological data by looking at the graph layout structure.
+	\FIXME{With the HPRC dataset, Describe a full chromosome, and 1 or a few selected loci, HLA, C4, beta-defensin locus, LPA, stuff from the HPRC paper or PGR-TK.}
 
 	% \iffalse
 	% Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
