@@ -179,7 +179,6 @@
 	It's mathematical formulation is called the Zipfian distribution and its rank-frequency distribution is related to the inverse power law.
 	Sampling $s_j$ from a Zipfian distribution fixed in the $s_i$'s path position space increases the possibility to draw a nucleotide position close to $s_i$.
 	So there is a high chance to use small nucleotide distances $nd_{ij}$ to refine the layout of nodes comprising a few base pairs.
-	\FIXME{TO IMPROVE, AS IT DOES NOT EXPLAIN WHY ZIPFIAN AND NOT OTHER FUNCTIONS}
 
 	To provide balance between global and local layout updates, in half of the updates ($flip$ flag in Algorithm~\ref{alg:pg_sgd}) the $s_j$ is sampled uniformly instead from a Zipfian distribution (uniform sampling favours global updates).
 	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a a small sampled nucleotide distance is significantly increased. 
@@ -262,7 +261,6 @@
 	
 	We presented Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph.
 	Our implementation efficiently computes the layout of pangenome graphs representing thousands of whole genomes.
-	\FIXME{Discuss differences to other existing methods? are there possible improvements for our method?}
 	
 	Graph visualization is key for understanding genome variations and the large-scale layouts produced by PG-SGD offer an unprecedented high-level perspective on variation in pangenomes.
 	We implemented PG-SGD to generate layouts in 1 and 2 dimensions.
