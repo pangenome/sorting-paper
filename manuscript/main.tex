@@ -153,10 +153,9 @@
 		Variation graphs are a mathematical formalism to represent pangenome graphs \citep{Garrison_2019_thesis}.
 		In the variation graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathcal{P})$, nodes (or vertices) $\mathcal{V} = v_1\ldots v_{|\mathcal{V}|}$ contain nucleotide sequences.
 		Each node $v_i$ has a unique identifier $i$ and an implicit reverse complement $\bar{v_i}$.
-		The node strand $s$ represents node orientation.
-		Edges $\mathcal{E} = e_1\ldots e_{|\mathcal{E}|}$ connect ordered pairs of node strands ($e_i = ( s_a, s_b )$), defining the graph topology.
-		Paths $\mathcal{P} = p_1\ldots p_{|\mathcal{P}|}$ describe walks over node strands ($p_i = s_1 \ldots s_{|p_i|}$), representing the genomes embedded in the graph.
-		\FIXME{EXPLAIN THE STEPS}
+		The node strand $o$ represents node orientation.
+		Edges $\mathcal{E} = e_1\ldots e_{|\mathcal{E}|}$ connect ordered pairs of node strands ($e_i = ( o_a, o_b )$), defining the graph topology.
+		Paths $\mathcal{P} = p_1\ldots p_{|\mathcal{P}|}$ are series of connected steps $s_i$ that refer to node strands in the graph ($p_i = s_1 \ldots s_{|p_i|}$); the paths represent the genomes embedded in the graph.
 	\end{definition}
 
 	PG-SGD's pseudocode is shown in Algorithm~\ref{alg:pg_sgd} and key steps are sketched in Figure \FIXME{Add puritan figure.}.
