@@ -222,23 +222,24 @@
 
     \subsection{Performance}
 	We apply PG-SGD to the recent draft human pangenome reference \citep{Liao2023} to show the scalability and practicality of the algorithm with a real pangenome.
-	Experiments were conducted on a cluster with 24 \texttt{Regular} nodes (32 cores / 64 threads 2* AMD EPYC 7343 processors with 512 GB RAM each) and 4 \texttt{HighMem} nodes (64 cores / 128 threads 2* AMD EPYC 7513 processors with 2048 GB RAM each). The high-mem nodes were only used for the calculations of the 2D layouts of the full HPRC graph including all chromosomes.
+	Experiments were conducted on a cluster with 24 \texttt{Regular} nodes (32 cores / 64 threads AMD EPYC 7343 processors with 512 GB RAM each) and 4 \texttt{HighMem} nodes (64 cores / 128 threads AMD EPYC 7513 processors with 2048 GB RAM each).
 	We downloaded pangenome graphs for each autosome (24 in total) and for the mitochondrial DNA.
 	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references.
 	See Supplementary Table~\ref{tab:layout} for graph statistics.
-	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, PG-SGD obtains the graph layouts in \FIXME{XXXX minutes/hours on average}, with the slowest chromosome being chromosome 16.
+	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, PG-SGD obtains the graph layouts in \FIXME{XXXX minutes/hours on average}, with the slowest chromosome being chromosome 16 (Supplementary Table~\ref{tab:layout}).
 	This is expected since chromosome 16 presents one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
 	Repetitive sequences lead to graph nodes with a very high number of path traversals, which are computationally expensive to work with \citep{Guarracino2022}.
-	Memory consumption is \FIXME{XXXX GB of RAM on average}, with the memory peak occurring with chromosome 1. An overview of these evaluations is given in Supplementary Table~\ref{tab:layout}.
-	Given its scalability, PG-SGD can even be applied to the full graph with all chromosomes together \FIXME{SUPPLEMENTARY TABLE WITH RUNTIME, MEMORY USAGE; SUPPLEMENTARY FIGURE whe}.
+	Memory consumption is \FIXME{XXXX GB of RAM on average}, with the memory peak occurring with chromosome 1, the biggest one in humans.
+	Given its scalability, we even applied PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}).
+	Overall, PG-SGD is ~\FIXME{XX}X faster than BandageNG \FIXME{HOW TO CITE IT?}, the current state-of-the-art for graph visualization, while using ~{}X less memory.
 
     \subsection{Pangenome graphs layouts reveal biology features}
 	Graph visualization is essential for understanding pangenome graphs and the genome variation they represent.
 	We show how PG-SGD allows us quickly gain insight into biological data by looking at the graph layout structure.
-	\FIXME{With the HPRC dataset, Describe a full chromosome, and 1 or a few selected loci, HLA, C4, beta-defensin locus, LPA, stuff from the HPRC paper or PGR-TK.}
+	\FIXME{Describe a full chromosome and/or 1/a few selected loci, HLA, C4, beta-defensin locus, LPA, stuff from the human paper or PGR-TK.}
 
 	% \iffalse
-	% Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full HPRC graph.
+	% Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full human graph.
     % \\
     % 1D (max. threads) vs. ALIBI; we should compare time + RAM in Fig.~\ref{fig:alibi}.
     % But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper in Table 1.
@@ -286,22 +287,22 @@
 	%The graph simplification pipeline smoothxg runs POA for each block of paths that are co-linear within each seqwish induced variation graph.
 	%A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
 	%Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
-	%Problem space: We take a look at all paths (FULL HPRC GRAPH ~8 BILLION STEPS ACROSS ~34 THOUSAND PATHS) and not at all nodes (FULL HPRC GRAPH ~100 MILLION). So we have a very large problem space compared to just looking at the nodes.
 	Of note, there still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
 	Our algorithm will be the foundation of new pangenome graph browsers for studying graph layouts and the genome variation they represent (\url{https://github.com/chfi/waragraph}).
 	
+	\FIXME{@Jiajie + Niklas: just 2/3 sentences about going GPU?}
+
 	PG-SGD can be extended to any number of dimensions.
 	It can be seen as a graph embedding algorithm that converts high-dimensional, sparse pangenome graphs into low-dimensional, dense, and continuous vector spaces, while preserving its biologically relevant information.
 	This enables the application of machine learning algorithms that use the graph layout for variant detection and classification. 
 	Our future research involves leveraging these graph projections to detect structural variants and to identify and correct assembly errors
 	Moreover, we are considering extending the algorithm to RNA and protein sequences to support pantranscriptome graphs \citep{sibbesen_haplotype-aware_2023} and panproteome graphs \citep{dabbaghie_panpa:_2023}, respectively.
 	%Helpful could be to integrate more layout objectives \citep{ahmed_multicriteria_2021} like neighborhood preservation.
-	\FIXME{@Jiajie + Niklas: What about going GPU?}
 
 	\section*{Acknowledgments}
 	
-	We are grateful to members of the HGSVC and HPRC production teams for their development of resources used in our exposition.
-	We thank the authors of the pangenome resources made available on GenBank which have made our experiments possible.
+	%We are grateful to members of the HGSVC and HPRC production teams for their development of resources used in our exposition.
+	%We thank the authors of the pangenome resources made available on GenBank which have made our experiments possible.
 	A special thanks goes to Matthias Seybold from the Quantitative Biology Center for maintaining the Core Facility Cluster.
 	
 	\section*{Funding}
@@ -333,6 +334,11 @@
 	    \subsection{Performance evaluation}
 	    \label{sec:performance}
 	    \input{table_layout}
+		\subsection{Graph layouts}
+		\FIXME{chr1}
+		\FIXME{chr2}
+		\FIXME{...}
+		\FIXME{FIGURE WITH ALL CHROMOSOMES TOGETHER}
 	\end{appendices}
 
 \end{document}
