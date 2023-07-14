@@ -221,8 +221,8 @@
     \label{sec:results}
 
     \subsection{Performance}
-	We apply PG-SGD to the recent draft human pangenome reference \citep{Liao2023} to show the scalability and practicality of the algorithm with a real pangenome.
-	Experiments were conducted on a cluster with 24 \texttt{Regular} nodes (32 cores / 64 threads AMD EPYC 7343 processors with 512 GB RAM each) and 4 \texttt{HighMem} nodes (64 cores / 128 threads AMD EPYC 7513 processors with 2048 GB RAM each).
+	We apply PG-SGD to the recent draft human pangenome reference \citep{Liao2023} from the Human Pangenome Reference Consortium (HPRC) to show the scalability of the algorithm with a real pangenome.
+	Experiments were conducted on a cluster with 24 \texttt{Regular} nodes (32 cores / 64 threads with two AMD EPYC 7343 processors with 512 GB RAM each) and 4 \texttt{HighMem} nodes (64 cores / 128 threads with two AMD EPYC 7513 processors with 2048 GB RAM each).
 	We downloaded pangenome graphs for each autosome (24 in total) and for the mitochondrial DNA.
 	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references.
 	See Supplementary Table~\ref{tab:layout} for graph statistics.
@@ -303,7 +303,7 @@
 	
 	%We are grateful to members of the HGSVC and HPRC production teams for their development of resources used in our exposition.
 	%We thank the authors of the pangenome resources made available on GenBank which have made our experiments possible.
-	A special thanks goes to Matthias Seybold from the Quantitative Biology Center for maintaining the Core Facility Cluster.
+	We thank Matthias Seybold from the Quantitative Biology Center for maintaining the Core Facility Cluster.
 	
 	\section*{Funding}
 	
@@ -311,7 +311,7 @@
 	S.N. acknowledges Germany’s Excellence Strategy (CMFI), EXC-2124 and (iFIT)—EXC 2180–390900677.
 	This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A532B, 031A533A, 031A533B, 031A534A, 031A535A, 031A537A, 031A537B, 031A537C, 031A537D and 031A538A).
 	A.G. acknowledges efforts by Nicole Soranzo to establish a pangenome research unit at the Human Technopole in Milan, Italy.
-	JNM.S., J.L., and Z.Z. acknowledge funding from the NSF PPoSS Award \#2118709.
+	JNM.S., J.L., Z.Z., P.P., and E.G. acknowledge funding from the NSF PPoSS Award \#2118709.
 	
 	\section*{Competing interests}
 	The authors declare that they have no competing interests.
