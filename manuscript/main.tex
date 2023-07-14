@@ -222,14 +222,14 @@
 
     \subsection{Performance}
 	We apply PG-SGD to the recent draft human pangenome reference \citep{Liao2023} to show the scalability and practicality of the algorithm with a real pangenome.
-	Experiments were conducted on computer with \FIXME{XXX GB of RAM and XXXAMD/INTELXXX processors with XXX vCPUs}.
+	Experiments were conducted on a cluster with 24 \texttt{Regular} nodes (32 cores / 64 threads 2* AMD EPYC 7343 processors with 512 GB RAM each) and 4 \texttt{HighMem} nodes (64 cores / 128 threads 2* AMD EPYC 7513 processors with 2048 GB RAM each). The high-mem nodes were only used for the calculations of the 2D layouts of the full HPRC graph including all chromosomes.
 	We downloaded pangenome graphs for each autosome (24 in total) and for the mitochondrial DNA.
 	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references.
-	See \FIXME{SUPPLEMENTARY TABLE XXX WITH GRAPH LENGTH AND NUMBER OF NODES, EDGES AND STEPS} for graph statistics).
-	When applied to these pangenome graphs, PG-SGD obtains the graph layouts in \FIXME{XXXX minutes/hours on average}, with the slowest chromosome being chromosome 16.
+	See Supplementary Table~\ref{tab:layout} for graph statistics.
+	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, PG-SGD obtains the graph layouts in \FIXME{XXXX minutes/hours on average}, with the slowest chromosome being chromosome 16.
 	This is expected since chromosome 16 presents one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
 	Repetitive sequences lead to graph nodes with a very high number of path traversals, which are computationally expensive to work with \citep{Guarracino2022}.
-	Memory consumption is \FIXME{XXXX GB of RAM on average}, with the memory peak occurring with \FIXME{chromosome XXX}.
+	Memory consumption is \FIXME{XXXX GB of RAM on average}, with the memory peak occurring with chromosome 1. An overview of these evaluations is given in Supplementary Table~\ref{tab:layout}.
 	Given its scalability, PG-SGD can even be applied to the full graph with all chromosomes together \FIXME{SUPPLEMENTARY TABLE WITH RUNTIME, MEMORY USAGE; SUPPLEMENTARY FIGURE whe}.
 
     \subsection{Pangenome graphs layouts reveal biology features}
@@ -330,7 +330,8 @@
 		\FIXME{ADD LINKS TO OUR ANIMATIONS ON ZENODO} \\
 	    \FIXME{From 1D layout to 1D node order} \\
 	    \FIXME{reference-guided path-guided stochastic gradient descent}
-	    
+	    \subsection{Performance evaluation}
+	    \label{sec:performance}
 	    \input{table_layout}
 	\end{appendices}
 
