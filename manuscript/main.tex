@@ -43,6 +43,15 @@
 \newcommand{\description}{}
 \usepackage[inline]{enumitem}
 
+% table stuff
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\usepackage{float}
+\floatstyle{plaintop}
+\restylefloat{table}
+
 
 \def\labelitemi{--}
 
@@ -321,6 +330,8 @@
 		\FIXME{ADD LINKS TO OUR ANIMATIONS ON ZENODO} \\
 	    \FIXME{From 1D layout to 1D node order} \\
 	    \FIXME{reference-guided path-guided stochastic gradient descent}
+	    
+	    \input{table_layout}
 	\end{appendices}
 
 \end{document}
