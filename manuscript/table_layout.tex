@@ -1,10 +1,10 @@
 \begin{table*}[!ht]
 	\centering
 	\ra{1.2}
-	\caption{\label{tab:layout} Performance evaluation of computing a 2D layout of all chromosomal HPRC pangenome graphs.}
+	\caption{\label{tab:layout} Performance evaluation of computing a 2D layout of all chromosomal HPRC pangenome graphs. From GFA to the actual layout written to a file on disk.}
 	\begin{tabular}{@{}lrrrrrrrrr@{}}
 		& & & & & &  \multicolumn{2}{c}{$\mathbf{time\ in\ minutes}$}  & \multicolumn{2}{c}{$\mathbf{memory\ in\ gigabytes}$}\\ \cmidrule(lr){7-8} \cmidrule(lr){9-10}
-		{$\mathbf{name}$} & {$\mathbf{len}$} & {$\mathbf{nodes}$} & {$\mathbf{edges}$} & {$\mathbf{paths}$} & {$\mathbf{steps}$} & {$\mathbf{pgsgd}$} & {$\mathbf{bng}$} & {$\mathbf{pgsgd}$} & {$\mathbf{bng}$}\\ \hline
+		{$\mathbf{name}$} & {$\mathbf{len}$} & {$\mathbf{nodes}$} & {$\mathbf{edges}$} & {$\mathbf{paths}$} & {$\mathbf{steps}$} & {$\mathbf{pg-sgd}$} & {$\mathbf{bng}$} & {$\mathbf{pg-sgd}$} & {$\mathbf{bng}$}\\ \hline
 		chr1 & 1.12e+09 & 1.11e+07 & 1.54e+07 & 2.26e+03 & 6.01e+08 & \textbf{68} & 1427 & \textbf{56.00} & 195.33 \\ 
 		chr2 & 3.47e+08 & 6.68e+06 & 9.27e+06 & 1.65e+03 & 3.89e+08 & \textbf{47} & 521 & \textbf{37.29} & 81.97 \\ 
 		chr3 & 4.06e+08 & 6.20e+06 & 8.62e+06 & 1.56e+03 & 4.55e+08 & \textbf{52} & 481 & \textbf{41.71} & 93.83 \\ 
