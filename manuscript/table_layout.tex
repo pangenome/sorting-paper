@@ -1,7 +1,7 @@
 \begin{table*}[!ht]
 	\centering
 	\ra{1.2}
-	\caption{\label{tab:layout} Performance evaluation of computing a 2D layout of all chromosomal HPRC pangenome graphs. From GFA to the actual layout. \textbf{\textit{*}} BandageNG did not finish its calculations after the job wall clock time limit of 7 days. Therefore, no layout was emitted. The memory allocated was a peak manually observed in htop.}
+	\caption{\label{tab:layout} Performance evaluation of computing a 2D layout of all chromosomal HPRC pangenome graphs. From GFA to the actual layout. $^{\boldsymbol{*}}$BandageNG did not finish within the job wall clock time limit of 7 days. Therefore, no layout was produced. \textbf{32T:} Number of threads: 32. \textbf{64T:} Number of threads: 64. \FIXME{SMT ....}}.
 	\begin{tabular}{@{}lrrrrrrrrrrrrr@{}}
 		& & & & & &  \multicolumn{4}{c}{$\mathbf{time\ in\ minutes}$}  & \multicolumn{4}{c}{$\mathbf{memory\ in\ gigabytes}$}\\ 
 	    \cmidrule(lr){7-10} \cmidrule(lr){11-14} \\
@@ -32,8 +32,8 @@
 		chr22 & 4.64e+08 & 3.76e+06 & 5.22e+06 & 1.76e+03 & 2.05e+08 & 32 & ? & \textbf{22} & 183 & \textbf{18.30} & ? & 18.65 & 45.13 \\ 
 		chrX & 2.07e+08 & 3.46e+06 & 4.89e+06 & 2.42e+03 & 2.70e+08 & 41 & ? & \textbf{28} & 155 & \textbf{24.66} & ? & 24.84 & 43.05 \\ 
 		chrY & 8.80e+07 & 3.18e+05 & 4.41e+05 & 3.07e+02 & 1.34e+07 & 2 & ? & \textbf{1} & 5 & \textbf{1.47} & ? & 1.57 & 4.65 \\ 
-		chrM & 1.76e+04 & 1.40e+03 & 1.89e+03 & 4.40e+01 & 4.06e+04 & \textbf{1} & ? & \textbf{1} & 0.21 & ? & \textbf{1} & 0.49 & \textbf{0.04}  \\ 
-		all chrs & 8.42e+09 & 1.11e+08 & 1.55e+08 & 3.48e+04 & 8.12e+09 & ? & ? & \textbf{1020} & 10080*  & ? & ? & \textbf{738.76} & $1510.00$* \\
+		chrM & 1.76e+04 & 1.40e+03 & 1.89e+03 & 4.40e+01 & 4.06e+04 & \textbf{1} & ? & \textbf{1} & \textbf{1} & 0.21 & ? & 0.49 & \textbf{0.04}  \\ 
+		all chrs & 8.42e+09 & 1.11e+08 & 1.55e+08 & 3.48e+04 & 8.12e+09 & ? & -$^{*}$ & \textbf{1020} & -$^{*}$  & ? & -$^{*}$ & \textbf{738.76} & -$^{*}$ \\
 		\bottomrule
 	\end{tabular}
 \end{table*}

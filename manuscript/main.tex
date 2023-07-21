@@ -226,12 +226,13 @@
 	We downloaded pangenome graphs for each autosome (24 in total) and for the mitochondrial DNA.
 	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references.
 	See Supplementary Table~\ref{tab:layout} for graph statistics.
-	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, PG-SGD obtains the graph layouts in \FIXME{XXXX minutes/hours on average}, with the slowest chromosome being chromosome 16 (Supplementary Table~\ref{tab:layout}).
+	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, PG-SGD obtains the graph layouts in 50 minutes on average, with the highest run time observed being chromosome 16 (Supplementary Table~\ref{tab:layout}).
 	This is expected since chromosome 16 presents one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
 	Repetitive sequences lead to graph nodes with a very high number of path traversals, which are computationally expensive to work with \citep{Guarracino2022}.
-	Memory consumption is \FIXME{XXXX GB of RAM on average}, with the memory peak occurring with chromosome 1, the biggest one in humans.
-	Given its scalability, we even applied PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}).
-	Overall, PG-SGD is ~\FIXME{XX}X faster than BandageNG \FIXME{HOW TO CITE IT?}, the current state-of-the-art for graph visualization, while using ~{}X less memory.
+	Memory consumption is 29.66 GB of RAM on average, with the memory peak again occurring with chromosome 16, presumably due to the memory expensive path index building phase.
+	Given its scalability, we even applied PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}). BandageNG\footnote{\url{https://github.com/asl/BandageNG} (last accessed Jul 2023)}, the current state-of-the-art for graph visualization, was not able to produce a layout within 7 days, hitting the wall clock time limit of the cluster.
+	Overall, PG-SGD is $\approx$8X faster on average than BandageNG while using $\approx$2X less memory.
+	% avg time bng 388 min, avg gb ng 66.84
 
     \subsection{Pangenome graphs layouts reveal biology features}
 	Graph visualization is essential for understanding pangenome graphs and the genome variation they represent.
@@ -240,7 +241,7 @@
 
 	% \iffalse
 	% Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full human graph.
-    % \\
+    % \\X
     % 1D (max. threads) vs. ALIBI; we should compare time + RAM in Fig.~\ref{fig:alibi}.
     % But also by our sorting goodness metrics: odgi sort + the one suggested in the ALIBI paper in Table 1.
     % \\
@@ -288,9 +289,9 @@
 	%A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
 	%Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
 	Of note, there still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
-	Our algorithm will be the foundation of new pangenome graph browsers for studying graph layouts and the genome variation they represent (\url{https://github.com/chfi/waragraph}).
+	Our algorithm will be the foundation of new pangenome graph browsers for studying graph layouts and the genome variation they represent\footnote{\url{https://github.com/chfi/waragraph} (last accessed Jul 2023)}.
 	
-	\FIXME{@Jiajie + Niklas: just 2/3 sentences about going GPU?}
+	\FIXME{@Jiajie + Niklas: Maybe address our SMT issue with your cache locality as a potential solution. Additionally just 2/3 sentences about going GPU?}
 
 	PG-SGD can be extended to any number of dimensions.
 	It can be seen as a graph embedding algorithm that converts high-dimensional, sparse pangenome graphs into low-dimensional, dense, and continuous vector spaces, while preserving its biologically relevant information.
@@ -335,10 +336,9 @@
 	    \label{sec:performance}
 	    \input{table_layout}
 		\subsection{Graph layouts}
-		\FIXME{chr1}
-		\FIXME{chr2}
-		\FIXME{...}
-		\FIXME{FIGURE WITH ALL CHROMOSOMES TOGETHER}
+		\label{sec:layouts}
+		\input{fig_2d_layouts}
+		\FIXME{1D layouts?}
 	\end{appendices}
 
 \end{document}
