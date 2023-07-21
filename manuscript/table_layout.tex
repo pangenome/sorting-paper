@@ -1,36 +1,39 @@
 \begin{table*}[!ht]
 	\centering
 	\ra{1.2}
-	\caption{\label{tab:layout} Performance evaluation of computing a 2D layout of all chromosomal HPRC pangenome graphs. From GFA to the actual layout.}
-	\begin{tabular}{@{}lrrrrrrrrr@{}}
-		& & & & & &  \multicolumn{2}{c}{$\mathbf{time\ in\ minutes}$}  & \multicolumn{2}{c}{$\mathbf{memory\ in\ gigabytes}$}\\ \cmidrule(lr){7-8} \cmidrule(lr){9-10}
-		{$\mathbf{name}$} & {$\mathbf{len}$} & {$\mathbf{nodes}$} & {$\mathbf{edges}$} & {$\mathbf{paths}$} & {$\mathbf{steps}$} & {$\mathbf{pg-sgd}$} & {$\mathbf{bng}$} & {$\mathbf{pg-sgd}$} & {$\mathbf{bng}$}\\ \hline
-		chr1 & 1.12e+09 & 1.11e+07 & 1.54e+07 & 2.26e+03 & 6.01e+08 & \textbf{68} & 1427 & \textbf{56.00} & 195.33 \\ 
-		chr2 & 3.47e+08 & 6.68e+06 & 9.27e+06 & 1.65e+03 & 3.89e+08 & \textbf{47} & 521 & \textbf{37.29} & 81.97 \\ 
-		chr3 & 4.06e+08 & 6.20e+06 & 8.62e+06 & 1.56e+03 & 4.55e+08 & \textbf{52} & 481 & \textbf{41.71} & 93.83 \\ 
-		chr4 & 2.73e+08 & 5.91e+06 & 8.23e+06 & 1.35e+03 & 4.97e+08 & \textbf{56} & 423 & \textbf{45.02} & 79.48 \\ 
-		chr5 & 3.35e+08 & 5.39e+06 & 7.51e+06 & 1.20e+03 & 4.04e+08 & \textbf{46} & 375 & \textbf{36.48} & 75.10 \\ 
-		chr6 & 2.29e+08 & 4.70e+06 & 6.56e+06 & 1.41e+03 & 4.03e+08 & \textbf{46} & 271 & \textbf{37.22} & 71.26 \\ 
-		chr7 & 2.71e+08 & 5.17e+06 & 7.25e+06 & 1.22e+03 & 4.10e+08 & \textbf{46} & 346 & \textbf{37.88} & 73.81 \\ 
-		chr8 & 1.93e+08 & 4.26e+06 & 5.95e+06 & 8.55e+02 & 4.29e+08 & \textbf{47} & 233 & \textbf{38.07} & 54.70 \\ 
-		chr9 & 1.01e+09 & 8.80e+06 & 1.23e+07 & 8.67e+02 & 3.31e+08 & \textbf{38} & 957 & \textbf{31.79} & 131.96 \\ 
-		chr10 & 2.56e+08 & 4.50e+06 & 6.26e+06 & 8.79e+02 & 2.72e+08 & \textbf{32} & 260 & \textbf{25.25} & 67.87 \\ 
-		chr11 & 2.83e+08 & 4.73e+06 & 6.54e+06 & 6.53e+02 & 2.38e+08 & \textbf{28} & 286 & \textbf{21.77} & 68.54 \\ 
-		chr12 & 2.44e+08 & 4.10e+06 & 5.71e+06 & 7.68e+02 & 2.54e+08 & \textbf{27} & 206 & \textbf{23.99} & 51.22 \\ 
-		chr13 & 3.47e+08 & 4.34e+06 & 6.08e+06 & 2.58e+03 & 3.12e+08 & \textbf{34} & 237 & \textbf{28.64} & 85.85 \\ 
-		chr14 & 2.73e+08 & 4.15e+06 & 5.79e+06 & 1.82e+03 & 2.62e+08 & \textbf{28} & 222 & \textbf{24.17} & 78.13 \\ 
-		chr15 & 5.64e+08 & 5.20e+06 & 7.26e+06 & 2.06e+03 & 4.02e+08 & \textbf{35} & 334 & \textbf{35.69} & 102.97 \\ 
-		chr16 & 3.39e+08 & 3.91e+06 & 5.53e+06 & 1.52e+03 & 6.91e+08 & 512 & \textbf{244} & 61.02 & \textbf{53.00} \\ 
-		chr17 & 1.73e+08 & 2.76e+06 & 3.93e+06 & 1.42e+03 & 3.25e+08 & \textbf{33} & 102 & \textbf{28.69} & 49.50 \\ 
-		chr18 & 2.44e+08 & 2.83e+06 & 3.98e+06 & 1.27e+03 & 3.00e+08 & \textbf{31} & 106 & \textbf{26.78} & 45.01 \\ 
-		chr19 & 2.91e+08 & 3.02e+06 & 4.21e+06 & 1.07e+03 & 2.03e+08 & \textbf{21} & 117 & \textbf{18.43} & 40.18 \\ 
-		chr20 & 1.87e+08 & 2.82e+06 & 3.97e+06 & 8.24e+02 & 2.35e+08 & \textbf{25} & 108 & \textbf{21.04} & 39.05 \\ 
-		chr21 & 2.74e+08 & 2.76e+06 & 3.88e+06 & 3.03e+03 & 2.21e+08 & \textbf{23} & 103 & \textbf{19.12} & 46.47 \\ 
-		chr22 & 4.64e+08 & 3.76e+06 & 5.22e+06 & 1.76e+03 & 2.05e+08 & \textbf{22} & 183 & \textbf{18.65} & 45.13 \\ 
-		chrX & 2.07e+08 & 3.46e+06 & 4.89e+06 & 2.42e+03 & 2.70e+08 & \textbf{28} & 155 & \textbf{24.84} & 43.05 \\ 
-		chrY & 8.80e+07 & 3.18e+05 & 4.41e+05 & 3.07e+02 & 1.34e+07 & \textbf{1} & 5 & \textbf{1.57} & 4.65 \\ 
-		chrM & 1.76e+04 & 1.40e+03 & 1.89e+03 & 4.40e+01 & 4.06e+04 & \textbf{1} & \textbf{1} & 0.49 & \textbf{0.04}  \\ 
-		all chrs & 8.42e+09 & 1.11e+08 & 1.55e+08 & 3.48e+04 & 8.12e+09 & \textbf{1020} & ?  & \textbf{738.76} & ? ($\approx$1567.45)\\
+	\caption{\label{tab:layout} Performance evaluation of computing a 2D layout of all chromosomal HPRC pangenome graphs. From GFA to the actual layout. $^{\boldsymbol{*}}$BandageNG did not finish within the job wall clock time limit of 7 days. Therefore, no layout was produced. \textbf{32T:} Number of threads: 32. \textbf{64T:} Number of threads: 64. \FIXME{SMT ....}}.
+	\begin{tabular}{@{}lrrrrrrrrrrrrr@{}}
+		& & & & & &  \multicolumn{4}{c}{$\mathbf{time\ in\ minutes}$}  & \multicolumn{4}{c}{$\mathbf{memory\ in\ gigabytes}$}\\ 
+	    \cmidrule(lr){7-10} \cmidrule(lr){11-14} \\
+		& & & & & & \multicolumn{2}{c}{$32$T} & \multicolumn{2}{c}{$64$T} & \multicolumn{2}{c}{$32$T} & \multicolumn{2}{c}{$64$T}\\
+		\cmidrule(lr){7-8} \cmidrule(lr){9-10} \cmidrule(lr){11-12} \cmidrule(lr){13-14} \\
+		{$\mathbf{name}$} & {$\mathbf{len}$} & {$\mathbf{nodes}$} & {$\mathbf{edges}$} & {$\mathbf{paths}$} & {$\mathbf{steps}$} & {$\mathbf{pg-sgd}$} & {$\mathbf{bng}$} & {$\mathbf{pg-sgd}$} & {$\mathbf{bng}$} & {$\mathbf{pg-sgd}$} & {$\mathbf{bng}$} & {$\mathbf{pg-sgd}$} & {$\mathbf{bng}$}\\ \hline
+		chr1 & 1.12e+09 & 1.11e+07 & 1.54e+07 & 2.26e+03 & 6.01e+08 & 110 & ? &  \textbf{68} & 1427 & \textbf{55.73} & ? & 56.00 & 195.33 \\ 
+		chr2 & 3.47e+08 & 6.68e+06 & 9.27e+06 & 1.65e+03 & 3.89e+08 & 67 & ? & \textbf{47} & 521 & 37.31 & ? & \textbf{37.29} & 81.97 \\ 
+		chr3 & 4.06e+08 & 6.20e+06 & 8.62e+06 & 1.56e+03 & 4.55e+08 & 81 & ? & \textbf{52} & 481 & \textbf{41.34} & ? & 41.71 & 93.83 \\ 
+		chr4 & 2.73e+08 & 5.91e+06 & 8.23e+06 & 1.35e+03 & 4.97e+08 & 88 & ? & \textbf{56} & 423 & \textbf{44.90} & ? & 45.02 & 79.48 \\ 
+		chr5 & 3.35e+08 & 5.39e+06 & 7.51e+06 & 1.20e+03 & 4.04e+08 & 73 & ? & \textbf{46} & 375 & \textbf{35.83} & ? & 36.48 & 75.10 \\ 
+		chr6 & 2.29e+08 & 4.70e+06 & 6.56e+06 & 1.41e+03 & 4.03e+08 & 70 & ? & \textbf{46} & 271 & \textbf{36.74} & ? & 37.22 & 71.26 \\ 
+		chr7 & 2.71e+08 & 5.17e+06 & 7.25e+06 & 1.22e+03 & 4.10e+08 & 70 & ? & \textbf{46} & 346 & \textbf{37.39} & ? & 37.88 & 73.81 \\ 
+		chr8 & 1.93e+08 & 4.26e+06 & 5.95e+06 & 8.55e+02 & 4.29e+08 & 71 & ? & \textbf{47} & 233 & \textbf{37.73} & ? & 38.07 & 54.70 \\ 
+		chr9 & 1.01e+09 & 8.80e+06 & 1.23e+07 & 8.67e+02 & 3.31e+08 & 44 & ? & \textbf{38} & 957 & \textbf{31.76} & ? & 31.79 & 131.96 \\ 
+		chr10 & 2.56e+08 & 4.50e+06 & 6.26e+06 & 8.79e+02 & 2.72e+08 & 36 & ? & \textbf{32} & 260 & 25.32 & ? & \textbf{25.25} & 67.87 \\ 
+		chr11 & 2.83e+08 & 4.73e+06 & 6.54e+06 & 6.53e+02 & 2.38e+08 & 31 & ? & \textbf{28} & 286 & 21.81 & ? & \textbf{21.77} & 68.54 \\ 
+		chr12 & 2.44e+08 & 4.10e+06 & 5.71e+06 & 7.68e+02 & 2.54e+08 & 44 & ? & \textbf{27} & 206 & \textbf{23.55} & ? & 23.99 & 51.22 \\ 
+		chr13 & 3.47e+08 & 4.34e+06 & 6.08e+06 & 2.58e+03 & 3.12e+08 & 52 & ? & \textbf{34} & 237 & \textbf{27.98} & ? & 28.64 & 85.85 \\ 
+		chr14 & 2.73e+08 & 4.15e+06 & 5.79e+06 & 1.82e+03 & 2.62e+08 & 45 & ? & \textbf{28} & 222 & \textbf{23.56} & ? & 24.17 & 78.13 \\ 
+		chr15 & 5.64e+08 & 5.20e+06 & 7.26e+06 & 2.06e+03 & 4.02e+08 & 64 & ? & \textbf{35} & 334 & \textbf{35.20} & ? & 35.69 & 102.97 \\ 
+		chr16 & 3.39e+08 & 3.91e+06 & 5.53e+06 & 1.52e+03 & 6.91e+08 & \textbf{152} & ? & 512 & 244 & 58.88 & ? & 61.02 & \textbf{53.00} \\ 
+		chr17 & 1.73e+08 & 2.76e+06 & 3.93e+06 & 1.42e+03 & 3.25e+08 & 50 & ? & \textbf{33} & 102 & \textbf{27.83} & ? & 28.69 & 49.50 \\ 
+		chr18 & 2.44e+08 & 2.83e+06 & 3.98e+06 & 1.27e+03 & 3.00e+08 & 44 & ? & \textbf{31} & 106 & \textbf{26.61} & ? & 26.78 & 45.01 \\ 
+		chr19 & 2.91e+08 & 3.02e+06 & 4.21e+06 & 1.07e+03 & 2.03e+08 & 31 & ? & \textbf{21} & 117 & \textbf{18.12} & ? & 18.43 & 40.18 \\ 
+		chr20 & 1.87e+08 & 2.82e+06 & 3.97e+06 & 8.24e+02 & 2.35e+08 & 35 & ? & \textbf{25} & 108 & \textbf{20.79} & ? & 21.04 & 39.05 \\ 
+		chr21 & 2.74e+08 & 2.76e+06 & 3.88e+06 & 3.03e+03 & 2.21e+08 & 33 & ? & \textbf{23} & 103 & \textbf{18.79} & ? & 19.12 & 46.47 \\ 
+		chr22 & 4.64e+08 & 3.76e+06 & 5.22e+06 & 1.76e+03 & 2.05e+08 & 32 & ? & \textbf{22} & 183 & \textbf{18.30} & ? & 18.65 & 45.13 \\ 
+		chrX & 2.07e+08 & 3.46e+06 & 4.89e+06 & 2.42e+03 & 2.70e+08 & 41 & ? & \textbf{28} & 155 & \textbf{24.66} & ? & 24.84 & 43.05 \\ 
+		chrY & 8.80e+07 & 3.18e+05 & 4.41e+05 & 3.07e+02 & 1.34e+07 & 2 & ? & \textbf{1} & 5 & \textbf{1.47} & ? & 1.57 & 4.65 \\ 
+		chrM & 1.76e+04 & 1.40e+03 & 1.89e+03 & 4.40e+01 & 4.06e+04 & \textbf{1} & ? & \textbf{1} & \textbf{1} & 0.21 & ? & 0.49 & \textbf{0.04}  \\ 
+		all chrs & 8.42e+09 & 1.11e+08 & 1.55e+08 & 3.48e+04 & 8.12e+09 & ? & -$^{*}$ & \textbf{1020} & -$^{*}$  & ? & -$^{*}$ & \textbf{738.76} & -$^{*}$ \\
 		\bottomrule
 	\end{tabular}
 \end{table*}
