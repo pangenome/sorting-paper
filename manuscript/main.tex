@@ -194,10 +194,10 @@
 
 	\section{Implementation}
 	
-	We implemented PG-SGD in ODGI \citep{Guarracino2022}. % which serves as an interface to graphs in the GFA (\url{https://github.com/GFA-spec/GFA-spec}) format. 
-	Our path index is a strict subset of the XG index~\citep{Garrison:2018} where we specifically avoid using succinct SDSL data structures \citep{Gog2014}.
+	We implemented PG-SGD in ODGI \citep{Guarracino2022}, specifically the 1D version in \textit{odgi sort} and the 2D version in \textit{odgi layout}. % which serves as an interface to graphs in the GFA (\url{https://github.com/GFA-spec/GFA-spec}) format. 
+	Our path index is a strict subset of the XG index~\citep{Garrison:2018} where we avoid using succinct SDSL data structures \citep{Gog2014} in particular.
 	Instead, we only use bit compressed integer vectors, enabling efficient retrieval of path positions to quickly compute nucleotide distances without the need to store all pairwise distances between nodes in memory.
-	This allows PG-SGD to scale on large pangenome graphs representing thousands of whole genomes.
+	This allows our implementation to scale on large pangenome graphs representing thousands of whole genomes.
 
 	Graph layout initialization can significantly influence the quality of the final layout.
 	In the 1D implementation, nodes are placed in the same order as they appear in the input graph by default, although support for random layout initialization is also provided.
@@ -207,7 +207,7 @@
 	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
 
 	Our implementation is multithreaded and uses shared memory for the layout vector following the HOGWILD! strategy \citep{Recht2011}: Threads perform layout updates without any locking for additional speed up.
-	This is possible because pangenome graphs are typically sparse \citep{Guarracino2022}, with low average node degree, meaning most updates only modify small parts of the entire layout.
+	This is possible because pangenome graphs are typically sparse \citep{Guarracino2022}, with low average node degree, meaning the updates only modify small parts of the entire layout.
 	The HOGWILD! SGD algorithm writes the layout updates to a shared non-atomic double vector, whereas PG-SGD stores node coordinates in a vector of atomic doubles.
 	Such a vector ensures that no memory overwrites are possible. Our tests revealed basically no performance loss with respect to the non-atomic counterpart.
 	
@@ -230,7 +230,7 @@
 	This is expected since chromosome 16 presents one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
 	Repetitive sequences lead to graph nodes with a very high number of path traversals, which are computationally expensive to work with \citep{Guarracino2022}.
 	Memory consumption is 29.66 GB of RAM on average, with the memory peak again occurring with chromosome 16, presumably due to the memory expensive path index building phase.
-	Given its scalability, we even applied PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}). Under one day a 2D layout was calculated. BandageNG\footnote{\url{https://github.com/asl/BandageNG} (last accessed Jul 2023)}, the current state-of-the-art for graph visualization, was not able to produce a layout within 7 days, hitting the wall clock time limit of the cluster.
+	Given its scalability, we even applied PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}). Under one day a 2D layout was calculated. \textit{BandageNG} (\url{https://github.com/asl/BandageNG}, last accessed Jul 2023), the current state-of-the-art for graph visualization, was not able to produce a layout within 7 days, hitting the wall clock time limit of the cluster.
 	On average, PG-SGD is $\approx$8X faster than BandageNG while using $\approx$2X less memory.
 	% avg time bng 388 min, avg gb ng 66.84
 
@@ -241,7 +241,7 @@
 	In Figure~\ref{fig:sfig1} all chromosomes of the HPRC graph a drawn in 2D. 
 	One can easily spot all the large scale structural variations including the hairball centromeres. 
 	Focusing on the major histocompatibility complex (MHC) of chromosome 6 (Figure~\ref{fig:sfig2}), the 2D layout reveals the positions and complexity of all MHC genes (Figure~\ref{fig:sfig3}). In Figure~\ref{fig:sfig4} the C4A and C4B genes are highlighted. 
-	The layout is exactly the same as the one produced by Bandage and displayed in~\citep{Guarracino2022}.
+	The layout is the same as the one produced by \textit{Bandage}~\citep{Wick_2015} and displayed in~\citep{Guarracino2022}.
 
 	% \iffalse
 	% Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full human graph.
@@ -293,7 +293,7 @@
 	%A prerequisite is that the graph nodes are sorted according to their occurrence in the graph's embedded paths.
 	%Our 1D path-guided SGD algorithm is designed to provide this kind of sort.
 	Of note, there still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
-	Our algorithm will be the foundation of new pangenome graph browsers for studying graph layouts and the genome variation they represent\footnote{\url{https://github.com/chfi/waragraph} (last accessed Jul 2023)}.
+	Our algorithm will be the foundation of new pangenome graph browsers for studying graph layouts and the genome variation they represent (\url{https://github.com/chfi/waragraph)} last accessed Jul 2023).
 	
 	\FIXME{Talk about the performance evaluation here?}
 	
@@ -343,7 +343,12 @@
 	    \input{table_layout}
 		\subsection{Graph layouts}
 		\label{sec:layouts}
+		\FIXME{Talk about the 2D layouts in brief. What about the SMT thingy?}
+		
+		\FIXME{What about 1D visualizations?}
+		
 		\input{fig_2d_layouts}
+		
 		\FIXME{1D layouts?}
 	\end{appendices}
 
