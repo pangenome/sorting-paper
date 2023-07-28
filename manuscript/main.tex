@@ -301,6 +301,7 @@
 	\FIXME{Talk about the performance evaluation here?}
 	
 	\FIXME{@Jiajie + Niklas: Maybe address our SMT issue with your cache locality as a potential solution. Additionally just 2/3 sentences about going GPU?}
+	As can especially be observed in the chromosome 16 evaluation results, the implementation is memory-bound. The current data structure doesn't consider the memory access pattern. Therefore, a CPU cache optimized implementation can make use of the massive parallelized calculations on a GPU.
 
 	PG-SGD can be extended to any number of dimensions.
 	It can be seen as a graph embedding algorithm that converts high-dimensional, sparse pangenome graphs into low-dimensional, dense, and continuous vector spaces, while preserving its biologically relevant information.
