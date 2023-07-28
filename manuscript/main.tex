@@ -185,11 +185,13 @@
 	%Should the delta of $nd_{ij}$ and $ld_{ij}$ become 0 before the annealing schedule is finished, the algorithm stops.
 
 	Originating from empirical inspection of word frequency tables, Zipf's law states that a word with rank $n$ occurs $1/n$ times as the most frequent one.
-	It's mathematical formulation is called the Zipfian distribution and its rank-frequency distribution is related to the inverse power law.
-	Sampling $s_j$ from a Zipfian distribution fixed in the $s_i$'s path position space increases the possibility to draw a nucleotide position close to $s_i$.
+    This law is modeled by the Zipf distribution, whose rank-frequency distribution is related to the inverse power law. % repetitive
+	Sampling $s_j$ from a Zipf distribution fixed in the $s_i$'s path position space increases the possibility to draw a nucleotide position close to $s_i$.
 	So there is a high chance to use small nucleotide distances $nd_{ij}$ to refine the layout of nodes comprising a few base pairs.
+    The Zipf distribution is also long tailed, with many occurrences of low frequency events, which ensures that longer-range structures are represented the output embedding space.
 
-	To provide balance between global and local layout updates, in half of the updates ($flip$ flag in Algorithm~\ref{alg:pg_sgd}) the $s_j$ is sampled uniformly instead from a Zipfian distribution (uniform sampling favours global updates).
+    While in principle, Zipf's long tail would lead to mixing of positional embedding information across entire chromosomes, practice demonstrated that very long range correlations were not captured sufficiently, leading to collapsed layouts for otherwise linear structures.
+    To provide balance between global and local layout updates, in half of the updates ($flip$ flag in Algorithm~\ref{alg:pg_sgd}) the $s_j$ is sampled uniformly instead from a Zipf distribution (uniform sampling favours global updates).
 	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a a small sampled nucleotide distance is significantly increased. 
 
 	\section{Implementation}
@@ -205,6 +207,7 @@
 	In 2D, we offer several layout initialization techniques.
 	One option is to position nodes in the first layout dimension according to their order in the input graph and to add either uniform or Gaussian noise in the second dimension.
 	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
+    We additionally support fixing a set of node coordinates, such as those in a reference genome, in their order and position, which allows us to build reference-focused views of complex pangenomes. \FIXME{Is this only for 1D? It would be \textit{amazing} if it were possible to do in 2D, and it should be easy. -EG}
 
 	Our implementation is multithreaded and uses shared memory for the layout vector following the HOGWILD! strategy \citep{Recht2011}: Threads perform layout updates without any locking for additional speed up.
 	This is possible because pangenome graphs are typically sparse \citep{Guarracino2022}, with low average node degree, meaning the updates only modify small parts of the entire layout.
@@ -212,7 +215,7 @@
 	Such a vector ensures that no memory overwrites are possible. Our tests revealed basically no performance loss with respect to the non-atomic counterpart.
 	
     \iffalse
-    Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipfian distribution.
+    Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipf distribution.
 
     \input{fig_sketches}
     \fi
