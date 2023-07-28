@@ -193,7 +193,7 @@
     This law is modeled by the Zipf distribution, whose rank-frequency distribution is related to the inverse power law. % repetitive
 	Sampling $s_j$ from a Zipf distribution fixed in the $s_i$'s path position space increases the possibility to draw a nucleotide position close to $s_i$.
 	So there is a high chance to use small nucleotide distances $nd_{ij}$ to refine the layout of nodes comprising a few base pairs.
-    The Zipf distribution is also long tailed, with many occurrences of low frequency events, which ensures that longer-range structures are represented the output embedding space.
+    The Zipf distribution is also long tailed, with many occurrences of low frequency events, which ensures that longer-range structures are represented in the output embedding space.
 
     While in principle, Zipf's long tail would lead to mixing of positional embedding information across entire chromosomes, practice demonstrated that very long range correlations were not captured sufficiently, leading to collapsed layouts for otherwise linear structures.
     To provide balance between global and local layout updates, in half of the updates ($flip$ flag in Algorithm~\ref{alg:pg_sgd}) the $s_j$ is sampled uniformly instead from a Zipf distribution (uniform sampling favours global updates).
@@ -209,7 +209,6 @@
 
 	Graph layout initialization can significantly influence the quality of the final layout.
 	In the 1D implementation, nodes are placed in the same order as they appear in the input graph by default, although support for random layout initialization is also provided.
-	%Random placement ensures that each run of the PG-SGD method could potentially yield a different result, thereby increasing the likelihood of obtaining a meaningful layout. @Andrea: What is it that you wanted to say here?
 	In 2D, we offer several layout initialization techniques.
 	One option is to position nodes in the first layout dimension according to their order in the input graph and to add either uniform or Gaussian noise in the second dimension.
 	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
