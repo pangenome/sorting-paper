@@ -80,6 +80,7 @@
         Jan-Niklas Manuel Schmelzle\,$^{\orcidlink{0000-0001-8566-4049}5,6}$,
         Jiajie Li\,$^{\orcidlink{0000-0002-9467-0659}6}$,
         Zhiru Zhang\,$^{\orcidlink{0000-0002-0778-0308}6}$,
+        Jörg Hagmann\,${\orcidlink{0000-0002-7232-3103}^7}$,
         Sven Nahnsen\,$^{\orcidlink{0000-0002-4375-0691}1,2}$,
         Pjotr Prins\,$^{\orcidlink{0000-0002-8021-9162}3}$,
         Erik~Garrison\,$^{\orcidlink{0000-0003-3821-631X}\text{\sfb 3},*}$
@@ -92,6 +93,7 @@
         $^4$Genomics Research Centre, Human Technopole, Milan 20157, Italy \\
         $^5$Department of Computer Engineering, School of Computation, Information and Technology (CIT), Technical University of Munich, Munich 80333, Germany \\
         $^6$School of Electrical and Computer Engineering, Cornell University, Ithaca, NY 14853, USA \\
+        $^7$Computomics GmbH, Eisenbahnstr. 1, 72072 Tübingen, Baden-Württemberg, Germany \\
     }
 
     \corresp{
@@ -107,7 +109,7 @@
 	\textbf{Motivation:}
 	The increasing availability of complete genomes demands models to study genomic variability within entire populations.
 	Pangenome graphs can represent the full genetic diversity between multiple genomes, but their layouts may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
-	These structures introduce difficulty in downstream analyses, visualization, and interpretation. \\
+	These structures hamper downstream analyses, visualization, and interpretation. \\
 	\textbf{Results:}
 	To address these challenges, we propose a novel graph layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
 	PG-SGD uses the genomes, represented in the pangenome graph as paths, to move pairs of nodes in parallel by applying a modified HOWGWILD! strategy.
@@ -124,7 +126,7 @@
 	\section{Introduction}
 	Reference genomes are the most widely used resource in genetics, serving as a foundation for a variety of analyses
 	such as gene annotation, read mapping, and variant detection \citep{Singh2022}.
-	However, with the availability of hundreds to thousands of high quality genomes per species, this linear model has become obsolete.
+	However, with the availability of hundreds to thousands of high quality genomes per species, this linear model will soon hit its limit.
 	A single genome can not faithfully represent the genetic diversity of a species, leading to the reference bias problem \citep{Ballouz2019}.
 	Rather, a pangenome models the entire set of genomic elements of a given population \citep{Tettelin_2008,cpang2018,Eizenga_2020, Sherman_2020}.
 	Pangenomes can be represented by a sequence graph incorporating sequences as nodes and their connections as edges \citep{Hein1989}.
@@ -132,11 +134,14 @@
 	In the variation graph model \citep{Garrison:2018}, genomes are encoded as paths visiting the nodes in the graph.
 	%A bidirected graph can even contain both strands of DNA as paths. \\
 	
-	A pangenome graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space such that a human accessible representation of genetic variation across multiple genomes can be drawn. 
-	Layout algorithms aim to find suitable node coodinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote intuitive understanding by displaying the graph layout.
-	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetically-pleasing layouts.
+	A pangenome graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space such that a human readible representation of genetic variation across multiple genomes can be drawn. 
+	Layout algorithms aim to find suitable node coodinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive understanding by displaying the graph layout.
+	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetic layouts.
 	This is prone to get stuck in local minima, but stochastic gradient descent (SGD) implementations can alleviate such a problem \citep{Zheng2019}.
-	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}, but the HOGWILD! SGD is a highly parallelizable, therefore scalable solution that can be applied when the optimization problem is sparse \citep{Recht2011}.
+	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions. Specifically, in pangenome graphs we move a single pair of nodes at a time.
+	
+	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}, but the lock-free HOGWILD! is a highly parallelizable, therefore scalable SGD approach that can be applied when the optimization problem is sparse \citep{Recht2011}.
+	
 	In practice, multidimensional scaling (MDS) is applied to minimize the difference between the visual distance and theoretical graph distance.
 	This can be accomplished by using pairwise node distances to minimize an energy function.
 	%\FIXME{
@@ -169,15 +174,19 @@
 <<<<<<< Updated upstream
 
 	PG-SGD's pseudocode is shown in Algorithm~\ref{alg:pg_sgd} and key steps are sketched in Figure \FIXME{Add puritan figure.}.
+<<<<<<< HEAD
 	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a path that traverses them.
 =======
  
 	PG-SGD's pseudocode is shown in Algorithm~\ref{alg:pg_sgd} and 2D key steps are sketched in Figure~\ref{fig:sketches}.
 	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a random path that traverses them.
 >>>>>>> Stashed changes
+=======
+	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a random path that traverses them.
+>>>>>>> 73e669906c16578e503a2dc9d9f7850147c06fb2
 	%Our multithreaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
 	$v_i$ is the node associated with the step $s_i$ sampled uniformly from all the steps in $\mathcal{P}$.
-	$v_j$ is the node associated with the step $s_j$ sampled from the same path of $s_i$ by following a Zipfian distribution \citep{Zipf1932}.
+	$v_j$ is the node associated with the step $s_j$ sampled from the same path of $s_i$ by drawing a Zipfian distribution \citep{Zipf1932}.
 	The difference between $nd_{ij}$ and $ld_{ij}$ guides the update of the node coordinates in the layout.
 	The magnitude $r$ of the update depends on the learning rate $\mu$ of the SGD.
 	The number of iterations steers the annealing step size $\eta$ which determines the learning rate $\mu$.
@@ -194,10 +203,11 @@
     This law is modeled by the Zipf distribution, whose rank-frequency distribution is related to the inverse power law. % repetitive
 	Sampling $s_j$ from a Zipf distribution fixed in the $s_i$'s path position space increases the possibility to draw a nucleotide position close to $s_i$.
 	So there is a high chance to use small nucleotide distances $nd_{ij}$ to refine the layout of nodes comprising a few base pairs.
-    The Zipf distribution is also long tailed, with many occurrences of low frequency events, which ensures that longer-range structures are represented the output embedding space.
+    The Zipf distribution is also long tailed, with many occurrences of low frequency events, which ensures that longer-range structures are represented in the output embedding space.
 
     While in principle, Zipf's long tail would lead to mixing of positional embedding information across entire chromosomes, practice demonstrated that very long range correlations were not captured sufficiently, leading to collapsed layouts for otherwise linear structures.
     To provide balance between global and local layout updates, in half of the updates ($flip$ flag in Algorithm~\ref{alg:pg_sgd}) the $s_j$ is sampled uniformly instead from a Zipf distribution (uniform sampling favours global updates).
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a a small sampled nucleotide distance is significantly increased. 
 =======
@@ -207,17 +217,20 @@
 	
 	\input{fig_sketches}
 >>>>>>> Stashed changes
+=======
+	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a small sampled nucleotide distance is much increased. 
+>>>>>>> 73e669906c16578e503a2dc9d9f7850147c06fb2
 
 	\section{Implementation}
 	
 	We implemented PG-SGD in ODGI \citep{Guarracino2022}, specifically the 1D version in \textit{odgi sort} and the 2D version in \textit{odgi layout}. % which serves as an interface to graphs in the GFA (\url{https://github.com/GFA-spec/GFA-spec}) format. 
-	Our path index is a strict subset of the XG index~\citep{Garrison:2018} where we avoid using succinct SDSL data structures \citep{Gog2014} in particular.
+	For the efficient retrieval of path nucleotide positions, we implemented a path index. 
+	It is a strict subset of the XG index~\citep{Garrison:2018} where we avoid using succinct SDSL data structures \citep{Gog2014} in particular.
 	Instead, we only use bit compressed integer vectors, enabling efficient retrieval of path positions to quickly compute nucleotide distances without the need to store all pairwise distances between nodes in memory.
 	This allows our implementation to scale on large pangenome graphs representing thousands of whole genomes.
 
 	Graph layout initialization can significantly influence the quality of the final layout.
 	In the 1D implementation, nodes are placed in the same order as they appear in the input graph by default, although support for random layout initialization is also provided.
-	This random placement ensures that each run of the PG-SGD method could potentially yield a different result, thereby increasing the likelihood of obtaining a meaningful layout.
 	In 2D, we offer several layout initialization techniques.
 	One option is to position nodes in the first layout dimension according to their order in the input graph and to add either uniform or Gaussian noise in the second dimension.
 	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
@@ -226,7 +239,7 @@
 	Our implementation is multithreaded and uses shared memory for the layout vector following the HOGWILD! strategy \citep{Recht2011}: Threads perform layout updates without any locking for additional speed up.
 	This is possible because pangenome graphs are typically sparse \citep{Guarracino2022}, with low average node degree, meaning the updates only modify small parts of the entire layout.
 	The HOGWILD! SGD algorithm writes the layout updates to a shared non-atomic double vector, whereas PG-SGD stores node coordinates in a vector of atomic doubles.
-	Such a vector ensures that no memory overwrites are possible. Our tests revealed basically no performance loss with respect to the non-atomic counterpart.
+	Such a vector prevents memory overwrites. Our tests revealed basically no performance loss with respect to the non-atomic counterpart.
 	
     \iffalse
     Fig. 1: Describe how our approach works, especially a single update operation (Fig. \ref{fig:sketches}). Explanation of 1D graph updating in Figures \ref{fig:1d_before_update}-\ref{fig:1d_after_update}. Explanation of 2D graph updating in Figures \ref{fig:2d_before_update}-\ref{fig:2d_after_update}. Zipf distribution.
@@ -238,26 +251,27 @@
     \label{sec:results}
 
     \subsection{Performance}
-	We apply the 2D PG-SGD to the recent draft human pangenome reference \citep{Liao2023} from the Human Pangenome Reference Consortium (HPRC) to show the scalability of the algorithm with a real pangenome.
+	We apply the 2D PG-SGD to the human pangenome \citep{Liao2023} from the Human Pangenome Reference Consortium (HPRC) to show the scalability of the algorithm.
 	Experiments were conducted on a cluster with 24 \texttt{Regular} nodes (32 cores / 64 threads with two AMD EPYC 7343 processors with 512 GB RAM) and 4 \texttt{HighMem} nodes (64 cores / 128 threads with two AMD EPYC 7513 processors with 2048 GB RAM).
 	We downloaded pangenome graphs for each autosome (24 in total) and for the mitochondrial DNA.
-	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references.
-	See Supplementary Table~\ref{tab:layout} for graph statistics.
+	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references (see Supplementary Table~\ref{tab:layout} for graph statistics).
 	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, PG-SGD obtains the graph layouts in 50 minutes on average, with the highest run time observed being chromosome 16 (Supplementary Table~\ref{tab:layout}).
-	This is expected since chromosome 16 presents one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
+	This is expected since chromosome 16 has one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
 	Repetitive sequences lead to graph nodes with a very high number of path traversals, which are computationally expensive to work with \citep{Guarracino2022}.
 	Memory consumption is 29.66 GB of RAM on average, with the memory peak again occurring with chromosome 16, presumably due to the memory expensive path index building phase.
-	Given its scalability, we even applied PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}). Under one day a 2D layout was calculated. \textit{BandageNG} (\url{https://github.com/asl/BandageNG}, last accessed Jul 2023), the current state-of-the-art for graph visualization, was not able to produce a layout within 7 days, hitting the wall clock time limit of the cluster.
-	On average, PG-SGD is $\approx$8X faster than BandageNG while using $\approx$2X less memory.
+	Given its scalability, we even applied PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}). 
+	A 2D layout was calculated in under one day.
+	\textit{BandageNG} (\url{https://github.com/asl/BandageNG}, last accessed Jul 2023), the current state-of-the-art for graph visualization, was not able to produce a layout within 7 days, hitting the wall clock time limit of the cluster.
+	On average, PG-SGD is $\sim$8X faster than BandageNG while using $\sim$2X less memory.
 	% avg time bng 388 min, avg gb ng 66.84
 
     \subsection{Pangenome graphs layouts reveal biology features}
 	Graph visualization is essential for understanding pangenome graphs and the genome variation they represent. 
-	We show how 2D PG-SGD allows us quickly gain insight into biological data by looking at the graph layout structure. 
-	To demonstrate this, we provide 2D drawings of various 2D PG-SGD layouts (see Figure~\ref{fig:2d_layouts})
-	In Figure~\ref{fig:sfig1} all chromosomes of the HPRC graph a drawn in 2D. 
-	One can easily spot all the large scale structural variations including the hairball centromeres. 
-	Focusing on the major histocompatibility complex (MHC) of chromosome 6 (Figure~\ref{fig:sfig2}), the 2D layout reveals the positions and complexity of all MHC genes (Figure~\ref{fig:sfig3}). In Figure~\ref{fig:sfig4} the C4A and C4B genes are highlighted. 
+	We show how 2D PG-SGD allows us gaining insight into biological data by looking at the graph layout structure. 
+	To demonstrate this, we provide various 2D PG-SGD layouts (see Figure~\ref{fig:2d_layouts}).
+	In Figure~\ref{fig:sfig1} the chromosomes of the HPRC graph show the large scale structural variations including the hairball centromeres. 
+	Focusing on the major histocompatibility complex (MHC) of chromosome 6 (Figure~\ref{fig:sfig2}), the 2D layout reveals the positions and complexity of all MHC genes (Figure~\ref{fig:sfig3}). 
+	In Figure~\ref{fig:sfig4} the C4A and C4B genes are highlighted. 
 	The layout is the same as the one produced by \textit{Bandage}~\citep{Wick_2015} and displayed in~\citep{Guarracino2022}.
 
 	% \iffalse
@@ -302,7 +316,7 @@
 	We presented Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph.
 	Our implementation efficiently computes the layout of pangenome graphs representing thousands of whole genomes.
 	
-	Graph visualization is key for understanding genome variations and the large-scale layouts produced by PG-SGD offer an unprecedented high-level perspective on variation in pangenomes.
+	Graph visualization is key for understanding genome variations and the layouts produced by PG-SGD offer an unprecedented high-level perspective on variation in pangenomes.
 	We implemented PG-SGD to generate layouts in 1D and 2D.
 	These graph projections have already been employed in constructing and analyzing the first draft human pangenome reference \citep{Liao2023}, as well as in the discovery of heterologous recombination of human acrocentric chromosomes \citep{Guarracino2023}.
 	Furthermore, they are applied in the creation and analysis of pangenome graphs for any species \citep{Guarracino2022, Garrison2023}.
@@ -339,7 +353,7 @@
 	JNM.S., J.L., Z.Z., P.P., and E.G. acknowledge funding from the NSF PPoSS Award \#2118709.
 	
 	\section*{Competing interests}
-	The authors declare that they have no competing interests.
+	Author J.H. is employed by Computomics GmbH.
 	
 	\section*{Data availability}
 	
