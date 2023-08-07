@@ -171,19 +171,10 @@
 		Edges $\mathcal{E} = e_1\ldots e_{|\mathcal{E}|}$ connect ordered pairs of node strands ($e_i = ( o_a, o_b )$), defining the graph topology.
 		Paths $\mathcal{P} = p_1\ldots p_{|\mathcal{P}|}$ are series of connected steps $s_i$ that refer to node strands in the graph ($p_i = s_1 \ldots s_{|p_i|}$); the paths represent the genomes embedded in the graph.
 	\end{definition}
-<<<<<<< Updated upstream
-
-	PG-SGD's pseudocode is shown in Algorithm~\ref{alg:pg_sgd} and key steps are sketched in Figure \FIXME{Add puritan figure.}.
-<<<<<<< HEAD
-	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a path that traverses them.
-=======
- 
+	
 	PG-SGD's pseudocode is shown in Algorithm~\ref{alg:pg_sgd} and 2D key steps are sketched in Figure~\ref{fig:sketches}.
-	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a random path that traverses them.
->>>>>>> Stashed changes
-=======
-	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a random path that traverses them.
->>>>>>> 73e669906c16578e503a2dc9d9f7850147c06fb2
+	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a path that traverses them.
+
 	%Our multithreaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
 	$v_i$ is the node associated with the step $s_i$ sampled uniformly from all the steps in $\mathcal{P}$.
 	$v_j$ is the node associated with the step $s_j$ sampled from the same path of $s_i$ by drawing a Zipfian distribution \citep{Zipf1932}.
@@ -207,19 +198,11 @@
 
     While in principle, Zipf's long tail would lead to mixing of positional embedding information across entire chromosomes, practice demonstrated that very long range correlations were not captured sufficiently, leading to collapsed layouts for otherwise linear structures.
     To provide balance between global and local layout updates, in half of the updates ($flip$ flag in Algorithm~\ref{alg:pg_sgd}) the $s_j$ is sampled uniformly instead from a Zipf distribution (uniform sampling favours global updates).
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a a small sampled nucleotide distance is significantly increased. 
-=======
 	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a small sampled nucleotide distance is much increased. 
 	
 	\FIXME{In the section above we need to clarify that we move the ends of the nodes in 2D, and just the nodes in 1D.}
 	
 	\input{fig_sketches}
->>>>>>> Stashed changes
-=======
-	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a small sampled nucleotide distance is much increased. 
->>>>>>> 73e669906c16578e503a2dc9d9f7850147c06fb2
 
 	\section{Implementation}
 	
