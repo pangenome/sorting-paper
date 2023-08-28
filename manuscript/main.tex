@@ -173,7 +173,7 @@
 	\end{definition}
 	
 	PG-SGD's pseudocode is shown in Algorithm~\ref{alg:pg_sgd} and 2D key steps are sketched in Figure~\ref{fig:sketches}.
-	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a path that traverses them.
+	In brief, the algorithm moves one pair of nodes $( v_i, v_j )$ at a time, minimizing the difference between the layout distance $ld_{ij}$ of the two nodes and the nucleotide distance $nd_{ij}$ of the same nodes as calculated along a path that traverses them. In 2D we model a layout node having two ends. When moving a pair of nodes we actually move one end of each node. For more details see Figure~\ref{fig:sketches}.
 
 	%Our multithreaded implementation (\url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}) presents a working prototype that is based on succinct graph data structures (\url{https://doi.org/ghqdzw}):
 	$v_i$ is the node associated with the step $s_i$ sampled uniformly from all the steps in $\mathcal{P}$.
@@ -199,9 +199,6 @@
     While in principle, Zipf's long tail would lead to mixing of positional embedding information across entire chromosomes, practice demonstrated that very long range correlations were not captured sufficiently, leading to collapsed layouts for otherwise linear structures.
     To provide balance between global and local layout updates, in half of the updates ($flip$ flag in Algorithm~\ref{alg:pg_sgd}) the $s_j$ is sampled uniformly instead from a Zipf distribution (uniform sampling favours global updates).
 	Additionally, to boost the local linearity (in 1D) or planarity (in 2D) of the graph layout, a \textit{cooling} phase skewes the Zipfian distribution after half the number of iterations, so that the possibility of a small sampled nucleotide distance is much increased. 
-	
-	\FIXME{In the section above we need to clarify that we move the ends of the nodes in 2D, and just the nodes in 1D.}
-	
 	\input{fig_sketches}
 
 	\section{Implementation}
@@ -217,7 +214,9 @@
 	In 2D, we offer several layout initialization techniques.
 	One option is to position nodes in the first layout dimension according to their order in the input graph and to add either uniform or Gaussian noise in the second dimension.
 	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
-    We additionally support fixing a set of node coordinates, such as those in a reference genome, in their order and position, which allows us to build reference-focused views of complex pangenomes. \FIXME{Is this only for 1D? It would be \textit{amazing} if it were possible to do in 2D, and it should be easy. -EG}
+    We additionally support fixing a set of node coordinates, such as those in a reference genome, in their order and position, which allows us to build 1D reference-focused views of complex pangenomes. An exapmle visualization is given in Figure~\ref{fig:1d_fig4}.
+    \FIXME{Is this only for 1D? It would be \textit{amazing} if it were possible to do in 2D, and it should be easy. -EG} \\
+    \FIXME{I am afraid this only works for 1D. Or what do you make of \url{https://github.com/pangenome/odgi/pull/491}? -SH}
 
 	Our implementation is multithreaded and uses shared memory for the layout vector following the HOGWILD! strategy \citep{Recht2011}: Threads perform layout updates without any locking for additional speed up.
 	This is possible because pangenome graphs are typically sparse \citep{Guarracino2022}, with low average node degree, meaning the updates only modify small parts of the entire layout.
@@ -234,11 +233,11 @@
     \label{sec:results}
 
     \subsection{Performance}
-	We apply the 2D PG-SGD to the human pangenome \citep{Liao2023} from the Human Pangenome Reference Consortium (HPRC) to show the scalability of the algorithm.
+	We apply the 2D PG-SGD to the human pangenome \citep{Liao2023} from the Human Pangenome Reference Consortium (HPRC) to show the scalability of the algorithm.	
 	Experiments were conducted on a cluster with 24 \texttt{Regular} nodes (32 cores / 64 threads with two AMD EPYC 7343 processors with 512 GB RAM) and 4 \texttt{HighMem} nodes (64 cores / 128 threads with two AMD EPYC 7513 processors with 2048 GB RAM).
 	We downloaded pangenome graphs for each autosome (24 in total) and for the mitochondrial DNA.
 	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references (see Supplementary Table~\ref{tab:layout} for graph statistics).
-	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, PG-SGD obtains the graph layouts in 50 minutes on average, with the highest run time observed being chromosome 16 (Supplementary Table~\ref{tab:layout}).
+	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, \textit{odgi layout's} PG-SGD obtains the graph layouts in 50 minutes on average, with the highest run time observed being chromosome 16 (Supplementary Table~\ref{tab:layout}).
 	This is expected since chromosome 16 has one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
 	Repetitive sequences lead to graph nodes with a very high number of path traversals, which are computationally expensive to work with \citep{Guarracino2022}.
 	Memory consumption is 29.66 GB of RAM on average, with the memory peak again occurring with chromosome 16, presumably due to the memory expensive path index building phase.
@@ -311,10 +310,9 @@
 	Of note, there still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
 	Our algorithm will be the foundation of new pangenome graph browsers for studying graph layouts and the genome variation they represent (\url{https://github.com/chfi/waragraph)} last accessed Jul 2023).
 	
-	\FIXME{Talk about the performance evaluation here?}
-	
 	\FIXME{@Jiajie + Niklas: Maybe address our SMT issue with your cache locality as a potential solution. Additionally just 2/3 sentences about going GPU?}
-	As can especially be observed in the chromosome 16 evaluation results, the implementation is memory-bound. The current data structure doesn't consider the memory access pattern. Therefore, a CPU cache optimized implementation can make use of the massive parallelized calculations on a GPU.
+	The performance analysis shows that our implemented 2D PG-SGD outperforms \textit{BandageNG} when handling large, complex pangenome graphs. While \textit{BandageNG} was not able to deliver a layout of the whole HPRC graph within 1 week, our 2D PG-SGD calculated one within one day. We expect that our implementation will be able to handle the next phase of the HPRC, 24 chromosomal pangenome graphs constructed from 300 individuals, without any problems.
+	As can especially be observed in the chromosome 16 evaluation results, the implementation is memory-bound. The current data structure doesn't consider the memory access pattern. Therefore, a CPU cache optimized implementation could make use of the massive parallelized calculations on a GPU. Such efforts are currently in progress \url{https://github.com/nsmlzl/odgi/tree/layout_cache_optimized_cpu}.
 
 	PG-SGD can be extended to any number of dimensions.
 	It can be seen as a graph embedding algorithm that converts high-dimensional, sparse pangenome graphs into low-dimensional, dense, and continuous vector spaces, while preserving its biologically relevant information.
@@ -340,9 +338,9 @@
 	\section*{Competing interests}
 	Author J.H. is employed by Computomics GmbH.
 	
-	\section*{Data availability}
+	\section*{Software and data availability}
 	
-	Code and links to data resources used to build this manuscript and its figures can be found in the paper's public repository: \url{https://github.com/pangenome/sorting-paper}.
+	Software versios, code, and links to data resources used to build this manuscript and its figures can be found in the paper's public repository: \url{https://github.com/pangenome/sorting-paper}.
 	Animations of the algorithm are deposited at \url{https://doi.org/10.5281/zenodo.8288999}.
 		
 	\bibliographystyle{natbib}
