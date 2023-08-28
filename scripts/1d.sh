@@ -17,6 +17,6 @@ odgi sort -i chr6.hprc-v1.0-pggb.13paths.MHC.og -r -P -t 28 -o chr6.hprc-v1.0-pg
 odgi viz -i chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og -o chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og.png -u -d
 odgi sort -i chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og -o chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og.Y.og -p Y -t 28 -P
 odgi viz -i chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og.Y.og -o chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og.Y.og.png -u -d
-odgi paths -i chr6.hprc-v1.0-pggb.13paths.MHC.og -L | grep "grch" > chr6.grch38.MHC.name
-odgi sort -i chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og -o chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og.HY.og -P -t 28 -H chr6.grch38.MHC.name -Y
+odgi paths -i chr6.hprc-v1.0-pggb.13paths.MHC.og -L | grep "HG01071" > chr6.HG01071.MHC.name
+odgi sort -i chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og -o chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og.HY.og -P -t 28 -H chr6.HG01071.MHC.name -Y
 odgi viz -i chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og.HY.og -o chr6.hprc-v1.0-pggb.13paths.MHC.og.r.og.HY.og.png -d -u
