@@ -251,11 +251,13 @@
     \subsection{Pangenome graphs layouts reveal biology features}
 	Graph visualization is essential for understanding pangenome graphs and the genome variation they represent. 
 	We show how 2D PG-SGD allows us gaining insight into biological data by looking at the graph layout structure. 
-	To demonstrate this, we provide various 2D PG-SGD layouts (see Figure~\ref{fig:2d_layouts}).
-	In Figure~\ref{fig:sfig1} the chromosomes of the HPRC graph show the large scale structural variations including the hairball centromeres. 
-	Focusing on the major histocompatibility complex (MHC) of chromosome 6 (Figure~\ref{fig:sfig2}), the 2D layout reveals the positions and complexity of all MHC genes (Figure~\ref{fig:sfig3}). 
-	In Figure~\ref{fig:sfig4} the C4A and C4B genes are highlighted. 
+	To demonstrate this, we provide various 2D PG-SGD layouts in Figure~\ref{fig:2d_layouts}.
+	\input{fig_2d_layouts}
+	In Figure~\ref{fig:2d_fig1} the chromosomes of the HPRC graph show the large scale structural variations including the hairball centromeres. 
+	Focusing on the major histocompatibility complex (MHC) of chromosome 6 (Figure~\ref{fig:2d_fig2}), the 2D layout reveals the positions and complexity of all MHC genes (Figure~\ref{fig:2d_fig3}). 
+	In Figure~\ref{fig:2d_fig4} the C4A and C4B genes are highlighted. 
 	The layout is the same as the one produced by \textit{Bandage}~\citep{Wick_2015} and displayed in~\citep{Guarracino2022}.
+	Complementary, we provide various 1D visualizations of in Supplementary Figure~\ref{fig:1d_sorts}.
 
 	% \iffalse
 	% Fig. 2: Performance evaluation 1D + 2D: Time + RAM by number of haplotypes (Fig.~\ref{fig:haps_time_ram}). Time + RAM by number of threads (Fig.~\ref{fig:threads_time_ram}). Full human graph.
@@ -341,6 +343,7 @@
 	\section*{Data availability}
 	
 	Code and links to data resources used to build this manuscript and its figures can be found in the paper's public repository: \url{https://github.com/pangenome/sorting-paper}.
+	Animations of the algorithm are deposited at \url{https://doi.org/10.5281/zenodo.8288999}.
 		
 	\bibliographystyle{natbib}
 	
@@ -348,23 +351,16 @@
 	
 	\begin{appendices}
 	    \section{Supplementary data}
-	    %\FIXME{@ANDREA: Please add some more details about your clever quantization. Why. How. Where. When. Secs.} \\
-	    %\FIXME{PGR-TK Paper - Layouts of challenging regions of the human pangenome. - https://www.nature.com/articles/s41592-023-01914-y} \\
-		\FIXME{ADD LINKS TO OUR ANIMATIONS ON ZENODO} \\
-	    \FIXME{From 1D layout to 1D node order} \\
-	    \FIXME{reference-guided path-guided stochastic gradient descent}
+	    \subsection{Quantization}
+	    \FIXME{@ANDREA: Please add some more details about your clever quantization. Why. How. Where. When. Secs.}
 	    \subsection{Performance evaluation}
 	    \label{sec:performance}
+	    The results of the performance evaluation are given in Table~\ref{tab:layout}.
 	    \input{table_layout}
-		\subsection{Graph layouts}
-		\label{sec:layouts}
-		\FIXME{Talk about the 2D layouts in brief. What about the SMT thingy?}
-		
-		\FIXME{What about 1D visualizations?}
-		
-		\input{fig_2d_layouts}
-		
-		\FIXME{1D layouts?}
+	    \FIXME{What about the SMT thingy?}
+		\subsection{1D visualizations}	
+		The 1D PG-SGD algorithm creates a 1D layout of the nodes of the graph. Theoretically, it is possible that 2 nodes have the same 1D coordinate or overlap. But, in our 1D visualizations, we arrange the nodes from left to right. Therefore, we project the 1D coordinates into a 1D node order: We sort the final layout by graph component, graph position, and node rank.
+		\input{fig_1d_sorts}
 	\end{appendices}
 
 \end{document}
