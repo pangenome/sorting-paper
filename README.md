@@ -2,7 +2,7 @@
 
 ## resources
 
-TODO.
+https://github.com/human-pangenomics/hpp_pangenome_resources
 
 ## building the manuscript
 
