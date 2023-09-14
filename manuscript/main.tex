@@ -214,9 +214,7 @@
 	In 2D, we offer several layout initialization techniques.
 	One option is to position nodes in the first layout dimension according to their order in the input graph and to add either uniform or Gaussian noise in the second dimension.
 	Another possibility is to arrange nodes along a Hilbert curve, which often favors the creation of planar final layouts.
-    We additionally support fixing a set of node coordinates, such as those in a reference genome, in their order and position, which allows us to build 1D reference-focused views of complex pangenomes. An exapmle visualization is given in Figure~\ref{fig:1d_fig4}.
-    \FIXME{Is this only for 1D? It would be \textit{amazing} if it were possible to do in 2D, and it should be easy. -EG} \\
-    \FIXME{I am afraid this only works for 1D. Or what do you make of \url{https://github.com/pangenome/odgi/pull/491}? -SH}
+    We additionally support fixing a set of node coordinates, such as those in a reference genome, in their order and position, which allows us to build reference-focused views of complex pangenomes. An example visualization is given in Figure~\ref{fig:1d_fig4}.
 
 	Our implementation is multithreaded and uses shared memory for the layout vector following the HOGWILD! strategy \citep{Recht2011}: Threads perform layout updates without any locking for additional speed up.
 	This is possible because pangenome graphs are typically sparse \citep{Guarracino2022}, with low average node degree, meaning the updates only modify small parts of the entire layout.
