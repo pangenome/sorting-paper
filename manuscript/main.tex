@@ -78,7 +78,7 @@
         Simon~Heumos\,$^{\orcidlink{0000-0003-3326-817X}1,2,\dagger}$,
         Andrea~Guarracino\,$^{\orcidlink{0000-0001-9744-131X}3,4,\dagger}$,
         Jan-Niklas Manuel Schmelzle\,$^{\orcidlink{0000-0001-8566-4049}5,6}$,
-        Jiajie Li\,$^{\orcidlink{0000-0002-9467-0659}6}$,
+        Jiajie Li\,$^{\orcidlink{0000-0002-6775-2843}6}$,
         Zhiru Zhang\,$^{\orcidlink{0000-0002-0778-0308}6}$,
         Jörg Hagmann\,${\orcidlink{0000-0002-7232-3103}^7}$,
         Sven Nahnsen\,$^{\orcidlink{0000-0002-4375-0691}1,2}$,
@@ -112,7 +112,7 @@
 	These structures hamper downstream analyses, visualization, and interpretation. \\
 	\textbf{Results:}
 	To address these challenges, we propose a novel graph layout algorithm, the Path-Guided Stochastic Gradient Descent (PG-SGD).
-	PG-SGD uses the genomes, represented in the pangenome graph as paths, to move pairs of nodes in parallel by applying a modified HOWGWILD! strategy.
+	PG-SGD uses the genomes, represented in the pangenome graph as paths, to move pairs of nodes in parallel by applying a modified HOGWILD! strategy.
 	We show that our implementation efficiently computes the layout of gigabase-scale pangenome graphs, revealing their biological features. \\
 	\textbf{Availability:}
 	PG-SGD has been integrated in \textit{ODGI} which is released as free software under the MIT open source license.
@@ -135,7 +135,7 @@
 	%A bidirected graph can even contain both strands of DNA as paths. \\
 	
 	A pangenome graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space such that a human readible representation of genetic variation across multiple genomes can be drawn. 
-	Layout algorithms aim to find suitable node coodinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive understanding by displaying the graph layout.
+	Layout algorithms aim to find suitable node coordinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive understanding by displaying the graph layout.
 	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetic layouts.
 	This is prone to get stuck in local minima, but stochastic gradient descent (SGD) implementations can alleviate such a problem \citep{Zheng2019}.
 	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions. Specifically, in pangenome graphs we move a single pair of nodes at a time.
