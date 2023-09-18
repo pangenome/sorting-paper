@@ -25,3 +25,5 @@ Application Notes: up to 4 pages; this is approx. 2,600 words or 2,000 words plu
 # Count the number of words
 pdftotext main.pdf - | egrep -e '\w\w\w+' | iconv -f ISO-8859-15 -t UTF-8 | wc -w 
 ```
+## Link to 2D sketch
+https://docs.google.com/presentation/d/1CRigpZKdGM9MGY8RLh-WhRo69AeMMAhvapOYvXKrEsM/edit#slide=id.g24520d7241f_0_3
