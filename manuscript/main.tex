@@ -53,6 +53,13 @@
 \floatstyle{plaintop}
 \restylefloat{table}
 
+% supplement stuff
+\newcommand{\beginsupplement}{%
+	\setcounter{table}{0}
+	\renewcommand{\thetable}{S\arabic{table}}%
+	\setcounter{figure}{0}
+	\renewcommand{\thefigure}{S\arabic{figure}}%
+}
 
 \def\labelitemi{--}
 
@@ -246,7 +253,7 @@
 	Graph visualization is essential for understanding pangenome graphs and the genome variation they represent. 
 	We show how 2D PG-SGD allows us gaining insight into biological data by looking at the graph layout structure. 
 	%To demonstrate this, we provide various 2D PG-SGD layouts in Figure~\ref{fig:2d_layouts}.
-
+			\input{fig_2d_layouts}
 	In Figure~\ref{fig:2d_fig1}, the chromosomes of the HPRC graph show the large scale structural variations in the centromeres.
 	Focusing on the major histocompatibility complex (MHC) of chromosome 6 (Figure~\ref{fig:2d_fig2}), the 2D layout reveals the positions and diversity of all MHC genes (Figure~\ref{fig:2d_fig3}).
 	In Figure~\ref{fig:2d_fig4} the C4A and C4B genes are highlighted. 
@@ -345,22 +352,26 @@
 	
 	\bibliography{document}
 	
-	\begin{appendices}
-	    \section{Supplementary data}
-		\input{fig_2d_layouts}
-	    %\subsection{Quantization} % DURING REVISION, IF NEEDED
-	    %More details about your clever quantization.
-	    \subsection{Performance evaluation}
-	    \label{sec:performance}
-	    The results of the performance evaluation are given in Table~\ref{tab:layout}.
-	    \input{table_layout}
-	    \FIXME{What about the SMT thingy?}
-		\subsection{1D visualizations}	
-		The 1D PG-SGD algorithm creates a 1D layout of the nodes of the graph.
-		Theoretically, it is possible that 2 nodes have the same 1D coordinate or overlap.
-		But, in our 1D visualizations, we arrange the nodes from left to right.
-		Therefore, we project the 1D coordinates into a 1D node order: We sort the final layout by graph component, graph position, and node rank.
-		\input{fig_1d_sorts}
-	\end{appendices}
+	\clearpage
+	\setcounter{page}{1}
+	
+	\beginsupplement
+	
+	\section{Supplement}
+	
+	 \subsection{Supplementary data}
+	 %\subsection{Quantization} % DURING REVISION, IF NEEDED
+	 %More details about your clever quantization.
+	 \subsubsection{Performance evaluation}
+	 \label{sec:performance}
+	 The results of the performance evaluation are given in Table~\ref{tab:layout}.
+	 \input{table_layout}
+	 %\FIXME{What about the SMT thingy?} % DURING REVISION, IF NEEDED
+	\subsubsection{1D visualizations}	
+	The 1D PG-SGD algorithm creates a 1D layout of the nodes of the graph.
+	Theoretically, it is possible that 2 nodes have the same 1D coordinate or overlap.
+	But, in our 1D visualizations, we arrange the nodes from left to right.
+	Therefore, we project the 1D coordinates into a 1D node order: We sort the final layout by graph component, graph position, and node rank.
+	\input{fig_1d_sorts}
 
 \end{document}
