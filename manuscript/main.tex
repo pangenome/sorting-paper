@@ -312,19 +312,21 @@
 	Of note, there still remains a gap in interactive and scalable solutions that merge layouts of large pangenome graph with annotation.
 	Our algorithm will underpin new pangenome graph browsers for studying graph layouts and the genome variation they represent (\url{https://github.com/chfi/waragraph)} last accessed Jul 2023).
 	
-	\FIXME{@Jiajie + Niklas: Maybe address our SMT issue with your cache locality as a potential solution. Additionally just 2/3 sentences about going GPU?}
+	% \FIXME{@Jiajie + Niklas: Maybe address our SMT issue with your cache locality as a potential solution. Additionally just 2/3 sentences about going GPU?}
 	The performance analysis shows that our 2D implementation outperforms \textit{BandageNG} when handling large, complex pangenome graphs.
 	While \textit{BandageNG} was not able to deliver a layout of the whole HPRC graph within 1 week, our 2D PG-SGD calculated one within one day.
 	%We expect that our implementation will be able to handle the next phase of the HPRC, 24 chromosomal pangenome graphs constructed from 300 individuals, without any problems.
-	As especially observed with chromosome 16 evaluation, our implementation is memory-bound.
-	The current data structure doesn't consider the memory access pattern.
-	Therefore, a CPU cache optimized implementation could make use of the massive parallelized calculations on a GPU.
-	Such efforts are currently in progress \url{https://github.com/nsmlzl/odgi/tree/layout_cache_optimized_cpu}.
+	There are some possible optimization approaches for future work to further improve the performance of PG-SGD, making it possible for interactive use. 
+	The data structure could be optimized to improve ache performance. Moreover, the high-degree of parallelism could be further exploited by using a GPU.  
+	% As especially observed with chromosome 16 evaluation, our implementation is memory-bound.
+	% The current data structure doesn't consider the memory access pattern.
+	% Therefore, a CPU cache optimized implementation could make use of the massive parallelized calculations on a GPU.
+	% Such efforts are currently in progress \url{https://github.com/nsmlzl/odgi/tree/layout_cache_optimized_cpu}.
 
 	PG-SGD can be extended to any number of dimensions.
 	It can be seen as a graph embedding algorithm that converts high-dimensional, sparse pangenome graphs into low-dimensional, dense, and continuous vector spaces, while preserving its biologically relevant information.
 	This enables the application of machine learning algorithms that use the graph layout for variant detection and classification. 
-	Our future research involves leveraging these graph projections to detect structural variants and to identify and correct assembly errors
+	Our future research involves leveraging these graph projections to detect structural variants and to identify and correct assembly errors. 
 	Moreover, we are considering extending the algorithm to RNA and protein sequences to support pantranscriptome graphs \citep{sibbesen_haplotype-aware_2023} and panproteome graphs \citep{dabbaghie_panpa:_2023}, respectively.
 	%Helpful could be to integrate more layout objectives \citep{ahmed_multicriteria_2021} like neighborhood preservation.
 
