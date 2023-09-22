@@ -41,8 +41,8 @@
 				\IF{$\mu>1$} {
 				$\mu \gets 1$
 				}
-				$\delta \gets abs(\mu \cdot \frac{ld_{ij} -nd_{ij}}{2})$ \tcp{the actual delta}
-				\uIf{$\delta <= 0$} {
+				$\delta \gets \mu \cdot \frac{ld_{ij} -nd_{ij}}{2}$ \tcp{the actual delta}
+				\uIf{abs($\delta) <= 0$} {
 					$STOP$ \tcp{we can't optimize more}
 				}
 				% TODO stop early?
