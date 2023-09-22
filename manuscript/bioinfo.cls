@@ -482,7 +482,7 @@
   \vspace*{\aboveskipchk}%
   \vspace{\dropfromtop}%
   \hbox to \textwidth{\raisebox{5pt}[0pt]{%
-  \parbox[b]{415pt}{\raggedleft{\helveticacnitalic\fontsize{8}{12}\selectfont {bioRxiv}}\\[1pt]
+  \parbox[b]{415pt}{\raggedleft{\helveticacnitalic\fontsize{8}{12}\selectfont {Journal}}\\[1pt]
   {\helveticacn doi.10.1093/xxxxxx/yyyyyy}\\[1pt]
   {\ifx\@access\@empty
   \else
