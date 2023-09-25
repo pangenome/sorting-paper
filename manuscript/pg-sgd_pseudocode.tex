@@ -48,7 +48,7 @@
 				% TODO stop early?
 				% TODO potentially store new delta max?
 				$r \gets \frac{\delta}{ld_{ij}}$ \tcp{size of the update}
-				$r_x \gets r \cdot ld_{ij}$ \tcp{update size normalized by layout distance}
+				$r_x \gets r \cdot (l_{i} - l_{j})$ \tcp{update size normalized by layout distance}
 				$l_i \gets l_i + r_{x}$ \tcp{update $v_i$ coordinates}
 				$l_j \gets l_j - r_{x}$ \tcp{update $v_j$ coordinates}
 			}
