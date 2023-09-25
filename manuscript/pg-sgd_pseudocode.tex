@@ -47,16 +47,13 @@
 				}
 				% TODO stop early?
 				% TODO potentially store new delta max?
-				$r \gets \delta - ld_{ij}$ \tcp{size of the update}
-				$l_i \gets l_i + r\cdot ld_{ij}$ \tcp{update $v_i$ coordinates}
-				$l_j \gets l_j - r\cdot ld_{ij}$ \tcp{update $v_j$ coordinates}
+				$r \gets \frac{\delta}{ld_{ij}}$ \tcp{size of the update}
+				$r_x \gets r \cdot ld_{ij}$ \tcp{update size normalized by layout distance}
+				$l_i \gets l_i + r_{x}$ \tcp{update $v_i$ coordinates}
+				$l_j \gets l_j - r_{x}$ \tcp{update $v_j$ coordinates}
 			}
 		}
 	}
-<<<<<<< HEAD
-	\caption{Pseudocode of the 1-dimensional PG-SGD.}
-=======
 	\caption{Pseudocode of PG-SGD in 1D.}
->>>>>>> 10b9624b03966971f75390cc79973b672d092c37
 	\label{alg:pg_sgd}
 \end{algorithm}
