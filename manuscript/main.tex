@@ -250,7 +250,7 @@
 	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references (see Supplementary Table~\ref{tab:layout} for graph statistics).
 	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, 2D PG-SGD obtains the graph layouts in 50 minutes on average, with the highest run time observed being chromosome 16 (Supplementary Table~\ref{tab:layout}).
 	This is expected since chromosome 16 has one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
-	Repetitive sequences lead to graph nodes with a very high number of path traversals, which are computationally expensive to work with \citep{Guarracino2022}.
+	Repetitive sequences lead to graph nodes with a very high number of path steps, which are computationally expensive to work with \citep{Guarracino2022}.
 	Memory consumption is 29.66 GB of RAM on average, with the memory peak again occurring with chromosome 16, due to the path index building phase.
 	Given its scalability, we even applied PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}). 
 	%A 2D layout was calculated in under one day.
