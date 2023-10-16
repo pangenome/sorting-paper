@@ -114,12 +114,17 @@
 	\abstract{
 	\textbf{Motivation:}
 	The increasing availability of complete genomes demands for models to study genomic variability within entire populations.
-	Pangenome graphs capture the full genetic diversity between multiple genomes, but their layouts may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
-	These structures hamper downstream analyses, visualization, and interpretation. \\
+	Pangenome graphs capture the full genomic diversity between multiple genomes. 
+	In order to understand them, we need to see them. 
+	For visualization, we need a human readable graph layout: A graph embedding in low (e.g. two) dimensional depictions.
+	Due to a pangenome graph's potential excessive size, this is a grand challenge.
+	%but their layouts may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
+	%These structures hamper downstream analyses, visualization, and interpretation. 
+	\\
 	\textbf{Results:}
 	In response, we introduce a novel graph layout algorithm: the Path-Guided Stochastic Gradient Descent (PG-SGD).
-	PG-SGD uses the genomes, represented in the pangenome graph as paths, to move pairs of nodes in parallel applying a modified HOGWILD! strategy.
-	We show that our implementation efficiently computes the layout of gigabase-scale pangenome graphs, unveiling their biological features. \\
+	PG-SGD uses the genomic paths in the pangenome graph as an embedded positional system to sample genomic distances between pairs of nodes, avoiding the quadratic cost seen in previous versions of graph drawing by Stochastic Gradient Descent (SGD).
+	We show that our implementation efficiently computes the low dimensional layouts of gigabase-scale pangenome graphs, unveiling their biological features. \\
 	\textbf{Availability:}
 	We integrated PG-SGD in \textit{ODGI} which is released as free software under the MIT open source license.
 	Source code is available at \url{https://github.com/pangenome/odgi}. \\% and documentation at \url{https://odgi.readthedocs.io/en/latest/rst/tutorials/sort_layout.html}. \\
@@ -143,16 +148,18 @@
 	Layout algorithms aim to find optimal node coordinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive graph understanding.
 	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetic layouts.
 	This is prone to get stuck in local minima, but stochastic gradient descent (SGD) implementations alleviate such a problem \citep{Zheng2019}.
-	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions.
+	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions. 
+	
+	However, \cite{Zheng2019}'s algorithm has a quadratic up front cost in the number of nodes to find pairwise distances to guide the layout, making it impossible to apply to pangenome graphs with millions of nodes. 
 	%Specifically, in pangenome graphs we move a single pair of nodes at a time.
 	
 	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}, but the lock-free HOGWILD! method offers a highly parallelizable and thus scalable SGD approach that can be applied when the optimization problem is sparse \citep{Recht2011}.
 	
 	In practice, multidimensional scaling (MDS) is applied to minimize the difference between the visual distance and theoretical graph distance.
 	This can be accomplished by using pairwise node distances to minimize an energy function.
-	Since pangenome graphs represent genomes as paths in the graph, a reasonable distance metric would be the nucleotide distance between a pair of nodes traversed by the same path.
+	Since pangenome graphs represent genomes as paths in the graph, a reasonable distance metric would be the nucleotide distance between a pair of nodes traversed by the same path. Such path sampling would overcome the quadratic costs of previous versions of graph drawing by SGD.
 	
-	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to move pairs of nodes in parallel with a modified HOGWILD! strategy.
+	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to use the paths as an embedded positional system to find distances between nodes, moving pairs of nodes in parallel with a modified HOGWILD! strategy.
 	The algorithm computes the pangenome graph layout that best reflects the nucleotide sequences in the graph.
 	To our knowledge, no algorithm takes into account such biological information to compute the graph layouts.
 	PG-SGD can be extended in any number of dimensions.
