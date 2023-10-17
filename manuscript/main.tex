@@ -114,10 +114,10 @@
 	\abstract{
 	\textbf{Motivation:}
 	The increasing availability of complete genomes demands for models to study genomic variability within entire populations.
-	Pangenome graphs capture the full genomic diversity between multiple genomes. 
+	Pangenome graphs capture the full genomic similarity and diversity between multiple genomes. 
 	In order to understand them, we need to see them. 
 	For visualization, we need a human readable graph layout: A graph embedding in low (e.g. two) dimensional depictions.
-	Due to a pangenome graph's potential excessive size, this is a grand challenge.
+	Due to a pangenome graph's potential excessive size, this is a signifiant challenge.
 	%but their layouts may exhibit complex structures due to common, nonlinear patterns of genome variation and evolution.
 	%These structures hamper downstream analyses, visualization, and interpretation. 
 	\\
@@ -144,20 +144,22 @@
 	In the variation graph model \citep{Garrison:2018}, genomes are encoded as paths traversing the nodes in the graph.
 	%A bidirected graph can even contain both strands of DNA as paths. \\
 	
-	A pangenome graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space to produce a human-readable visualization of genetic variation between multiple genomes.
-	Layout algorithms aim to find optimal node coordinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive graph understanding.
+	A graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space.
+	Graph layout algorithms aim to find optimal node coordinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive understanding of the graph.
 	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetic layouts.
 	This is prone to get stuck in local minima, but stochastic gradient descent (SGD) implementations alleviate such a problem \citep{Zheng2019}.
 	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions. 
 	
+	A \textit{pangenome} graph layout can provide a human-readable visualization of genetic variation between multiple genomes.
 	However, \cite{Zheng2019}'s algorithm has a quadratic up front cost in the number of nodes to find pairwise distances to guide the layout, making it impossible to apply to pangenome graphs with millions of nodes. 
+	Also, existing graph layout approaches ignore the biological information inherent in pangenome graphs.
 	%Specifically, in pangenome graphs we move a single pair of nodes at a time.
-	
-	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}, but the lock-free HOGWILD! method offers a highly parallelizable and thus scalable SGD approach that can be applied when the optimization problem is sparse \citep{Recht2011}.
 	
 	In practice, multidimensional scaling (MDS) is applied to minimize the difference between the visual distance and theoretical graph distance.
 	This can be accomplished by using pairwise node distances to minimize an energy function.
 	Since pangenome graphs represent genomes as paths in the graph, a reasonable distance metric would be the nucleotide distance between a pair of nodes traversed by the same path. Such path sampling would overcome the quadratic costs of previous versions of graph drawing by SGD.
+	
+	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}, but the lock-free HOGWILD! method offers a highly parallelizable and thus scalable SGD approach that can be applied when the optimization problem is sparse \citep{Recht2011}.	
 	
 	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to use the paths as an embedded positional system to find distances between nodes, moving pairs of nodes in parallel with a modified HOGWILD! strategy.
 	The algorithm computes the pangenome graph layout that best reflects the nucleotide sequences in the graph.
