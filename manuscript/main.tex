@@ -146,7 +146,7 @@
 	
 	A graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space.
 	Graph layout algorithms aim to find optimal node coordinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive understanding of the graph.
-	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetic layouts.
+	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which produces aesthetic layouts. %by ....
 	This is prone to get stuck in local minima, but stochastic gradient descent (SGD) implementations alleviate such a problem \citep{Zheng2019}.
 	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions. 
 	
@@ -163,7 +163,7 @@
 	
 	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to use the paths as an embedded positional system to find distances between nodes, moving pairs of nodes in parallel with a modified HOGWILD! strategy.
 	The algorithm computes the pangenome graph layout that best reflects the nucleotide sequences in the graph.
-	To our knowledge, no algorithm takes into account such biological information to compute the graph layouts.
+	\red{To our knowledge, no generic graph layout algorithm takes into account such path encoded biological information when computing a graph's layout.}
 	PG-SGD can be extended in any number of dimensions.
 	In the ODGI toolkit \citep{Guarracino2022}, we provide implementations for 1-dimensional (1D) and 2-dimensional (2D) layouts.
 	These algorithms have already been successfully applied to construct and visualize large-scale pangenome graphs of the Human Pangenome Reference Consortium (HPRC)~\citep{Liao2023, Guarracino2023}.
@@ -312,7 +312,8 @@
 	\section{Discussion}
 	\label{sec:discussion}
 	
-	We presented Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph.
+	\red{We presented Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph. 
+	Other generic graph layout algorithms, such as the one offered by \textit{BandageNG}, ignore this additional information.}
 	Our implementation efficiently computes the layout of pangenome graphs representing thousands of whole genomes.
 	
 	Graph visualization is key for understanding genome variations and the layouts produced by PG-SGD offer an unprecedented high-level perspective on pangenome variation.
