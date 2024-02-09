@@ -146,13 +146,13 @@
 	
 	A graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space.
 	Graph layout algorithms aim to find optimal node coordinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive understanding of the graph.
-	\red{One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which uses physical simulation to produce aesthetic layouts. %by ....
+	\red{One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which uses physical simulation to produce aesthetic layouts. The classical approach combines repulsive forces on all vertices and attractive forces on adjacent vertices.  %by ....
 	This is prone to get stuck in local minima, but multi-layer strategies such as the Fast Multipole Multilevel (FM$^{3}$)~\citep{Hachul2005} method or stochastic gradient descent (SGD) implementations alleviate such a problem \citep{Zheng2019}.
 	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions.} 
 	
 	A \textit{pangenome} graph layout can provide a human-readable visualization of genetic variation between multiple genomes.
 	However, \cite{Zheng2019}'s algorithm has a quadratic up front cost in the number of nodes to find pairwise distances to guide the layout, making it impossible to apply to pangenome graphs with millions of nodes. 
-	\red{Also, existing generic graph layout approaches ignore the biological information inherent in pangenome graphs. One such bioinformatics tool is \textit{BandageNG}, the current state of the art for genome graph visualization.} 
+	\red{Also, existing generic graph layout approaches ignore the biological information inherent in pangenome graphs. One such bioinformatics tool is \textit{BandageNG}, the current state of the art for genome graph visualization. It uses FM$^{3}$ which only considers the nodes and edges of a graph.} 
 	%Specifically, in pangenome graphs we move a single pair of nodes at a time.
 	
 	In practice, multidimensional scaling (MDS) is applied to minimize the difference between the visual distance and theoretical graph distance.
@@ -334,7 +334,20 @@
 	%We expect that our implementation will be able to handle the next phase of the HPRC, 24 chromosomal pangenome graphs constructed from 300 individuals, without any problems.
 	There are some possible optimization approaches for future work to further improve the performance of PG-SGD, making it possible for interactive use. 
 	The data structure could be optimized to improve cache performance. Moreover, the high-degree of parallelism could be further exploited by using a GPU. 
-	\red{Since BandageNG was primarily designed for assembly graphs, one may have to adjust its parameters dependent on the input graph, in order to boost the layout generation or to adjust the highlighting of desired graph features.}	 
+	\red{In \textit{BandageNG}, one can't select the number of threads for the calculations. They are automatically chosen by the number of connected components of the graph to draw. This limits its parallelism and leads to an unbalanced workload. Since \textit{BandageNG} was primarily designed for assembly graphs, one may have to adjust its parameters dependent on the input graph, in order to boost the layout generation or to adjust the highlighting of desired graph features.}
+	
+	\red{The classical force model of state of the art generic graph algorithms, such as FM³ based-ones, places nodes according to their attractive and repulsive forces.
+	This force can be seen as equivalent to how our 2D PG-SGD moves the nodes’ ends in 2D: If the nucleotide distance of the randomly chose path steps is smaller than the layout distance of the nodes’ ends, we move them closer together (“attractive force”), else we move them further away (“repulsive force”). 
+	However, the key difference here is that this approach is path-guided using a “biological force”. 
+	So theoretically, it would be possible to combine our approach with a force-directed one. 
+	Combining both methods, we might get the best of both worlds: Multi-threadable PG-SGD iteratively applied to different graph-layout-levels. 
+	We can imagine that such an approach can lead to a further speedup when calculating the layout.
+	However, for generic graphs, this would only work if quantitative path information for each node could be added: We would replace the classical physical simulation approach with our path-guided method. 
+	If such information is not available, one could randomly cover the graph with paths. Staying in the pangenomic world there already exists such a tool: \textit{odgi cover}. 
+	However, this is an NP-hard problem and so far didn’t work very well in practice.}
+	
+	\red{With assembly graphs we face the same problem: They usually do not carry path information during each assembly step. 
+	One could map the initial assembly back against the assembly graph in order to build paths through the graph. This would allow us to obtain a layout using PG-SGD.}	 
 	% As especially observed with chromosome 16 evaluation, our implementation is memory-bound.
 	% The current data structure doesn't consider the memory access pattern.
 	% Therefore, a CPU cache optimized implementation could make use of the massive parallelized calculations on a GPU.
