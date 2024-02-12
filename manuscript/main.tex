@@ -338,7 +338,7 @@
 	
 	\red{The classical force model of state of the art generic graph algorithms, such as FM³-based ones, places nodes according to their attractive and repulsive forces.
 	This force can be seen as equivalent to how our 2D PG-SGD moves the nodes’ ends in 2D: If the nucleotide distance of the randomly chosen path steps is smaller than the layout distance of the nodes' ends, we move them closer together (“attractive force”), else we move them further away (“repulsive force”). 
-	However, the key difference here is that this approach is path-guided using a “biological force”, but paths represent biological sequences in pangenome graphs, so it is as if PG-SDG considers a “biological force” for placing the graph nodes.
+	However, the key difference here is that this approach is path-guided: Paths represent biological sequences in pangenome graphs, so it is as if PG-SDG considers a “biological force” for placing the graph nodes.
 	So theoretically, it would be possible to combine our approach with a force-directed one. 
 	Combining both methods, we might get the best of both worlds: Multi-threadable PG-SGD iteratively applied to different graph-layout-levels. 
 	We can imagine that such an approach can lead to a further speedup when calculating the layout.
@@ -348,7 +348,7 @@
 	However, this is an NP-hard problem and so far didn't work very well in practice.}
 	
 	\red{With assembly graphs we face the same problem: They usually do not carry path information during each assembly step. 
-	One could map the initial assembly back against the assembly graph in order to build paths through the graph. This would allow us to obtain a layout using PG-SGD.}	 
+	One could map the initial assembly reads back against the assembly graph in order to build paths through the graph. This would allow us to obtain a layout using PG-SGD.}	 
 	% As especially observed with chromosome 16 evaluation, our implementation is memory-bound.
 	% The current data structure doesn't consider the memory access pattern.
 	% Therefore, a CPU cache optimized implementation could make use of the massive parallelized calculations on a GPU.
