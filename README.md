@@ -30,3 +30,6 @@ https://docs.google.com/presentation/d/1CRigpZKdGM9MGY8RLh-WhRo69AeMMAhvapOYvXKr
 
 ## How to generate Supplementary
 pdftk manuscript/main.pdf cat 7-end output manuscript/supplementary.pdf
+
+## Note about the scripts folder
+Since the maturation of the manuscript, only the scripts in folder `scripts/cfc` are relevant for the manuscript.
