@@ -27,3 +27,6 @@ pdftotext main.pdf - | egrep -e '\w\w\w+' | iconv -f ISO-8859-15 -t UTF-8 | wc -
 ```
 ## Link to 2D sketch
 https://docs.google.com/presentation/d/1CRigpZKdGM9MGY8RLh-WhRo69AeMMAhvapOYvXKrEsM/edit#slide=id.g24520d7241f_0_3
+
+## How to generate Supplementary
+pdftk manuscript/main.pdf cat 7-end output manuscript/supplementary.pdf
