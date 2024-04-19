@@ -147,29 +147,29 @@
 	
 	A graph layout is the arrangement of nodes and edges in an \textit{N}-dimensional space.
 	Graph layout algorithms aim to find optimal node coordinates in order to minimize overlapping nodes or edges, reduce edge crossings, and promote an intuitive understanding of the graph.
-	\red{One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which uses physical simulation to produce aesthetic layouts. The classical approach combines repulsive forces on all vertices and attractive forces on adjacent vertices.  %by ....
+	One popular approach is force-directed graph drawing \citep{cheong_force-directed_2022} which uses physical simulation to produce aesthetic layouts. The classical approach combines repulsive forces on all vertices and attractive forces on adjacent vertices.  %by ....
 	This is prone to get stuck in local minima, but multi-layer strategies such as the Fast Multipole Multilevel (FM$^{3}$)~\citep{Hachul2005} method or stochastic gradient descent (SGD) implementations alleviate such a problem \citep{Zheng2019}.
-	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions.} 
+	SGD uses the gradient of its individual terms to approximate the gradient of a sum of functions.
 	
 	A \textit{pangenome} graph layout can provide a human-readable visualization of genetic variation between multiple genomes.
 	However, \cite{Zheng2019}'s algorithm has a quadratic up front cost in the number of nodes to find pairwise distances to guide the layout, making it impossible to apply to pangenome graphs with millions of nodes. 
-	\red{Also, existing generic graph layout approaches ignore the biological information inherent in pangenome graphs. One such bioinformatics tool is \textit{BandageNG}, the current state of the art for genome graph visualization. It uses FM$^{3}$ which only considers the nodes and edges of a graph.} 
+	Also, existing generic graph layout approaches ignore the biological information inherent in pangenome graphs. One such bioinformatics tool is \textit{BandageNG}, the current state of the art for genome graph visualization. It uses FM$^{3}$ which only considers the nodes and edges of a graph.
 	%Specifically, in pangenome graphs we move a single pair of nodes at a time.
 	
 	In practice, multidimensional scaling (MDS) is applied to minimize the difference between the visual distance and theoretical graph distance.
 	This can be accomplished by using pairwise node distances to minimize an energy function.
 	Since pangenome graphs represent genomes as paths in the graph, a reasonable distance metric would be the nucleotide distance between a pair of nodes traversed by the same path. Such path sampling would overcome the quadratic costs of previous versions of graph drawing by SGD.
 	
-	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}. \red{Although, \textit{BandageNG} applies FM$^{3}$ for layout generation, it's parallelism is bound by the number of connected graph components. Alternatively, the lock-free HOGWILD! method offers a highly parallelizable and thus scalable SGD approach that can be applied when the optimization problem is sparse \citep{Recht2011}.}	
+	Typically, force-directed layouts are hard to compute \citep{wang_research_2014}. Although, \textit{BandageNG} applies FM$^{3}$ for layout generation, it's parallelism is bound by the number of connected graph components. Alternatively, the lock-free HOGWILD! method offers a highly parallelizable and thus scalable SGD approach that can be applied when the optimization problem is sparse \citep{Recht2011}.
 	
 	Here, we present a new pangenome graph layout algorithm which applies a path-guided stochastic gradient descent (PG-SGD) to use the paths as an embedded positional system to find distances between nodes, moving pairs of nodes in parallel with a modified HOGWILD! strategy.
 	The algorithm computes the pangenome graph layout that best reflects the nucleotide sequences in the graph.
-	\red{To our knowledge, no generic graph layout algorithm takes into account such path encoded biological information when computing a graph's layout.}
+	To our knowledge, no generic graph layout algorithm takes into account such path encoded biological information when computing a graph's layout.
 	
 	PG-SGD can be extended in any number of dimensions.
 	In the ODGI toolkit \citep{Guarracino2022}, we provide implementations for 1-dimensional (1D) and 2-dimensional (2D) layouts.
 	These algorithms have already been successfully applied to construct and visualize large-scale pangenome graphs of the Human Pangenome Reference Consortium (HPRC)~\citep{Liao2023, Guarracino2023}.
-	\red{In addition, we show that PG-SGD is almost an order of magnitude faster than \textit{BandageNG}.}
+	In addition, we show that PG-SGD is almost an order of magnitude faster than \textit{BandageNG}.
 
 	\section{Algorithm}
 
@@ -253,16 +253,16 @@
 	Experiments were conducted on a cluster with 24 \texttt{Regular} nodes (32 cores / 64 threads with two AMD EPYC 7343 processors with 512 GB RAM) and 4 \texttt{HighMem} nodes (64 cores / 128 threads with two AMD EPYC 7513 processors with 2048 GB RAM).
 	We downloaded pangenome graphs for each autosome (24 in total) and for the mitochondrial DNA.
 	Each graph represents 90 whole human haplotypes: 44 diploid individuals plus the GRCh38 \citep{Schneider2017} and CHM13 \citep{Nurk_2021} haploid human references (see Supplementary Table~\ref{tab:layout} for graph statistics).
-	\red{When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, \textit{odgi layout}'s 2D PG-SGD implementation obtains the graph layouts in 50 minutes on average, with the highest run time observed being chromosome 16 (Supplementary Table~\ref{tab:layout}).}
+	When applied to these pangenome graphs using one \texttt{Regular} node for each calculation, \textit{odgi layout}'s 2D PG-SGD implementation obtains the graph layouts in 50 minutes on average, with the highest run time observed being chromosome 16 (Supplementary Table~\ref{tab:layout}).
 	This is expected since chromosome 16 has one of the highest levels of segmentally duplicated sequence among the human autosomes \citep{Martin2004}.
 	Repetitive sequences lead to graph nodes with a very high number of path steps, which are computationally expensive to work with \citep{Guarracino2022}.
 	Memory consumption is 29.66 GB of RAM on average, with the memory peak again occurring with chromosome 16, due to the path index building phase.
-	\red{Given its scalability, we applied 2D PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}).} 
+	Given its scalability, we applied 2D PG-SGD to the full graph with all chromosomes together using a \texttt{HighMem} node (Supplementary Table~\ref{tab:layout}).
 	%A 2D layout was calculated in under one day.
-	\red{To compare, \textit{BandageNG} (\url{https://github.com/asl/BandageNG}, last accessed Jul 2023), the current state of the art for graph visualization, was used to calculate a 2D layout of each of the HPRC pangenome graphs. 
+	To compare, \textit{BandageNG} (\url{https://github.com/asl/BandageNG}, last accessed Jul 2023), the current state of the art for graph visualization, was used to calculate a 2D layout of each of the HPRC pangenome graphs. 
 	For a fair comparison, we did not rely on \textit{BandageNG}'s interactive GUI application, but we executed \textit{BandageNG layout}, which directly emits a 2D graph layout similar to \textit{odgi layout}. 
 	\textit{BandageNG} was not able to produce a layout for the full graph within 7 days, hitting the wall clock time limit of the cluster.
-	On average, PG-SGD is $\sim$8X faster than \textit{BandageNG} while using $\sim$2X less memory.}
+	On average, PG-SGD is $\sim$8X faster than \textit{BandageNG} while using $\sim$2X less memory.
 	% avg time bng 388 min, avg gb ng 66.84
 
     \subsection{Pangenome graph layouts reveal biological features}
@@ -315,8 +315,8 @@
 	\section{Discussion}
 	\label{sec:discussion}
 	
-	\red{We presented Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph. 
-	Other generic graph layout algorithms, such as the one offered by \textit{BandageNG}, ignore this additional information.}
+	We presented Path-Guided Stochastic Gradient Descent (PG-SGD), the first layout algorithm for pangenome graphs that leverages the biological information available within the genomes represented in the graph. 
+	Other generic graph layout algorithms, such as the one offered by \textit{BandageNG}, ignore this additional information.
 	Our implementation efficiently computes the layout of pangenome graphs representing thousands of whole genomes.
 	
 	Graph visualization is key for understanding genome variations and the layouts produced by PG-SGD offer an unprecedented high-level perspective on pangenome variation.
@@ -335,9 +335,9 @@
 	%We expect that our implementation will be able to handle the next phase of the HPRC, 24 chromosomal pangenome graphs constructed from 300 individuals, without any problems.
 	There are some possible optimization approaches for future work to further improve the performance of PG-SGD, making it possible for interactive use. 
 	The data structure could be optimized to improve cache performance. Moreover, the high-degree of parallelism could be further exploited by using a GPU. 
-	\red{In \textit{BandageNG}, one can't select the number of threads for the calculations. They are automatically chosen by the number of connected components of the graph to draw. This limits its parallelism and leads to an unbalanced workload. Since \textit{BandageNG} was primarily designed for assembly graphs, one may have to adjust its parameters dependent on the input graph, in order to boost the layout generation or to adjust the highlighting of desired graph features.}
+	In \textit{BandageNG}, one can't select the number of threads for the calculations. They are automatically chosen by the number of connected components of the graph to draw. This limits its parallelism and leads to an unbalanced workload. Since \textit{BandageNG} was primarily designed for assembly graphs, one may have to adjust its parameters dependent on the input graph, in order to boost the layout generation or to adjust the highlighting of desired graph features.
 	
-	\red{The classical force model of state of the art generic graph algorithms, such as FM³-based ones, places nodes according to their attractive and repulsive forces.
+	The classical force model of state of the art generic graph algorithms, such as FM³-based ones, places nodes according to their attractive and repulsive forces.
 	This force can be seen as equivalent to how our 2D PG-SGD moves the nodes’ ends in 2D: If the nucleotide distance of the randomly chosen path steps is smaller than the layout distance of the nodes' ends, we move them closer together (“attractive force”), else we move them further away (“repulsive force”). 
 	However, the key difference here is that this approach is path-guided: Paths represent biological sequences in pangenome graphs, so it is as if PG-SDG considers a “biological force” for placing the graph nodes.
 	So theoretically, it would be possible to combine our approach with a force-directed one. 
@@ -346,10 +346,10 @@
 	However, for generic graphs, this would only work if path information for each node could be added: We would replace the classical physical simulation approach with our path-guided method. 
 	If such information is not available, one could randomly cover the graph with paths.
 	This function is already provided in \textit{odgi cover}. 
-	However, this is an NP-hard problem and our preliminary solutions proved ineffective.}
+	However, this is an NP-hard problem and our preliminary solutions proved ineffective.
 	
-	\red{With assembly graphs we face the same problem: They usually do not carry path information during each assembly step. 
-	One could map the initial assembly reads back against the assembly graph in order to build paths through the graph. This would allow us to obtain a layout using PG-SGD.}	 
+	With assembly graphs we face the same problem: They usually do not carry path information during each assembly step. 
+	One could map the initial assembly reads back against the assembly graph in order to build paths through the graph. This would allow us to obtain a layout using PG-SGD.
 	% As especially observed with chromosome 16 evaluation, our implementation is memory-bound.
 	% The current data structure doesn't consider the memory access pattern.
 	% Therefore, a CPU cache optimized implementation could make use of the massive parallelized calculations on a GPU.
