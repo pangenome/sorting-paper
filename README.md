@@ -13,7 +13,7 @@ sudo apt-get -y install texlive texlive-latex-recommended \
         texlive-science
 
 git clone https://github.com/pangenome/sorting-paper
-cd hogwild-layout/manuscript && make -k
+cd sorting-paper/manuscript && make -k
 ```
 
 ## Oxford Bioinformatics Application Notes paper author instructions
